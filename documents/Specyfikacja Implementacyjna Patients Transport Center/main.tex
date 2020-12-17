@@ -1,0 +1,358 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{polski}
+\usepackage{indentfirst}
+\usepackage{lastpage}
+\usepackage{natbib}
+\usepackage{graphicx} 
+\usepackage{sidecap}
+\usepackage{wrapfig}
+\usepackage{subfig}
+\usepackage{caption}
+
+\captionsetup[figure]{name={Rysunek}}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{A. Malinowski, F. Wysocki, B.Zakrzewski}
+\rfoot{Strona \thepage \hspace{1pt} z \pageref{LastPage}}
+\lhead{Spis treści}
+\title{Specyfikacja implementacyjna projektu pt. \\ ,,Patients Transport Center''}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{flushright}
+\par
+\vfill
+\par
+{\fontsize{11}{11}\selectfont
+    Wykonali: Antoni Malinowski, Franciszek Wysocki, Bartosz Zakrzewski
+
+    Sprawdzający: mgr inż. Paweł Zawadzki
+
+    Data: 17-12-2020
+}
+\end{flushright}
+\thispagestyle{empty}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\lhead{Cel dokumentu i projektu}
+
+\section{Cel dokumentu}
+{\fontsize{12}{12}\selectfont
+Niniejszy dokument przedstawia plan implementacji programu, który zarządza transportem pacjentów do szpitali. Zostaną w nim podane szczegóły dotyczące środowisk deweloperskich członków zespołu, zasad pracy z systemem kontroli wersji, rodzajów testów, struktury projektu, struktur danych i algorytmów.
+
+}
+
+\section{Cel projektu}
+{\fontsize{12}{12}\selectfont
+    Celem projektu jest zapewnienie optymalnego transportu pacjentów z obszaru zdefiniowanego przez najmniejszy zbiór wypukły zawierający w sobie wszystkie obiekty. Program powinien decydować czy dany pacjent znajduje się w tym obszarze, transportować go do najbliższego szpitala i w razie braku wolnych łóżek znajdować szpital, do którego czas transportu jest najkrótszy.
+}
+
+\section{Podstawowe informacje}
+{\fontsize{12}{12}\selectfont
+
+\begin{itemize}
+    \item aplikacja będzie posiadała graficzny interfejs użytkownika, który pozwoli między innymi na dodanie pacjenta na mapie, wczytanie pliku, zmianę tempa;
+    \item aplikacja będzie wielowątkowa – zostanie oddzielony wątek wykonujący obliczenia od wątku wyświetlającego symulację.
+\end{itemize}
+
+}
+
+\clearpage
+\lhead{Środowisko deweloperskie}
+
+\section{Środowisko deweloperskie}
+{\fontsize{12}{12}\selectfont
+Program będzie implementowany przez trzech członków zespołu na ich indywidualnych komputerach.\\
+
+Aplikacja zostanie napisana w języku programowania Java w wersji 13.0.2 (JDK). \\
+
+Każdy członek zespołu będzie pracował na systemie Windows 10 i na tych samych wersjach narzędzi deweloperskich: 
+\begin{itemize}
+    \item IDE - Intellij 2020.2.4 Community Edition;
+    \item Apache Maven w wersji 3.6.3;
+    \item Git w wersji 2.29.2;
+    \item Projektor w wersji 2.3.1.
+\end{itemize}
+
+Pozostałe narzędzia:
+
+\begin{itemize}
+    \item Sprite'y: rysunek karetki, szpitali, obiektów (pomników), dróg, mapy, pacjentów  będą stworzone w programie Paint, Paint 3D i GIMP 2;
+    \item Kontakt między członkami zespołu będzie odbywał się za pomocą aplikacji Messenger i Microsoft Teams;
+    \item Udostępnianie plików dla wszystkich członków zespołu nastąpi za pomocą aplikacji OneDrive;
+    \item W podziale obowiązków i zauważeniu progresu pomoże nam Tablica Kanban na stronie Trello.
+\end{itemize}
+
+Wykorzystane pakiety i biblioteki:
+\begin{itemize}
+    \item Do stworzenia GUI zostaną użyte pakiety java.awt oraz javax.swing;
+    \item Do napisania testów zostaną wykorzystane biblioteki JUnit 5, AssertJ oraz Mockito.
+\end{itemize}
+
+}
+
+\clearpage
+\lhead{Zasady wersjonowania i testowanie}
+
+\section{Zasady wersjonowania}
+{\fontsize{12}{12}\selectfont
+Wersjonowanie odbędzie się za pomocą systemu kontroli wersji -- git.
+Commity (oraz kod) będą pisane w języku angielskim. \\
+
+Commity mogą zostać otagowane, jeżeli zajdzie taka potrzeba (np. tagiem ,,FINAL\_RELEASE\_GR3\_1’’,  ,,PROOF\_OF\_CONCEPT’’ czy ,,STABLE\_01’’). \\
+
+Praca z systemem kontroli wersji git będzie rozłożona na wiele gałęzi. Łączenie ich będzie wykonywane za pomocą komendy git merge. \\
+
+Gałęzie będą nazywane za pomocą ,,kebab case’’ np. ,,data-verification’’, ,,graph-representation’’.
+}
+
+
+\section{Testowanie}
+{\fontsize{12}{12}\selectfont
+Weryfikacja poprawności działania programu odbędzie się przy pomocy testów jednostkowych. \\
+
+Do ich napisania zostaną wykorzystane biblioteki: JUnit 5, AssertJ oraz Mockito. \\
+
+Testy zostaną stworzone zgodnie z zasadą F.I.R.S.T. i będą sprawdzały poprawność działania konkretnych metod publicznych ze szczególnym naciskiem na warunki brzegowe, odporność na niepożądane warunki (takie jak np. podanie niezainicjowanej zmiennej jako argument funkcji). \\
+
+Nazwy testów będą pisane zgodnie z konwencją:
+        \begin{center}
+            \texttt{should\_expectedBehavior\_when\_stateUnderTest}
+        \end{center}
+Natomiast ciało funkcji testujących z konwencją given/when/then. \\
+
+Testy będą automatycznie uruchamiane za pomocą Mavena przed stworzeniem pliku JAR.
+}
+
+\clearpage
+\lhead{Struktura projektu}
+
+\section{Struktura projektu}
+{\fontsize{12}{12}\selectfont
+Nazwa projektu to ,,patients-transport-center’’. \\
+Projekt z racji, że będzie posiał graficzny interfejs użytkownika będzie podzielony na dwa główne pakiety: 
+\begin{itemize}
+    \item \textbf{"pl.group2.optimizer.gui"} zawierający pakiety i klasy związane z java.awt i javax.swing;
+    \item \textbf{,,pl.group2.optimizer.impl’’} zawierający część odpowiadającą za obliczenia.
+\end{itemize}
+
+Pakiet \textbf{pl.group2.optimizer.impl} dzieli się na:
+\begin{itemize}
+    \item \textbf{,,pl.group2.optimizer.impl.algorithms’’} zawierający klasy reprezentujące algorytmy;
+    \item \textbf{,,pl.group2.optimizer.impl.io’’} zawierający klasy obsługującą wczytywanie z pliku i obsługę błędów;
+    \item \textbf{,,pl.group2.optimizer.impl.items’’} zawierający klasy reprezentujące szpitale, obiekty, pacjentów, drogi oraz skrzyżowania;
+    \item \textbf{,,pl.group2.optimizer.impl.structures’’} zawierający klasy reprezentujące graf i inne struktury danych.
+\end{itemize}
+
+}
+
+\clearpage
+\lhead{Klasy w projekcie}
+
+\section{Klasy}
+{\fontsize{12}{12}\selectfont
+Klasy czy pakiety mogą wymagać zmiany lub utworzenia nowych, dlatego członkowie zespołu powinny pozostawać w kontakcie. \\
+
+Klasa główna ,,\textbf{Optimizer}'' (zawierająca metodę main()) odpowiadająca za sterowanie aplikacją, będzie znajdować się w pakiecie \textbf{pl.group2.optimizer}. \\
+
+Klasy odpowiadające za algorytm i optymalizację:
+\begin{enumerate}
+    \item Klasy pakietu \textbf{,,pl.group2.optimizer.impl.algorithms’’}:
+    \begin{itemize}
+        \item \textbf{AreaHandledByAmbulance}: jest to klasa reprezentująca obszar wyznaczony przez szpitale oraz obiekty graniczne,w którym program poszukuje pacjentów do obsłużenia. Posiada metodę \textbf{contains()}, która zawiera implementacje algorytmu \textbf{Ray casting} i służy do wykrywania, czy pacjent znajduje się w wyznaczonym obszarze;
+
+        \item \textbf{GrahamAlgorithm}: zawiera implementacje algorytmu Grahama, który służy do wyznaczenia granic terytorium, w którym karetka jest w stanie dotrzeć do pacjenta;
+
+        \item \textbf{DijkstraAlgorithm}: klasa służąca do wyznaczania takiej drogi pomiędzy szpitalami (po której karetka transportująca pacjenta będzie musiała przejechać) aby była ona najkrótsza z możliwych;
+
+        \item \textbf{ShortestDistanceChecker}: zajmuje się szukaniem najbliższego szpitala z dowolnego miejsca (które jest w istocie miejscem w którym “pojawia się” pacjent) znajdującego się na terytorium obsługiwanym przez karetki;
+        \item \textbf{IntersectionSearcher}: klasa ta zajmuje się wyszukiwaniem przecięć pomiędzy gałęziami grafu łączącego szpitale i dodawaniem nowo powstałych dróg do listy wszystkich dróg pomiędzy szpitalami.
+        
+    \end{itemize}
+    
+    
+    \clearpage
+    
+    
+    \item Klasy pakietu \textbf{,,pl.group2.optimizer.impl.io’’}:
+    
+    \begin{itemize}
+        \item \textbf{TextFileReader}: zajmuje się czytaniem plików wejściowych i zapisywaniem zawartych w nich danych do odpowiednich struktur w programie. \\
+        Dodatkowo sprawdza czy plik wejściowy jest poprawny. Jeżeli nie to wywołuje metody z klasy ErrorHandler;
+        
+        \item \textbf{ErrorHandler}: zawiera metody, które wyświetlają odpowiedni komunikat o tym jaki błąd się pojawił. \\
+        np. błąd formatowania w pliku, i w której linii się on znajduje 
+        (aby użytkownik mógł poprawić go i załadować dane ponownie). \\
+        Jeżeli zajdzie taka potrzeba to program zakończy się z odpowiednim kodem błędu.
+    \end{itemize}
+    
+    \item Klasy pakietu \textbf{,,pl.group2.optimizer.impl.items’’}:
+    \begin{itemize}
+        \item \textbf{Hospital}: klasa służąca do tworzenia obiektów reprezentujących szpitale i przechowujących informację o nich;
+
+        \item \textbf{Hospitals}: klasa przechowująca operacje, które możemy wykonywać na liście liniowej szpitali;
+        
+        \item \textbf{SpecialObject}: klasa służąca do tworzenia obiektów reprezentujących obiekty dodatkowe (np. pomniki) i przechowujących informację o nich;
+
+        \item \textbf{Path}: klasa służąca do tworzenia obiektów reprezentujących drogi/ścieżki między szpitalami i przechowujących informację o nich;
+        
+        \item \textbf{Paths}: klasa posiadająca operacje, które można wykonać na drogach (np. sprawdź czy drogi się nie przecinają);
+
+        \item \textbf{Patient}: klasa służąca do tworzenia obiektów reprezentujących pacjentów i przechowujących informację o nich;
+
+        \item \textbf{Patients}: klasa posiadająca operacje, które można wykonywać na liście pacjentów (np. dodaj pacjenta, sprawdź czy leży poza obszarem);
+
+        \item \textbf{Intersection}: klasa reprezentująca skrzyżowanie, jest ona potrzebna, aby algorytm poszukujący najkrótszej ścieżki mógł przecięcie dróg jako wierzchołek w drodze do szpitala;
+
+        \item \textbf{Intersections}: klasa przechowująca operacje, które możemy wykonywać na większej ilości skrzyżowań;
+
+        \item \textbf{Vertex}: interfejs, implementowany przez klasy Intersection oraz Hospital. Reprezentuje on wierzchołek grafu;
+
+    \end{itemize}
+    
+    \clearpage
+    
+    \item Klasy pakietu \textbf{,,pl.group2.optimizer.impl.structures''}:
+    \begin{itemize}
+        \item \textbf{Graph}: służy do stworzenia grafu, którego wierzchołki to szpitale bądź skrzyżowania, a gałęzie to drogi pomiędzy wybranymi szpitalami/skrzyżowaniami;
+(pacjent ma zostać przetransportowany do szpitala więc karetka ,,nie zatrzyma się’’ na skrzyżowaniu);
+
+        \item  \textbf{Stack}: zawiera implementacje stosu z dodatkową metodą zwracającą również przedostatni element leżący na stosie;
+
+        \item \textbf{BinaryHeap}: zawiera implementacje minimalnego kopca binarnego wykorzystywanego w klasie MinimumPriorityQueue;
+
+        \item \textbf{MinimumPriorityQueue}: tworzy kolejkę priorytetową, której priorytetem będzie aktualnie wyliczona odległość od wierzchołka grafu;
+
+        \item \textbf{FifoQueue}: kolejka first in, first out, która posłuży do określania kolejności transportu pacjentów.
+
+    \end{itemize}
+\end{enumerate}
+
+}
+
+\clearpage
+
+\lhead{Algorytmy}
+
+\section{Algorytmy, które zostaną wykorzystane i ich opis}
+{\fontsize{12}{12}\selectfont
+Implementacja poniższych algorytmów będzie oparta na pseudokodzie i opisie algorytmu, które można znaleźć:
+\begin{itemize}
+    \item w książce pt. ,,Wprowadzenie do algorytmów’’ autorstwa: Clifford Stein, Ron Rivest i Thomas H. Cormen;
+    \item na polskiej i angielskiej wikipedii;
+    \item  na innych stronach: np. geeksforgeeks.org, stackoverflow.com.
+\end{itemize}
+
+\begin{enumerate}
+    \item \textbf{Algorytm Grahama}
+    
+    Jest to efektywny algorytm znajdowania otoczki wypukłej skończonego zbioru punktów płaszczyzny. 
+
+    Zostanie on wykorzystany do zakreślenia obszaru, w obrębie którego pacjent będzie przetransportowany do szpitali. 
+    
+    Rozpatrywanymi punktami będą współrzędne wszystkich obiektów.
+    
+    Złożoność obliczeniowa algorytmu: O(n * log n), gdzie n - liczba punktów.
+
+    \item \textbf{Algorytm sprawdzania czy istnieją przecinające się odcinki}
+    
+    Algorytm ten posłuży do szukania skrzyżowań dróg. Po znalezieniu przecinających się dróg zostanie utworzony obiekt reprezentujący skrzyżowanie. 
+
+    Skrzyżowanie zawiera informację w jakim punkcie (x,y) znajduje się przecięcie dróg, dzięki czemu będzie można obliczyć odległości dróg, które łączą szpitale ze skrzyżowaniem.
+    
+    Nowo utworzone drogi (szpital - skrzyżowanie) zostaną dodane do kolekcji dróg, natomiast krzyżujące się odcinki (szpital - szpital) zostaną z niej usunięte.
+    
+    Złożoność obliczeniowa algorytmu: O(n * log n), gdzie n - liczba odcinków.
+
+    \item \textbf{Algorytm Ray Casting}
+    
+    Jest to algorytm stwierdzający czy dany punkt (pacjent) znajduje się w obszarze (znalezionej wcześniej otoczce wypukłej).
+
+    Jeżeli tak to dany pacjent zostanie przetransportowany do szpitala (lub kolejnych szpitali w przypadku braku wolnych łóżek).
+    
+    Jego implementacja znajdzie się w metodzie contains() klasy wielokąta reprezentującego obsługiwany obszar.
+    
+    Złożoność obliczeniowa algorytmu: O($n^2$), gdzie n - liczba wierzchołków reprezentujących otoczkę wypukłą.
+
+    
+    \item \textbf{Algorytm znajdowania pary najmniej odległych punktów}
+    
+    Algorytm ten posłuży podczas szukania najbliższego szpitala z dowolnego miejsca należącego do obsługiwanego obszaru. 
+
+    Będzie on używany za każdym razem, gdy zostanie dodany nowy pacjent. Karetka transportuje go prosto do szpitala (nie musi jechać po drodze).
+    
+    Domyślnie złożoność obliczeniowa tego algorytmu wynosi: O(n * log n), gdzie n - liczba punktów w zbiorze (liczba szpitali). 
+    Do potrzeb projektu, algorytm nie będzie znajdował pary najmniej odległych szpitali w całym zbiorze, a jedynie najmniejszą odległość między konkretnym punktem (pacjentem), a szpitalami, dzięki czemu złożoność wynosi O(n), gdzie n - liczba punktów (szpitali).
+    
+    \item \textbf{Algorytm Dijkstry}
+    
+    Jest to algorytm znajdowania najkrótszej ścieżki (ścieżki o najmniejszej sumie wag poszczególnych krawędzi - w tym przypadku wagi to miary odległości drogi).
+
+    Posłuży on do szukania szpitala i drogi (dróg), która do niego doprowadzi.
+    
+    Gdy w odwiedzonym szpitalu nie będzie wolnych łóżek, to algorytm zostanie wykonany ponownie.
+    
+    Złożoność obliczeniowa algorytmu: O(E * log V), gdzie E - liczba krawędzi; V - liczba wierzchołków.
+
+\end{enumerate}
+
+}
+
+\clearpage
+\lhead{Struktury danych}
+
+\section{Struktury danych i abstrakcyjne typy danych}
+{\fontsize{12}{12}\selectfont
+\begin{enumerate}
+    \item \textbf{Stos}
+    - zostanie wykorzystany podczas implementacji algorytmu Grahama (będzie przechował punkty - współrzędne obiektów). Stos poza podstawowymi metodami będzie posiadał dodatkowo metodę nextToTop() - zwracającą przedostatni element;
+    
+    \item \textbf{Kolejka Priorytetowa}
+    typu min - zostanie stworzona na podstawie kopca binarnego i będzie wykorzystana do zaimplementowania algorytmu Dijkstry. Będzie przechowywała wierzchołki grafu (obiekty). Priorytetem kolejki będzie aktualnie wyliczona odległość od wierzchołka źródłowego;
+
+    \item \textbf{Kolejka FIFO}
+    - zostanie stworzona w oparciu o listę liniową. Będzie przechować pacjentów w kolejności dodania, aby umożliwić obsługę pacjentów w określonej sekwencji;
+    
+    \item \textbf{Kopiec binarny}
+    (minimalny) - będzie przechowywał elementy w taki sposób, że rodzic będzie mniejszy lub równy swojemu dziecku. Jest to spowodowane tym, że wyciągane elementy będą w kolejności od najmniejszego do największego, gdyż tego będzie wymagała kolejka;
+    
+    \item \textbf{Graf}
+    - jego wierzchołkami będą szpitale bądź skrzyżowania, a wartościami krawędzi będą czasy potrzebne do przebycia konkretnej drogi. Zostanie on zaimplementowany za pomocą tablicy dwuwymiarowej;
+    
+    \item \textbf{Tablice}
+    - będą przechowywały elementy, kiedy ich liczba będzie stała podczas działania programu (będą to np. sprite'y szpitali). Zostaną również stworzone tablice dwumiarowe, które będą reprezentowały macierze (przechowujące wagi grafu - wartości na drogach);
+    
+    \item \textbf{Listy liniowe}
+    - będą przechowywać elementy, których liczba może zmieniać w trakcie działania programu oraz po których wymagana będzie szybka iteracja (np. lista szpitali). 
+
+    
+
+\end{enumerate}
+}
+
+\section{Źródła}
+{\fontsize{12}{12}\selectfont
+Aby opisać algorytmy i dowiedzieć się o potrzebnych strukturach danych i abstrakcyjnych typach danych skorzystaliśmy z:
+\begin{itemize}
+    \item ,,Wprowadzenie do algorytmów’’ autorstwa: Clifford Stein, Ron Rivest i Thomas H. Cormen;
+    \item Wikipedia.
+\end{itemize}
+
+Ten dokument został stworzony za pomocą strony overleaf.com.
+
+}
+
+\end{document}
