@@ -55,10 +55,13 @@ public class Optimizer {
         inputFilePath = "exemplaryData/correct/patients1.txt";
 
         System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH... ");
+
         long before = System.nanoTime();
         TextFileReader textFileReader = new TextFileReader(inputFilePath);
+        textFileReader.readData();
         patients = textFileReader.getPatients();
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
+
         System.out.printf(timeFormat, time);
     }
 }
