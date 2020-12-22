@@ -11,8 +11,10 @@ import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 public class Optimizer {
     private static String inputFilePath;
     public static final double NANOSECONDS_IN_SECOND = 1_000_000_000.0;
-    private Patients patients;
     private final String timeFormat;
+
+    private Patients patients;
+    private Hospitals hospitals;
 
     public Optimizer() {
         timeFormat = "[ %.4fs ]\n";
@@ -26,11 +28,11 @@ public class Optimizer {
         Hospital hospital5 = new Hospital(5, "Trzeci Szpital im. Króla RP", 140, 10, 996, 0);
 
         Hospitals hospitals = new Hospitals();
-        hospitals.add(hospital1);
-        hospitals.add(hospital2);
-        hospitals.add(hospital3);
-        hospitals.add(hospital4);
-        hospitals.add(hospital5);
+//        hospitals.add(hospital1);
+//        hospitals.add(hospital2);
+//        hospitals.add(hospital3);
+//        hospitals.add(hospital4);
+//        hospitals.add(hospital5);
 
         SpecialObject specialObject1 = new SpecialObject(1, "Pomnik Wikipedii", -1, 50);
         SpecialObject specialObject2 = new SpecialObject(2, "Pomnik Fryderyka Chopina", 110, 55);
@@ -50,6 +52,8 @@ public class Optimizer {
         System.out.println("Ich ilość to: " + optimizer.patients.size());
         System.out.println("Pierwszy z nich to: " + optimizer.patients.getFirst().toString());
 
+        System.out.println("Pobrano szpitale:");
+        System.out.println("Ostatni z nich to: " + optimizer.hospitals.getHospitalByIndex(4).getName());
     }
 
     private void loadData() throws MyException {
@@ -58,9 +62,15 @@ public class Optimizer {
         System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH... ");
 
         long before = System.nanoTime();
-        TextFileReader textFileReader = new TextFileReader(inputFilePath);
-        textFileReader.readData();
+        TextFileReader textFileReader = new TextFileReader();
+        textFileReader.readData(inputFilePath, 0);
         patients = textFileReader.getPatients();
+
+        inputFilePath = "exemplaryData/correct/map1.txt";
+        textFileReader.readData(inputFilePath, 1);
+        hospitals = textFileReader.getHospitals();
+
+
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
 
         System.out.printf(timeFormat, time);

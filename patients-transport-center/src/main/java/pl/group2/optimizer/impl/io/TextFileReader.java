@@ -1,6 +1,7 @@
 package pl.group2.optimizer.impl.io;
 
 import pl.group2.optimizer.impl.items.Items;
+import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.patients.Patients;
 
 import java.io.File;
@@ -14,25 +15,28 @@ import static pl.group2.optimizer.impl.io.ErrorHandler.INPUT_FILE_INCORRECT_HEAD
 import static pl.group2.optimizer.impl.io.ErrorHandler.INPUT_FILE_NOT_FOUND;
 
 public class TextFileReader {
-
-    private final String path;
     private int lineNumber;
     private String fileName;
     private Scanner scanner;
     private Patients patients;
+    private Hospitals hospitals;
     private String whereInFileMessage;
 
-    public TextFileReader(String path) {
-        this.path = path;
+    public TextFileReader() {
+
     }
 
-    public void readData() throws MyException {
+    public void readData(String path, int fileNumber) throws MyException {
         File inputFile = new File(path);
         scanner = createScannerIfSpecifiedFileExists(inputFile);
         checkIfArgumentsAreNotNull(scanner);
         fileName = inputFile.getName();
 
-        patients = loadPatientsFromFile();
+        if(fileNumber == 0) {
+            patients = loadPatientsFromFile();
+        } else {
+            hospitals = loadHospitalsFromFile();
+        }
     }
 
     private Items readDataFromFile(Items items) throws MyException {
@@ -72,6 +76,11 @@ public class TextFileReader {
         return (Patients) readDataFromFile(new Patients());
     }
 
+    private Hospitals loadHospitalsFromFile() throws MyException {
+        checkHeadline();
+        return (Hospitals) readDataFromFile(new Hospitals());
+    }
+
     private void checkHeadline() throws MyException {
         String headline = null;
 
@@ -103,5 +112,9 @@ public class TextFileReader {
 
     public Patients getPatients() {
         return patients;
+    }
+
+    public Hospitals getHospitals() {
+        return hospitals;
     }
 }

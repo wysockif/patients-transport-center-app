@@ -1,9 +1,14 @@
 package pl.group2.optimizer.impl.items.hospitals;
 
+import pl.group2.optimizer.impl.items.Items;
+import pl.group2.optimizer.impl.items.patients.Patient;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
+import java.util.zip.DataFormatException;
 
-public class Hospitals {
+public class Hospitals implements Items {
     private final Map<Integer, Hospital> hospitalsByIndex;
     private final Map<Integer, Integer> indexById;
     private int counter;
@@ -37,4 +42,70 @@ public class Hospitals {
         return hospitalsByIndex.get(index);
     }
 
+    @Override
+    public Object[] convertAttributes(String[] attributes) throws DataFormatException {
+        checkIfArgumentIsNotNull(attributes);
+        if (attributes.length != 6) {
+            throw new DataFormatException("Niepoprawny format danych");
+        }
+        return parseAttributes(attributes);
+    }
+
+    @Override
+    public void validateAttributes(Object[] attributes) throws DataFormatException {
+        checkIfArgumentIsNotNull(attributes);
+        int id = (int) attributes[0];
+        int numberOfBeds = (int) attributes[4];
+        int numberOfAvailableBeds = (int) attributes[5];
+
+        if (id < 0) {
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala.";
+            throw new DataFormatException(message);
+        }
+        if (contain(id)) {
+            throw new DataFormatException("Nie można dodawać szpitali o tym samym id.");
+        }
+
+        if (numberOfBeds < 0 || numberOfAvailableBeds < 0) {
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca liczbę łóżek szpitala.";
+            throw new DataFormatException(message);
+        }
+    }
+
+    @Override
+    public void addNewElement(Object[] attributes) {
+        checkIfArgumentIsNotNull(attributes);
+        int id = (int) attributes[0];
+        String name = (String) attributes[1];
+        int x = (int) attributes[2];
+        int y = (int) attributes[3];
+        int numberOfBeds = (int) attributes[4];
+        int numberOfAvailableBeds = (int) attributes[5];
+        add(new Hospital(id, name, x, y, numberOfBeds, numberOfAvailableBeds));
+    }
+
+    private void checkIfArgumentIsNotNull(Object argument) {
+        if (argument == null) {
+            throw new IllegalArgumentException("Niezainicjowany argument");
+        }
+    }
+
+    private Object[] parseAttributes(String[] attributes) throws DataFormatException {
+        checkIfArgumentIsNotNull(attributes);
+        Object[] convertedAttributes = new Object[attributes.length];
+        try {
+            convertedAttributes[0] = Integer.parseInt(attributes[0]);
+            convertedAttributes[1] = attributes[1];
+            convertedAttributes[2] = Integer.parseInt(attributes[2]);
+            convertedAttributes[3] = Integer.parseInt(attributes[3]);
+            convertedAttributes[4] = Integer.parseInt(attributes[4]);
+            convertedAttributes[5] = Integer.parseInt(attributes[5]);
+        } catch (NumberFormatException e) {
+            String regex = Pattern.quote("For input string: ");
+            String info = e.getMessage().replaceAll(regex, "");
+            String message = "Nieudana konwersja danej: " + info;
+            throw new DataFormatException(message);
+        }
+        return convertedAttributes;
+    }
 }
