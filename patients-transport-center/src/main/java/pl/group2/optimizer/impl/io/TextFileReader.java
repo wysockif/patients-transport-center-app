@@ -26,7 +26,7 @@ public class TextFileReader {
         this.path = path;
     }
 
-    public void readData() {
+    public void readData() throws MyException {
         File inputFile = new File(path);
         scanner = createScannerIfSpecifiedFileExists(inputFile);
         checkIfArgumentsAreNotNull(scanner);
@@ -35,7 +35,7 @@ public class TextFileReader {
         patients = loadPatientsFromFile();
     }
 
-    private Items readDataFromFile(Items items) {
+    private Items readDataFromFile(Items items) throws MyException {
         while (scanner.hasNext()) {
             String line = scanner.nextLine();
             lineNumber++;
@@ -48,7 +48,7 @@ public class TextFileReader {
         return items;
     }
 
-    private Scanner createScannerIfSpecifiedFileExists(File file) {
+    private Scanner createScannerIfSpecifiedFileExists(File file) throws MyException {
         Scanner createdScanner = null;
         try {
             createdScanner = new Scanner(file);
@@ -67,12 +67,12 @@ public class TextFileReader {
         }
     }
 
-    private Patients loadPatientsFromFile() {
+    private Patients loadPatientsFromFile() throws MyException {
         checkHeadline();
         return (Patients) readDataFromFile(new Patients());
     }
 
-    private void checkHeadline() {
+    private void checkHeadline() throws MyException {
         String headline = null;
 
         if (scanner.hasNext()) {
@@ -89,7 +89,7 @@ public class TextFileReader {
         return headline.startsWith("#");
     }
 
-    private void loadSingleItem(Items item, String line) {
+    private void loadSingleItem(Items item, String line) throws MyException {
         String[] attributes = line.split(Pattern.quote(" | "));
         try {
             Object[] convertedAttributes = item.convertAttributes(attributes);

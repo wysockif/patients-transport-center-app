@@ -11,9 +11,12 @@ public class ErrorHandler {
     private ErrorHandler() {
     }
 
-    public static void handleError(int codeError, String message) {
-        System.err.println("\n| Błąd " + codeError + " | " + message + "!");
-        exit(codeError);
+    public static void handleError(int codeError, String message) throws MyException {
+        String informationAboutError = "\n| Błąd " + codeError + " | " + message + "!";
+        throw new MyException(informationAboutError);
+
+//        System.err.println("\n| Błąd " + codeError + " | " + message + "!");
+//        exit(codeError);
     }
 
     public static void handleError(int codeError, String message, String tip) {

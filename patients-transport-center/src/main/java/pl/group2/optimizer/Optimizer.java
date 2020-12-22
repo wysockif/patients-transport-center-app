@@ -1,5 +1,6 @@
 package pl.group2.optimizer;
 
+import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
@@ -17,7 +18,7 @@ public class Optimizer {
         timeFormat = "[ %.4fs ]\n";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MyException {
         Hospital hospital1 = new Hospital(1, "Szpital Wojewódzki nr 997", 10, 10, 1000, 100);
         Hospital hospital2 = new Hospital(2, "Krakowski Szpital Kliniczny", 100, 120, 999, 99);
         Hospital hospital3 = new Hospital(3, "Pierwszy Szpital im. Prezesa RP", 120, 130, 99, 0);
@@ -51,7 +52,7 @@ public class Optimizer {
 
     }
 
-    private void loadData() {
+    private void loadData() throws MyException {
         inputFilePath = "exemplaryData/correct/patients1.txt";
 
         System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH... ");
