@@ -2,7 +2,9 @@ package pl.group2.optimizer.impl.io;
 
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
+import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
+import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,9 +20,12 @@ public class TextFileReader {
     private int lineNumber;
     private String fileName;
     private Scanner scanner;
+    private String whereInFileMessage;
+
     private Patients patients;
     private Hospitals hospitals;
-    private String whereInFileMessage;
+    private SpecialObjects specialObjects;
+    private Paths paths;
 
     public TextFileReader() {
 
@@ -36,6 +41,8 @@ public class TextFileReader {
             patients = loadPatientsFromFile();
         } else {
             hospitals = loadHospitalsFromFile();
+            specialObjects = loadSpecialObjectsFromFile();
+            paths = loadPathsFromFile();
         }
     }
 
@@ -72,25 +79,37 @@ public class TextFileReader {
     }
 
     private Patients loadPatientsFromFile() throws MyException {
-        checkHeadline();
+        checkHeadline(true);
         return (Patients) readDataFromFile(new Patients());
     }
 
     private Hospitals loadHospitalsFromFile() throws MyException {
-        checkHeadline();
+        checkHeadline(true);
         return (Hospitals) readDataFromFile(new Hospitals());
     }
 
-    private void checkHeadline() throws MyException {
-        String headline = null;
+    private SpecialObjects loadSpecialObjectsFromFile() throws MyException {
+        checkHeadline(false);
+        return (SpecialObjects) readDataFromFile(new SpecialObjects());
+    }
 
-        if (scanner.hasNext()) {
-            headline = scanner.nextLine();
-            lineNumber++;
-        }
-        if (headline == null || !isHeadlineCorrect(headline)) {
-            String message = whereInFileMessage + "Niepoprawny nagłówek";
-            ErrorHandler.handleError(INPUT_FILE_INCORRECT_HEADLINE, message);
+    private Paths loadPathsFromFile() throws MyException {
+        checkHeadline(false);
+        return (Paths) readDataFromFile(new Paths());
+    }
+
+    private void checkHeadline(boolean firstInFile) throws MyException {
+        if (firstInFile) {
+            String headline = null;
+
+            if (scanner.hasNext()) {
+                headline = scanner.nextLine();
+                lineNumber++;
+            }
+            if (headline == null || !isHeadlineCorrect(headline)) {
+                String message = whereInFileMessage + "Niepoprawny nagłówek";
+                ErrorHandler.handleError(INPUT_FILE_INCORRECT_HEADLINE, message);
+            }
         }
     }
 
@@ -116,5 +135,13 @@ public class TextFileReader {
 
     public Hospitals getHospitals() {
         return hospitals;
+    }
+
+    public SpecialObjects getSpecialObjects() {
+        return specialObjects;
+    }
+
+    public Paths getPaths() {
+        return paths;
     }
 }
