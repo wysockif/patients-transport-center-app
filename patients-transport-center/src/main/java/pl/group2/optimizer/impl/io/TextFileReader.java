@@ -15,68 +15,37 @@ import static pl.group2.optimizer.impl.io.ErrorHandler.INPUT_FILE_NOT_FOUND;
 
 public class TextFileReader {
 
+    private final String path;
     private int lineNumber;
-    private final String fileName;
-    private final Scanner scanner;
-    private final Patients patients;
+    private String fileName;
+    private Scanner scanner;
+    private Patients patients;
+    private String whereInFileMessage;
 
     public TextFileReader(String path) {
+        this.path = path;
+    }
+
+    public void readData() {
         File inputFile = new File(path);
-        fileName = inputFile.getName();
         scanner = createScannerIfSpecifiedFileExists(inputFile);
-        patients = loadPatientsFromFile(scanner);
+        checkIfArgumentsAreNotNull(scanner);
+        fileName = inputFile.getName();
+
+        patients = loadPatientsFromFile();
     }
 
-    private Patients loadPatientsFromFile(Scanner scanner) {
-        checkHeadline();
-        return (Patients) readDataFromFile(scanner, new Patients());
-    }
-
-    public Items readDataFromFile(Scanner scanner, Items items) {
-        checkIfArgumentsAreNotNull(scanner, items);
+    private Items readDataFromFile(Items items) {
         while (scanner.hasNext()) {
             String line = scanner.nextLine();
             lineNumber++;
-
             if (isHeadlineCorrect(line)) {
                 break;
             }
+            whereInFileMessage = "[Plik wejściowy: " + fileName + ", nr linii: " + lineNumber + "]. ";
             loadSingleItem(items, line);
         }
         return items;
-    }
-
-    private void loadSingleItem(Items item, String line) {
-        String[] attributes = line.split(Pattern.quote(" | "));
-        try {
-            Object[] convertedAttributes = item.convertAttributes(attributes);
-            item.validateAttributes(convertedAttributes);
-            item.addNewElement(convertedAttributes);
-        } catch (DataFormatException e) {
-            String message = "[Plik wejściowy: " + fileName + ", nr linii: " + lineNumber + "]. " + e.getMessage();
-            ErrorHandler.handleError(INPUT_FILE_INCORRECT_FORMAT, message);
-        }
-    }
-
-    private void checkIfArgumentsAreNotNull(Object... args) {
-        for (Object o : args) {
-            if (o == null) {
-                throw new IllegalArgumentException("Niezainicjowany argument!");
-            }
-        }
-    }
-
-    private void checkHeadline() {
-        String headline = null;
-
-        if (scanner.hasNext()) {
-            headline = scanner.nextLine();
-            lineNumber++;
-        }
-        if (headline == null || !isHeadlineCorrect(headline)) {
-            String message = "[Plik wejściowy: " + fileName + ", nr linii: " + lineNumber + "]. " + "Niepoprawny nagłówek";
-            ErrorHandler.handleError(INPUT_FILE_INCORRECT_HEADLINE, message);
-        }
     }
 
     private Scanner createScannerIfSpecifiedFileExists(File file) {
@@ -90,8 +59,46 @@ public class TextFileReader {
         return createdScanner;
     }
 
+    private void checkIfArgumentsAreNotNull(Object... args) {
+        for (Object o : args) {
+            if (o == null) {
+                throw new IllegalArgumentException("Niezainicjowany argument!");
+            }
+        }
+    }
+
+    private Patients loadPatientsFromFile() {
+        checkHeadline();
+        return (Patients) readDataFromFile(new Patients());
+    }
+
+    private void checkHeadline() {
+        String headline = null;
+
+        if (scanner.hasNext()) {
+            headline = scanner.nextLine();
+            lineNumber++;
+        }
+        if (headline == null || !isHeadlineCorrect(headline)) {
+            String message = whereInFileMessage + "Niepoprawny nagłówek";
+            ErrorHandler.handleError(INPUT_FILE_INCORRECT_HEADLINE, message);
+        }
+    }
+
     private boolean isHeadlineCorrect(String headline) {
         return headline.startsWith("#");
+    }
+
+    private void loadSingleItem(Items item, String line) {
+        String[] attributes = line.split(Pattern.quote(" | "));
+        try {
+            Object[] convertedAttributes = item.convertAttributes(attributes);
+            item.validateAttributes(convertedAttributes);
+            item.addNewElement(convertedAttributes);
+        } catch (DataFormatException e) {
+            String message = whereInFileMessage + e.getMessage();
+            ErrorHandler.handleError(INPUT_FILE_INCORRECT_FORMAT, message);
+        }
     }
 
     public Patients getPatients() {
