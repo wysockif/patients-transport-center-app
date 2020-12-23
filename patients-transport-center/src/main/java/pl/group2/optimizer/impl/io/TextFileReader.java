@@ -95,7 +95,7 @@ public class TextFileReader {
 
     private Paths loadPathsFromFile() throws MyException {
         checkHeadline(false);
-        return (Paths) readDataFromFile(new Paths());
+        return (Paths) readDataFromFile(new Paths(hospitals));
     }
 
     private void checkHeadline(boolean firstInFile) throws MyException {

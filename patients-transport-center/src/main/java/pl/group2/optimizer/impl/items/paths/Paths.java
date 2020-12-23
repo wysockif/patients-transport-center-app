@@ -1,6 +1,7 @@
 package pl.group2.optimizer.impl.items.paths;
 
 import pl.group2.optimizer.impl.items.Items;
+import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,9 +10,11 @@ import java.util.zip.DataFormatException;
 
 public class Paths implements Items {
     private final List<Path> paths;
+    private final Hospitals hospitals;
 
-    public Paths() {
+    public Paths(Hospitals hospitals) {
         paths = new LinkedList<>();
+        this.hospitals = hospitals;
     }
 
     public void addNewPath(Path path) {
@@ -26,6 +29,10 @@ public class Paths implements Items {
 
     public int size() {
         return paths.size();
+    }
+
+    public Path get(int index) {
+        return paths.get(index);
     }
 
     private void checkIfArgumentIsNull(Object argument) {
@@ -64,7 +71,8 @@ public class Paths implements Items {
         int from = (int) attributes[1];
         int to = (int) attributes[2];
         int distance = (int) attributes[3];
-        paths.add(new Path(id, from, to, distance));
+
+        paths.add(new Path(id, hospitals.getHospitalById(from), hospitals.getHospitalById(to), distance));
     }
 
     private void checkIfArgumentIsNotNull(Object argument) {

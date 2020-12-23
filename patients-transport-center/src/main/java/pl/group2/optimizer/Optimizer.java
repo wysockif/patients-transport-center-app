@@ -36,6 +36,7 @@ public class Optimizer {
 
         System.out.println("Pobrano paths:");
         System.out.println("Ich ilość to: " + optimizer.paths.size());
+        System.out.println("x From drogi o indexie 5 to: " + optimizer.paths.get(5).getFrom().getXCoordinate());
     }
 
     private void loadData() throws MyException {
