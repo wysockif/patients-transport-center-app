@@ -1,5 +1,6 @@
 package pl.group2.optimizer;
 
+import pl.group2.optimizer.gui.MyWindow;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
@@ -23,23 +24,27 @@ public class Optimizer {
 
     public static void main(String[] args) throws MyException {
         Optimizer optimizer = new Optimizer();
-        optimizer.loadData();
-        System.out.println("Pobrano pacjentów");
-        System.out.println("Ich ilość to: " + optimizer.patients.size());
-        System.out.println("Pierwszy z nich to: " + optimizer.patients.getFirst().toString());
-
-        System.out.println("Pobrano szpitale:");
-        System.out.println("Ostatni z nich to: " + optimizer.hospitals.getHospitalByIndex(4).getName());
-
-        System.out.println("Pobrano special objects:");
-        System.out.println("Ostatni z nich to: " + optimizer.specialObjects.getSpecialObjectById(3).getName());
-
-        System.out.println("Pobrano paths:");
-        System.out.println("Ich ilość to: " + optimizer.paths.size());
-        System.out.println("x From drogi o indexie 5 to: " + optimizer.paths.get(5).getFrom().getXCoordinate());
+        optimizer.makeWindow();
+        //optimizer.loadData();
     }
 
-    private void loadData() throws MyException {
+    public void checkIfDataWasDownloaded() {
+        System.out.println("Pobrano pacjentów");
+        System.out.println("Ich ilość to: " + patients.size());
+        System.out.println("Pierwszy z nich to: " + patients.getFirst().toString());
+
+        System.out.println("Pobrano szpitale:");
+        System.out.println("Ostatni z nich to: " + hospitals.getHospitalByIndex(4).getName());
+
+        System.out.println("Pobrano special objects:");
+        System.out.println("Ostatni z nich to: " + specialObjects.getSpecialObjectById(3).getName());
+
+        System.out.println("Pobrano paths:");
+        System.out.println("Ich ilość to: " + paths.size());
+        System.out.println("x From drogi o indexie 5 to: " + paths.get(5).getFrom().getXCoordinate());
+    }
+
+    public void loadData() throws MyException {
         inputFilePath = "exemplaryData/correct/patients1.txt";
 
         System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH... ");
@@ -58,5 +63,11 @@ public class Optimizer {
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
 
         System.out.printf(timeFormat, time);
+    }
+
+    private MyWindow window;
+
+    private void makeWindow() {
+        window = new MyWindow(this);
     }
 }
