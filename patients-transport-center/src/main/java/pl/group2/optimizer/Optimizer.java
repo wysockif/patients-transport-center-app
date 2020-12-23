@@ -21,12 +21,6 @@ public class Optimizer {
         timeFormat = "[ %.4fs ]\n";
     }
 
-    public static void main(String[] args) throws MyException {
-        Optimizer optimizer = new Optimizer();
-        optimizer.makeWindow();
-        //optimizer.loadData();
-    }
-
     public void checkIfPatientsWereDownloaded() {
         System.out.println("Pobrano pacjentów");
         System.out.println("Ich ilość to: " + patients.size());
@@ -71,8 +65,7 @@ public class Optimizer {
         System.out.printf(timeFormat, time);
     }
 
-    private MyWindow window;
-    private void makeWindow() {
-        window = new MyWindow(this);
+    public void makeWindow() {
+        MyWindow window = new MyWindow(this);
     }
 }
