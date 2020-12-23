@@ -9,7 +9,6 @@ import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
 public class Optimizer {
-    private static String inputFilePath;
     public static final double NANOSECONDS_IN_SECOND = 1_000_000_000.0;
     private final String timeFormat;
 
@@ -28,11 +27,13 @@ public class Optimizer {
         //optimizer.loadData();
     }
 
-    public void checkIfDataWasDownloaded() {
+    public void checkIfPatientsWereDownloaded() {
         System.out.println("Pobrano pacjentów");
         System.out.println("Ich ilość to: " + patients.size());
         System.out.println("Pierwszy z nich to: " + patients.getFirst().toString());
+    }
 
+    public void checkIfMapWasDownloaded() {
         System.out.println("Pobrano szpitale:");
         System.out.println("Ostatni z nich to: " + hospitals.getHospitalByIndex(4).getName());
 
@@ -44,29 +45,33 @@ public class Optimizer {
         System.out.println("x From drogi o indexie 5 to: " + paths.get(5).getFrom().getXCoordinate());
     }
 
-    public void loadData() throws MyException {
-        inputFilePath = "exemplaryData/correct/patients1.txt";
-
-        System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH... ");
-
+    public void loadPatients(String inputFilePath) throws MyException {
+        System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH PACJENTÓW... ");
         long before = System.nanoTime();
+
         TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath, 0);
         patients = textFileReader.getPatients();
 
-        inputFilePath = "exemplaryData/correct/map1.txt";
+        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
+        System.out.printf(timeFormat, time);
+    }
+
+    public void loadMap(String inputFilePath) throws MyException {
+        System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
+        long before = System.nanoTime();
+
+        TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath, 1);
         hospitals = textFileReader.getHospitals();
         specialObjects = textFileReader.getSpecialObjects();
         paths = textFileReader.getPaths();
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-
         System.out.printf(timeFormat, time);
     }
 
     private MyWindow window;
-
     private void makeWindow() {
         window = new MyWindow(this);
     }
