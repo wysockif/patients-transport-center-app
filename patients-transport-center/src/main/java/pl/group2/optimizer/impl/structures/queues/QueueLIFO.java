@@ -36,12 +36,12 @@ public class QueueLIFO<T> implements QueueInterface<T> {
         return queue.contains(item);
     }
 
-    public T nextToTop(){
+    public T nextToTop() {
         int size = queue.size();
-        if(size < 2){
-            throw new IllegalArgumentException("Cannot return non-existent  value");
+        if (size < 2) {
+            throw new IllegalArgumentException("Cannot return non-existent value");
         }
-        return queue.get(size-2);
+        return queue.get(size - 2);
     }
 
     private void validateArgument(T item) {
@@ -51,7 +51,7 @@ public class QueueLIFO<T> implements QueueInterface<T> {
     }
 
     public T top() {
-        if(queue.isEmpty()){
+        if (queue.isEmpty()) {
             throw new IllegalArgumentException("Cannot return non-existent  value");
         }
         return queue.getLast();

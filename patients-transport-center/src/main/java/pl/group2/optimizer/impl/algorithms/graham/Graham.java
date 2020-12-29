@@ -36,21 +36,24 @@ public class Graham {
         printList(points);
         System.out.println("---------------------");
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             queueLIFO.add(points.get(i));
+            System.out.println("Dodanie: " +  points.get(i));
         }
 
         for (int i = 3; i < points.size(); i++) {
             Point currentPoint = points.get(i);
 
             while (queueLIFO.size() > 1 && counterClockwiseChecker(queueLIFO.nextToTop(), queueLIFO.top(), currentPoint) <= 0) {
-                queueLIFO.remove();
+                Point p = queueLIFO.remove();
+                System.out.println("Skasowanie: " + p);
             }
             queueLIFO.add(currentPoint);
+            System.out.println("Dodanie: " +  currentPoint);
         }
 
         List<Point> pointsList = rewriteStackToList(queueLIFO);
-        printList(pointsList);
+//        printList(pointsList);
         return pointsList;
     }
 

@@ -37,4 +37,11 @@ public abstract class Vertex {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    @Override
+    public String toString() {
+        return "(" + xCoordinate +
+                "," + yCoordinate +
+                ')';
+    }
 }

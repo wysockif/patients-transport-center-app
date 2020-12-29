@@ -32,4 +32,11 @@ public class SpecialObject implements Point {
     public int getYCoordinate() {
         return yCoordinate;
     }
+
+    @Override
+    public String toString() {
+        return "(" + xCoordinate +
+                "," + yCoordinate +
+                ')';
+    }
 }
