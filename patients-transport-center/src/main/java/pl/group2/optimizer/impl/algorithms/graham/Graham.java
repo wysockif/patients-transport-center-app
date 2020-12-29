@@ -68,14 +68,18 @@ public class Graham {
         } else if (isFirstPointBelowAndSecondAbove(dy1, dy2)) {
             return 1;
         } else if (arePointsCollinear(dy1, dy2)) {
-            if (isFirstPointToTheRightAndSecondToTheLeft(dx1, dx2)) {
-                return -1;
-            } else if (isFirstPointToTheLeftAndSecondToTheRight(dx1, dx2)) {
-                return 1;
-            } else {
-                return 0;
-            }
+            return checkVerticalPosition(dx1, dx2);
         } else return -counterClockwiseChecker(lowestPoint, q1, q2);
+    }
+
+    private int checkVerticalPosition(double dx1, double dx2) {
+        if (isFirstPointToTheRightAndSecondToTheLeft(dx1, dx2)) {
+            return -1;
+        } else if (isFirstPointToTheLeftAndSecondToTheRight(dx1, dx2)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     private boolean isFirstPointToTheLeftAndSecondToTheRight(double dx1, double dx2) {
