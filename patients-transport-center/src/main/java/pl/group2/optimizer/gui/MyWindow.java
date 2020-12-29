@@ -1,19 +1,17 @@
 package pl.group2.optimizer.gui;
 
 import pl.group2.optimizer.Optimizer;
-import pl.group2.optimizer.impl.io.MyException;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.File;
-
-import static javax.swing.JFileChooser.APPROVE_OPTION;
+import java.io.IOException;
 
 public class MyWindow extends JFrame {
-    private JButton loadMapButton;
-    private JButton loadPatientsButton;
+
     private JPanel panel;
     private Optimizer optimizer;
 
@@ -21,54 +19,24 @@ public class MyWindow extends JFrame {
         super("Patients Transport Center");
         this.optimizer = optimizer;
 
-        panel = new JPanel();
-        loadMapButton = new JButton("Wczytaj mapę");
-        loadPatientsButton = new JButton("Wczytaj pacjentów");
-        panel.setSize(640, 480);
+        panel = new MyPanel(optimizer);
         setSize(panel.getSize());
-
-        setLoadMapButton();
-        setLoadPatientsButton();
-
-        panel.add(loadMapButton);
-        panel.add(loadPatientsButton);
+        setContentPane(panel);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        setContentPane(panel);
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private String getPathFromFileChooser() {
-        JFileChooser fc = new JFileChooser();
-        fc.setCurrentDirectory(new File("D:/"));
-        if (fc.showOpenDialog(null) == APPROVE_OPTION) {
-            return fc.getSelectedFile().getPath();
+    public void drawHospitals() {
+        Graphics g = panel.getGraphics();
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File("images/hospital1.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return "";
-    }
-
-    private void setLoadPatientsButton() {
-        loadPatientsButton.addActionListener(e -> {
-            try {
-                optimizer.loadPatients(getPathFromFileChooser());
-                optimizer.checkIfPatientsWereDownloaded();
-            } catch (MyException myException) {
-                myException.printStackTrace();
-            }
-        });
-    }
-
-    private void setLoadMapButton() {
-        loadMapButton.addActionListener(e -> {
-            try {
-                optimizer.loadMap(getPathFromFileChooser());
-                optimizer.checkIfMapWasDownloaded();
-            } catch (MyException myException) {
-                myException.printStackTrace();
-            }
-        });
+        g.drawImage(image, 20, 20, null);
     }
 }

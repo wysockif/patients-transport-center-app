@@ -63,9 +63,12 @@ public class Optimizer {
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         System.out.printf(timeFormat, time);
+
+        window.drawHospitals();
     }
 
+    MyWindow window;
     public void makeWindow() {
-        MyWindow window = new MyWindow(this);
+        window = new MyWindow(this);
     }
 }
