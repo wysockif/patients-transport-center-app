@@ -3,6 +3,7 @@ package pl.group2.optimizer.impl.items.hospitals;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.items.patients.Patient;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -107,5 +108,9 @@ public class Hospitals implements Items {
             throw new DataFormatException(message);
         }
         return convertedAttributes;
+    }
+
+    public Collection<Hospital> getCollection(){
+        return hospitalsByIndex.values();
     }
 }

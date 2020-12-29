@@ -1,7 +1,9 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
 import pl.group2.optimizer.impl.items.Items;
+import pl.group2.optimizer.impl.items.Point;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -96,5 +98,9 @@ public class SpecialObjects implements Items {
             throw new DataFormatException(message);
         }
         return convertedAttributes;
+    }
+
+    public Collection<SpecialObject> getCollection() {
+        return specialObjectByIndex.values();
     }
 }

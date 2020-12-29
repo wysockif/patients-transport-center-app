@@ -1,8 +1,8 @@
 package pl.group2.optimizer.impl.items.patients;
 
 import pl.group2.optimizer.impl.items.Items;
-import pl.group2.optimizer.impl.structures.queue.QueueFIFO;
-import pl.group2.optimizer.impl.structures.queue.QueueInterface;
+import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
+import pl.group2.optimizer.impl.structures.queues.QueueInterface;
 
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;

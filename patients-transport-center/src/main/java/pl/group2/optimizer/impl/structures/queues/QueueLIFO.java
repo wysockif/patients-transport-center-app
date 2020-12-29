@@ -1,11 +1,11 @@
-package pl.group2.optimizer.impl.structures.queue;
+package pl.group2.optimizer.impl.structures.queues;
 
 import java.util.LinkedList;
 
-public class QueueFIFO<T> implements QueueInterface<T> {
+public class QueueLIFO<T> implements QueueInterface<T> {
     private final LinkedList<T> queue;
 
-    public QueueFIFO() {
+    public QueueLIFO() {
         queue = new LinkedList<>();
     }
 
@@ -17,7 +17,7 @@ public class QueueFIFO<T> implements QueueInterface<T> {
 
     @Override
     public T remove() {
-        return queue.removeFirst();
+        return queue.removeLast();
     }
 
     @Override
@@ -41,10 +41,17 @@ public class QueueFIFO<T> implements QueueInterface<T> {
         return queue.contains(item);
     }
 
+    public T nextToTop(){
+        int size = queue.size();
+        if(size < 2){
+            throw new IllegalArgumentException("Cannot return non-existent  value");
+        }
+        return queue.get(size-2);
+    }
+
     private void validateArgument(T item) {
         if (item == null) {
             throw new IllegalArgumentException("Argument cannot be null");
         }
     }
-
 }

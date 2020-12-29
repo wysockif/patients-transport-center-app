@@ -1,4 +1,4 @@
-package pl.group2.optimizer.impl.structures.queue;
+package pl.group2.optimizer.impl.structures.queues;
 
 
 import org.junit.jupiter.api.Test;

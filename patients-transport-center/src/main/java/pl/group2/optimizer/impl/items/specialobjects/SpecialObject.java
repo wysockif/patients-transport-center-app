@@ -1,6 +1,8 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
-public class SpecialObject {
+import pl.group2.optimizer.impl.items.Point;
+
+public class SpecialObject implements Point {
     private int id;
     private String name;
     private final int xCoordinate;
@@ -13,15 +15,6 @@ public class SpecialObject {
         this.yCoordinate = yCoordinate;
     }
 
-    public int getXCoordinate() {
-        return xCoordinate;
-    }
-
-    public int getYCoordinate() {
-        return yCoordinate;
-    }
-
-
     public int getId() {
         return id;
     }
@@ -30,11 +23,13 @@ public class SpecialObject {
         return name;
     }
 
-    public int getxCoordinate() {
+    @Override
+    public int getXCoordinate() {
         return xCoordinate;
     }
 
-    public int getyCoordinate() {
+    @Override
+    public int getYCoordinate() {
         return yCoordinate;
     }
 }
