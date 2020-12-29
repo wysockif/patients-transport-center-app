@@ -3,12 +3,13 @@ package pl.group2.optimizer.impl.items.patients;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
 import pl.group2.optimizer.impl.structures.queues.QueueInterface;
+import pl.group2.optimizer.impl.structures.queues.QueueLIFO;
 
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
 public class Patients implements Items {
-    private final QueueInterface<Patient> patientsQueue;
+    private final QueueFIFO<Patient> patientsQueue;
 
     public Patients() {
         patientsQueue = new QueueFIFO<>();

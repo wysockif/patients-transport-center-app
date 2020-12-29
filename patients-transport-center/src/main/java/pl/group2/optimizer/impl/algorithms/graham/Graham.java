@@ -10,12 +10,12 @@ import java.util.List;
 
 public class Graham {
     private final List<Point> points;
-    private final QueueLIFO<Point> stack;
+    private final QueueLIFO<Point> queueLIFO;
     private Point lowestPoint;
 
     public Graham() {
         points = new LinkedList<>();
-        stack = new QueueLIFO<>();
+        queueLIFO = new QueueLIFO<>();
     }
 
     public void loadPoints(Hospitals hospitals, SpecialObjects specialObjects) {
@@ -24,16 +24,46 @@ public class Graham {
         points.addAll(specialObjects.getCollection());
     }
 
-    public void findConvexHull() {
+    public List<Point> findConvexHull() {
+        if (points.isEmpty()) {
+            throw new UnsupportedOperationException("Cannot handle the empty list");
+        }
         findTheLowestPoint();
         points.sort(this::comparePoints);
+        if (points.size() < 2) {
+            return new LinkedList<>();
+        }
+        printList(points);
+        System.out.println("---------------------");
 
-        printList();
+        for (int i = 0; i < 2; i++) {
+            queueLIFO.add(points.get(i));
+        }
+
+        for (int i = 3; i < points.size(); i++) {
+            Point currentPoint = points.get(i);
+
+            while (queueLIFO.size() > 1 && counterClockwiseChecker(queueLIFO.nextToTop(), queueLIFO.top(), currentPoint) <= 0) {
+                queueLIFO.remove();
+            }
+            queueLIFO.add(currentPoint);
+        }
+
+        List<Point> pointsList = rewriteStackToList(queueLIFO);
+        printList(pointsList);
+        return pointsList;
     }
 
-    private void printList() {
-        System.out.println("Lowest: x: " + lowestPoint.getXCoordinate() + " | y: " + lowestPoint.getYCoordinate());
-        for (Point p : points) {
+    private List<Point> rewriteStackToList(QueueLIFO<Point> stack) {
+        LinkedList<Point> list = new LinkedList<>();
+        while (!stack.isEmpty()) {
+            list.addLast(stack.remove());
+        }
+        return list;
+    }
+
+    private void printList(List<Point> list) {
+        for (Point p : list) {
             System.out.println("x: " + p.getXCoordinate() + " | y: " + p.getYCoordinate());
         }
     }
@@ -49,14 +79,11 @@ public class Graham {
             if (dx1 >= 0 && dx2 < 0) return -1;
             else if (dx2 >= 0 && dx1 < 0) return +1;
             else return 0;
-        }
-        else return -ccw(lowestPoint, q1, q2);     // both above or below
-        // Note: ccw() recomputes dx1, dy1, dx2, and dy2
+        } else return -counterClockwiseChecker(lowestPoint, q1, q2);     // both above or below
     }
 
-    // is a->b->c a counter-clockwise turn?
     // -1 if clockwise, +1 if counter-clockwise, 0 if collinear
-    public static int ccw(Point a, Point b, Point c) {
+    public static int counterClockwiseChecker(Point a, Point b, Point c) {
         double area2 = (b.getXCoordinate() - a.getXCoordinate()) *
                 (c.getYCoordinate() - a.getYCoordinate()) - (b.getYCoordinate() - a.getYCoordinate()) *
                 (c.getXCoordinate() - a.getXCoordinate());
@@ -66,7 +93,6 @@ public class Graham {
     }
 
     private void findTheLowestPoint() {
-        // sprawdzenie czy jakikolwiek istnieje będzie przed wywołaniem tej funkcji dlatego pobieram "zerowy" bez sprawdzania
         lowestPoint = points.get(0);
         for (Point point : points) {
             if (point.getYCoordinate() < lowestPoint.getYCoordinate()) {
@@ -75,7 +101,6 @@ public class Graham {
                 lowestPoint = findLeftmostPoint(point, lowestPoint);
             }
         }
-        points.remove(lowestPoint);
     }
 
     private Point findLeftmostPoint(Point currentPoint, Point lowestPoint) {
@@ -85,7 +110,6 @@ public class Graham {
         return lowestPoint;
     }
 
-
     private void checkIfArgumentsAreNotNull(Object... arguments) {
         for (Object argument : arguments) {
             if (argument == null) {
@@ -93,6 +117,4 @@ public class Graham {
             }
         }
     }
-
-
 }

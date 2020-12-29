@@ -21,11 +21,6 @@ public class QueueLIFO<T> implements QueueInterface<T> {
     }
 
     @Override
-    public T front() {
-        return queue.getFirst();
-    }
-
-    @Override
     public int size() {
         return queue.size();
     }
@@ -53,5 +48,12 @@ public class QueueLIFO<T> implements QueueInterface<T> {
         if (item == null) {
             throw new IllegalArgumentException("Argument cannot be null");
         }
+    }
+
+    public T top() {
+        if(queue.isEmpty()){
+            throw new IllegalArgumentException("Cannot return non-existent  value");
+        }
+        return queue.getLast();
     }
 }

@@ -21,11 +21,6 @@ public class QueueFIFO<T> implements QueueInterface<T> {
     }
 
     @Override
-    public T front() {
-        return queue.getFirst();
-    }
-
-    @Override
     public int size() {
         return queue.size();
     }
@@ -47,4 +42,7 @@ public class QueueFIFO<T> implements QueueInterface<T> {
         }
     }
 
+    public T front() {
+        return queue.getFirst();
+    }
 }

@@ -5,8 +5,6 @@ public interface QueueInterface<T> {
 
     T remove();
 
-    T front();
-
     int size();
 
     boolean isEmpty();
