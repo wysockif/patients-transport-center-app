@@ -33,28 +33,21 @@ public class Graham {
         if (points.size() < 2) {
             return new LinkedList<>();
         }
-        printList(points);
-        System.out.println("---------------------");
+        runScanning();
+        return rewriteStackToList(queueLIFO);
+    }
 
+    private void runScanning() {
         for (int i = 0; i < 3; i++) {
             queueLIFO.add(points.get(i));
-            System.out.println("Dodanie: " +  points.get(i));
         }
-
         for (int i = 3; i < points.size(); i++) {
             Point currentPoint = points.get(i);
-
             while (queueLIFO.size() > 1 && counterClockwiseChecker(queueLIFO.nextToTop(), queueLIFO.top(), currentPoint) <= 0) {
-                Point p = queueLIFO.remove();
-                System.out.println("Skasowanie: " + p);
+                queueLIFO.remove();
             }
             queueLIFO.add(currentPoint);
-            System.out.println("Dodanie: " +  currentPoint);
         }
-
-        List<Point> pointsList = rewriteStackToList(queueLIFO);
-//        printList(pointsList);
-        return pointsList;
     }
 
     private List<Point> rewriteStackToList(QueueLIFO<Point> stack) {
@@ -65,34 +58,65 @@ public class Graham {
         return list;
     }
 
-    private void printList(List<Point> list) {
-        for (Point p : list) {
-            System.out.println("x: " + p.getXCoordinate() + " | y: " + p.getYCoordinate());
-        }
-    }
-
     private int comparePoints(Point q1, Point q2) {
         double dx1 = q1.getXCoordinate() - lowestPoint.getXCoordinate();
         double dy1 = q1.getYCoordinate() - lowestPoint.getYCoordinate();
         double dx2 = q2.getXCoordinate() - lowestPoint.getXCoordinate();
         double dy2 = q2.getYCoordinate() - lowestPoint.getYCoordinate();
-        if (dy1 >= 0 && dy2 < 0) return -1;    // q1 above; q2 below
-        else if (dy2 >= 0 && dy1 < 0) return +1;    // q1 below; q2 above
-        else if (dy1 == 0 && dy2 == 0) {            // 3-collinear and horizontal
-            if (dx1 >= 0 && dx2 < 0) return -1;
-            else if (dx2 >= 0 && dx1 < 0) return +1;
-            else return 0;
-        } else return -counterClockwiseChecker(lowestPoint, q1, q2);     // both above or below
+        if (isFirstPointAboveAndSecondBelow(dy1, dy2)) {
+            return -1;
+        } else if (isFirstPointBelowAndSecondAbove(dy1, dy2)) {
+            return 1;
+        } else if (arePointsCollinear(dy1, dy2)) {
+            if (isFirstPointToTheRightAndSecondToTheLeft(dx1, dx2)) {
+                return -1;
+            } else if (isFirstPointToTheLeftAndSecondToTheRight(dx1, dx2)) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } else return -counterClockwiseChecker(lowestPoint, q1, q2);
     }
 
-    // -1 if clockwise, +1 if counter-clockwise, 0 if collinear
+    private boolean isFirstPointToTheLeftAndSecondToTheRight(double dx1, double dx2) {
+        return dx2 >= 0 && dx1 < 0;
+    }
+
+    private boolean isFirstPointToTheRightAndSecondToTheLeft(double dx1, double dx2) {
+        return dx1 >= 0 && dx2 < 0;
+    }
+
+    private boolean arePointsCollinear(double dy1, double dy2) {
+        return dy1 == 0 && dy2 == 0;
+    }
+
+    private boolean isFirstPointBelowAndSecondAbove(double dy1, double dy2) {
+        return dy2 >= 0 && dy1 < 0;
+    }
+
+    private boolean isFirstPointAboveAndSecondBelow(double dy1, double dy2) {
+        return dy1 >= 0 && dy2 < 0;
+    }
+
     public static int counterClockwiseChecker(Point a, Point b, Point c) {
-        double area2 = (b.getXCoordinate() - a.getXCoordinate()) *
+        double area = (b.getXCoordinate() - a.getXCoordinate()) *
                 (c.getYCoordinate() - a.getYCoordinate()) - (b.getYCoordinate() - a.getYCoordinate()) *
                 (c.getXCoordinate() - a.getXCoordinate());
-        if (area2 < 0) return -1;
-        else if (area2 > 0) return +1;
-        else return 0;
+        if (isClockwise(area)) {
+            return -1;
+        } else if (isCounterClockwise(area)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    private static boolean isCounterClockwise(double area) {
+        return area > 0;
+    }
+
+    private static boolean isClockwise(double area) {
+        return area < 0;
     }
 
     private void findTheLowestPoint() {
