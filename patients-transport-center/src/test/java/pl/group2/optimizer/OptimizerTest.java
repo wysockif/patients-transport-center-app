@@ -24,7 +24,7 @@ class OptimizerTest {
         // when
         Executable executable = () -> optimizer.loadPatients("does not exist");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -100 | [Plik wejściowy: null]. Plik nie został znaleziony!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -38,7 +38,7 @@ class OptimizerTest {
         // when
         Executable executable = () -> optimizer.loadMap("does not exist");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -100 | [Plik wejściowy: null]. Plik nie został znaleziony!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -53,7 +53,7 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
                 "patients_no_headline.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -101 | nullNiepoprawny nagłówek!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -68,7 +68,7 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
                 "map_no_second_headline.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -102 | [Plik wejściowy: map_no_second_headline.txt, nr linii: 7]. Niepoprawny format danych!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -96,7 +96,7 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
                 "patients_negative_id.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -102 | [Plik wejściowy: patients_negative_id.txt, nr linii: 3]. " +
                         "Niepoprawny format danych. Ujemna wartość reprezentująca id pacjenta!",
@@ -112,7 +112,7 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
                 "map_negative_id_hospital.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -102 | [Plik wejściowy: map_negative_id_hospital.txt, nr linii: 4]. " +
                         "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala!",
@@ -128,7 +128,7 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
                 "map_negative_id_special_object.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -102 | [Plik wejściowy: map_negative_id_special_object.txt, nr linii: 9]. " +
                         "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu!",
@@ -144,12 +144,77 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
                 "map_negative_id_path.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -102 | [Plik wejściowy: map_negative_id_path.txt, nr linii: 15]. " +
                         "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi!",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
+
+    @Test
+    void should_throwMyException_when_idAlreadyExists_patients() {
+        // given
+        String fileName = "patients_id_already_exists";
+
+        // when
+        Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
+                fileName + ".txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: " + fileName + ".txt, nr linii: 4]. " +
+                        "Nie można dodawać pacjentów o tym samym id!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idAlreadyExists_hospitals_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_id_already_exist_hospital.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist_hospital.txt, nr linii: 5]. " +
+                        "Nie można dodawać szpitali o tym samym id.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idAlreadyExists_specialObjects_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_id_already_exist_special_object.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist_special_object.txt, nr linii: 10]. " +
+                        "Nie można dodawać specjalnych obiektów o tym samym id.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+//    @Test
+//    void should_throwMyException_when_idAlreadyExists_paths_map() {
+//        // given
+//
+//        // when
+//        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+//                "map_id_already_exist_path.txt");
+//
+//        // then
+//        assertEquals(
+//                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist.txt, nr linii: 5]. " +
+//                        "Nie można dodawać szpitali o tym samym id.!",
+//                assertThrows(MyException.class, executable).getMessage()
+//        );
+//    }
 
 }
