@@ -249,4 +249,20 @@ class OptimizerTest {
         );
     }
 
+    @Test
+    void should_throwMyException_when_IntegerValueIsTooBig() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/" +
+                "max_int_value.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: max_int_value.txt, nr linii: 13]. " +
+                        "Nieudana konwersja danej: \"2147483648\"!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
 }
