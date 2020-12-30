@@ -88,4 +88,68 @@ class OptimizerTest {
 
     }
 
+    @Test
+    void should_throwMyException_when_idIsNegative_patients() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
+                "patients_negative_id.txt");
+
+        // when
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: patients_negative_id.txt, nr linii: 3]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id pacjenta!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idIsNegative_hospitals_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_id_hospital.txt");
+
+        // when
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_hospital.txt, nr linii: 4]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idIsNegative_specialObjects_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_id_special_object.txt");
+
+        // when
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_special_object.txt, nr linii: 9]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idIsNegative_paths_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_id_path.txt");
+
+        // when
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_path.txt, nr linii: 15]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
 }

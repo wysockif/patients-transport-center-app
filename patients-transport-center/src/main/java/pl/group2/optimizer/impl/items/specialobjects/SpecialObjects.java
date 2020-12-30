@@ -1,7 +1,6 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
 import pl.group2.optimizer.impl.items.Items;
-import pl.group2.optimizer.impl.items.Point;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,7 +57,7 @@ public class SpecialObjects implements Items {
         int id = (int) attributes[0];
 
         if (id < 0) {
-            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu.";
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu";
             throw new DataFormatException(message);
         }
         if (contain(id)) {

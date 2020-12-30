@@ -56,7 +56,7 @@ public class Paths implements Items {
         int id = (int) attributes[0];
 
         if (id < 0) {
-            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu.";
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi";
             throw new DataFormatException(message);
         }
 //        if (contains(id)) {
