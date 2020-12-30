@@ -265,4 +265,36 @@ class OptimizerTest {
         );
     }
 
+    @Test
+    void should_throwMyException_when_numberOfBedsIsNegative_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_beds_are_negative.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_beds_are_negative.txt, nr linii: 4]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca liczbę łóżek szpitala.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_numberOfAvailableBedsIsNegative_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_beds_are_negative2.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_beds_are_negative2.txt, nr linii: 2]. Niepoprawny format danych. " +
+                        "Ujemna wartość reprezentująca liczbę łóżek szpitala.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
 }
