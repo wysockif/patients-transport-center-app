@@ -6,6 +6,9 @@ import pl.group2.optimizer.gui.components.Management;
 import pl.group2.optimizer.gui.components.Plan;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Window extends JFrame {
     public static final int WIDTH = 1200;
@@ -14,7 +17,9 @@ public class Window extends JFrame {
     public Window(Optimizer optimizer) {
         super("Patients Transport Center");
         setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addAskingIfUserWantToExit();
+
         setResizable(false);
         setLayout(null);
         setLocationRelativeTo(null);
@@ -31,5 +36,22 @@ public class Window extends JFrame {
 
         add(plan);
         add(management);
+    }
+
+    private void addAskingIfUserWantToExit() {
+        addWindowListener(new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent we) {
+                String ObjButtons[] = {"Yes", "No"};
+                int PromptResult = JOptionPane.showOptionDialog(null,
+                        "Are you sure you want to exit?", "Patients Transport Center",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                        ObjButtons, ObjButtons[1]);
+                if (PromptResult == 0) {
+                    System.exit(0);
+                }
+            }
+        });
     }
 }
