@@ -14,6 +14,10 @@ public class SpecialObjects implements Items {
     private final Map<Integer, Integer> indexById;
     private int counter;
 
+    public int size() {
+        return specialObjectByIndex.size();
+    }
+
     public SpecialObjects() {
         specialObjectByIndex = new HashMap<>();
         indexById = new HashMap<>();
@@ -58,7 +62,7 @@ public class SpecialObjects implements Items {
         int id = (int) attributes[0];
 
         if (id < 0) {
-            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu.";
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu";
             throw new DataFormatException(message);
         }
         if (contain(id)) {

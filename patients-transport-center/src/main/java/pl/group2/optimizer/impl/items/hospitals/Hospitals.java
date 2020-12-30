@@ -1,7 +1,6 @@
 package pl.group2.optimizer.impl.items.hospitals;
 
 import pl.group2.optimizer.impl.items.Items;
-import pl.group2.optimizer.impl.items.patients.Patient;
 
 import java.awt.*;
 import java.util.Collection;
@@ -20,14 +19,18 @@ public class Hospitals implements Items {
         indexById = new HashMap<>();
     }
 
-    public void add(Hospital hospital){
+    public int size() {
+        return hospitalsByIndex.size();
+    }
+
+    public void add(Hospital hospital) {
         int id = hospital.getId();
         hospitalsByIndex.put(counter, hospital);
         indexById.put(id, counter);
         counter++;
     }
 
-    public Hospital getHospitalByIndex(int index){
+    public Hospital getHospitalByIndex(int index) {
         return hospitalsByIndex.get(index);
     }
 
@@ -61,7 +64,7 @@ public class Hospitals implements Items {
         int numberOfAvailableBeds = (int) attributes[5];
 
         if (id < 0) {
-            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala.";
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala";
             throw new DataFormatException(message);
         }
         if (contain(id)) {

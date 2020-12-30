@@ -24,7 +24,7 @@ class OptimizerTest {
         // when
         Executable executable = () -> optimizer.loadPatients("does not exist");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -100 | [Plik wejściowy: null]. Plik nie został znaleziony!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -38,7 +38,7 @@ class OptimizerTest {
         // when
         Executable executable = () -> optimizer.loadMap("does not exist");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -100 | [Plik wejściowy: null]. Plik nie został znaleziony!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -53,7 +53,7 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
                 "patients_no_headline.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -101 | nullNiepoprawny nagłówek!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -68,7 +68,7 @@ class OptimizerTest {
         Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
                 "map_no_second_headline.txt");
 
-        // when
+        // then
         assertEquals(
                 "\n| Błąd -102 | [Plik wejściowy: map_no_second_headline.txt, nr linii: 7]. Niepoprawny format danych!",
                 assertThrows(MyException.class, executable).getMessage()
@@ -86,6 +86,215 @@ class OptimizerTest {
         Nie wiem jak to inaczej rozwiązać, chyba jest okej.
          */
 
+    }
+
+    @Test
+    void should_throwMyException_when_idIsNegative_patients() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
+                "patients_negative_id.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: patients_negative_id.txt, nr linii: 3]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id pacjenta!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idIsNegative_hospitals_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_id_hospital.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_hospital.txt, nr linii: 4]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idIsNegative_specialObjects_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_id_special_object.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_special_object.txt, nr linii: 9]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idIsNegative_paths_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_id_path.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_path.txt, nr linii: 15]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idAlreadyExists_patients() {
+        // given
+        String fileName = "patients_id_already_exists";
+
+        // when
+        Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
+                fileName + ".txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: " + fileName + ".txt, nr linii: 4]. " +
+                        "Nie można dodawać pacjentów o tym samym id!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idAlreadyExists_hospitals_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_id_already_exist_hospital.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist_hospital.txt, nr linii: 5]. " +
+                        "Nie można dodawać szpitali o tym samym id.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_idAlreadyExists_specialObjects_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_id_already_exist_special_object.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist_special_object.txt, nr linii: 10]. " +
+                        "Nie można dodawać specjalnych obiektów o tym samym id.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+//    @Test
+//    void should_throwMyException_when_idAlreadyExists_paths_map() {
+//        // given
+//
+//        // when
+//        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+//                "map_id_already_exist_path.txt");
+//
+//        // then
+//        assertEquals(
+//                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist.txt, nr linii: 5]. " +
+//                        "Nie można dodawać szpitali o tym samym id.!",
+//                assertThrows(MyException.class, executable).getMessage()
+//        );
+//    }
+
+    @Test
+    void should_throwMyException_when_distanceIsNegative_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_distance.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_distance.txt, nr linii: 15]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca odległość drogi!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_distanceIsZero_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_zero_distance.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_zero_distance.txt, nr linii: 16]. Niepoprawny format danych. " +
+                        "Zerowa wartość reprezentująca odległość drogi!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_IntegerValueIsTooBig() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/" +
+                "max_int_value.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: max_int_value.txt, nr linii: 13]. " +
+                        "Nieudana konwersja danej: \"2147483648\"!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_numberOfBedsIsNegative_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_beds_are_negative.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_beds_are_negative.txt, nr linii: 4]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca liczbę łóżek szpitala.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_numberOfAvailableBedsIsNegative_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_beds_are_negative2.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_beds_are_negative2.txt, nr linii: 2]. Niepoprawny format danych. " +
+                        "Ujemna wartość reprezentująca liczbę łóżek szpitala.!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
     }
 
 }
