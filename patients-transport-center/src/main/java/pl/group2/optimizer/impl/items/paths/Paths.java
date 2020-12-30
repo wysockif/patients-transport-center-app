@@ -54,11 +54,24 @@ public class Paths implements Items {
     public void validateAttributes(Object[] attributes) throws DataFormatException {
         checkIfArgumentIsNotNull(attributes);
         int id = (int) attributes[0];
+        int distance = (int) attributes[3];
 
         if (id < 0) {
             String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi";
             throw new DataFormatException(message);
         }
+
+        if (distance < 0) {
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca odległość drogi";
+            throw new DataFormatException(message);
+        }
+
+        if (distance <= 0) {
+            String message = "Niepoprawny format danych. Zerowa wartość reprezentująca odległość drogi";
+            throw new DataFormatException(message);
+        }
+
+
 //        if (contains(id)) {
 //            throw new DataFormatException("Nie można dodawać specjalnych obiektów o tym samym id.");
 //        }

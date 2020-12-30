@@ -217,4 +217,36 @@ class OptimizerTest {
 //        );
 //    }
 
+    @Test
+    void should_throwMyException_when_distanceIsNegative_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_negative_distance.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_negative_distance.txt, nr linii: 15]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca odległość drogi!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_distanceIsZero_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_zero_distance.txt");
+
+        // then
+        assertEquals(
+                "\n| Błąd -102 | [Plik wejściowy: map_zero_distance.txt, nr linii: 16]. Niepoprawny format danych. " +
+                        "Zerowa wartość reprezentująca odległość drogi!",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
 }
