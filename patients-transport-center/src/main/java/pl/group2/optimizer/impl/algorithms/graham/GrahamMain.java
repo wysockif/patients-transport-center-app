@@ -2,7 +2,7 @@ package pl.group2.optimizer.impl.algorithms.graham;
 
 import pl.group2.optimizer.Optimizer;
 import pl.group2.optimizer.impl.io.MyException;
-import pl.group2.optimizer.impl.items.Point;
+import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;

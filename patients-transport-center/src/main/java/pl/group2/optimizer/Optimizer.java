@@ -24,18 +24,6 @@ public class Optimizer {
     private Paths paths;
     private Window window;
 
-    public Patients getPatients() {
-        return patients;
-    }
-
-    public Hospitals getHospitals() {
-        return hospitals;
-    }
-
-    public SpecialObjects getSpecialObjects() {
-        return specialObjects;
-    }
-
     public Paths getPaths() {
         return paths;
     }
