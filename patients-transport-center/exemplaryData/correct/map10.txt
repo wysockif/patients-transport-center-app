@@ -1,0 +1,33 @@
+# Szpitale (id | nazwa | wsp. x | wsp. y | Liczba łóżek | Liczba wolnych łóżek) 
+83 | Hospital | 60 | 223 | 96 | 102
+56 | Hospital | -246 | -257 | 20 | 96
+59 | Hospital | -6 | 434 | 107 | 145
+148 | Hospital | 155 | -474 | 87 | 165
+16 | Hospital | 457 | -252 | 149 | 197
+62 | Hospital | -342 | -437 | 51 | 136
+48 | Hospital | -457 | 484 | 43 | 168
+198 | Hospital | -59 | 250 | 64 | 83
+157 | Hospital | 227 | 346 | 109 | 23
+65 | Hospital | -307 | -11 | 162 | 13
+# Obiekty (id | nazwa | wsp. x | wsp. y) 
+108 | Building | -406 | -109
+177 | Building | 446 | 401
+99 | Building | 359 | -252
+188 | Building | -86 | -153
+43 | Building | 67 | 59
+171 | Building | -45 | 422
+74 | Building | 474 | 123
+114 | Building | 311 | -476
+35 | Building | -285 | -384
+36 | Building | 260 | 335
+# Drogi (id | id_szpitala | id_szpitala | odległość) 
+16 | 148 | 48 | 722
+39 | 62 | 83 | 531
+122 | 59 | 65 | 282
+173 | 62 | 148 | 703
+70 | 65 | 198 | 825
+91 | 157 | 65 | 109
+197 | 56 | 148 | 498
+134 | 157 | 62 | 819
+190 | 62 | 48 | 119
+157 | 48 | 56 | 240
