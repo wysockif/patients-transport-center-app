@@ -6,6 +6,7 @@ import pl.group2.optimizer.impl.io.MyException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import java.awt.Color;
@@ -76,7 +77,7 @@ public class Management extends JPanel {
         attachPatientsButton.addActionListener(e -> {
             try {
                 optimizer.loadPatients(getPathFromFileChooser());
-                optimizer.checkIfPatientsWereDownloaded();
+                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients());
             } catch (MyException myException) {
                 myException.printStackTrace();
             }
@@ -95,7 +96,7 @@ public class Management extends JPanel {
         attachMapButton.addActionListener(e -> {
             try {
                 optimizer.loadMap(getPathFromFileChooser());
-                optimizer.checkIfMapWasDownloaded();
+                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap());
             } catch (MyException myException) {
                 myException.printStackTrace();
             }

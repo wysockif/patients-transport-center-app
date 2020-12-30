@@ -32,15 +32,14 @@ public class Optimizer {
         timeFormat = "[ %.4fs ]\n";
     }
 
-    public void checkIfPatientsWereDownloaded() {
-        System.out.println("Pobrano " + patients.size() + "pacjentów");
-        System.out.println("Pierwszy z nich to: " + patients.getFirst().toString());
+    public String messageAboutDownloadedPatients() {
+        return "Pobrano " + patients.size() + " pacjentów" + '\n';
     }
 
-    public void checkIfMapWasDownloaded() {
-        System.out.println("Pobrano " + hospitals.size() + " szpitali");
-        System.out.println("Pobrano " + specialObjects.size() + " specjalnych obiektów");
-        System.out.println("Pobrano " + paths.size() + " dróg");
+    public String messageAboutDownloadedMap() {
+        return "Pobrano " + hospitals.size() + " szpitali" + '\n' +
+                "Pobrano " + specialObjects.size() + " specjalnych obiektów" + '\n' +
+                "Pobrano " + paths.size() + " dróg";
     }
 
     public void loadPatients(String inputFilePath) throws MyException {
