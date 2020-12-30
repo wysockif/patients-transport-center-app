@@ -77,7 +77,8 @@ public class Management extends JPanel {
         attachPatientsButton.addActionListener(e -> {
             try {
                 optimizer.loadPatients(getPathFromFileChooser());
-                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients());
+                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
+                        "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
             } catch (MyException myException) {
                 myException.printStackTrace();
             }
@@ -96,7 +97,8 @@ public class Management extends JPanel {
         attachMapButton.addActionListener(e -> {
             try {
                 optimizer.loadMap(getPathFromFileChooser());
-                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap());
+                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
+                        "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
             } catch (MyException myException) {
                 myException.printStackTrace();
             }

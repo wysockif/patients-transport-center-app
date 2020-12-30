@@ -1,5 +1,7 @@
 package pl.group2.optimizer.impl.io;
 
+import javax.swing.JOptionPane;
+
 import static java.lang.System.exit;
 
 public class ErrorHandler {
@@ -13,6 +15,9 @@ public class ErrorHandler {
 
     public static void handleError(int codeError, String message) throws MyException {
         String informationAboutError = "\n| Błąd " + codeError + " | " + message + "!";
+
+        JOptionPane.showMessageDialog(null, informationAboutError, "Patients Transport Center", JOptionPane.ERROR_MESSAGE);
+
         throw new MyException(informationAboutError);
 
 //        System.err.println("\n| Błąd " + codeError + " | " + message + "!");
