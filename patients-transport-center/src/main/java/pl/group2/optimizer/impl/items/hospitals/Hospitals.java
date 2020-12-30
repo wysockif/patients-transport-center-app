@@ -18,14 +18,18 @@ public class Hospitals implements Items {
         indexById = new HashMap<>();
     }
 
-    public void add(Hospital hospital){
+    public int size() {
+        return hospitalsByIndex.size();
+    }
+
+    public void add(Hospital hospital) {
         int id = hospital.getId();
         hospitalsByIndex.put(counter, hospital);
         indexById.put(id, counter);
         counter++;
     }
 
-    public Hospital getHospitalByIndex(int index){
+    public Hospital getHospitalByIndex(int index) {
         return hospitalsByIndex.get(index);
     }
 

@@ -13,6 +13,10 @@ public class SpecialObjects implements Items {
     private final Map<Integer, Integer> indexById;
     private int counter;
 
+    public int size() {
+        return specialObjectByIndex.size();
+    }
+
     public SpecialObjects() {
         specialObjectByIndex = new HashMap<>();
         indexById = new HashMap<>();

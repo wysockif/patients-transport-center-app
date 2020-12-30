@@ -38,21 +38,14 @@ public class Optimizer {
     }
 
     public void checkIfPatientsWereDownloaded() {
-        System.out.println("Pobrano pacjentów");
-        System.out.println("Ich ilość to: " + patients.size());
+        System.out.println("Pobrano " + patients.size() + "pacjentów");
         System.out.println("Pierwszy z nich to: " + patients.getFirst().toString());
     }
 
     public void checkIfMapWasDownloaded() {
-        System.out.println("Pobrano szpitale:");
-        System.out.println("Ostatni z nich to: " + hospitals.getHospitalByIndex(4).getName());
-
-        System.out.println("Pobrano special objects:");
-        System.out.println("Ostatni z nich to: " + specialObjects.getSpecialObjectById(3).getName());
-
-        System.out.println("Pobrano paths:");
-        System.out.println("Ich ilość to: " + paths.size());
-        System.out.println("x From drogi o indexie 5 to: " + paths.get(5).getFrom().getXCoordinate());
+        System.out.println("Pobrano " + hospitals.size() + " szpitali");
+        System.out.println("Pobrano " + specialObjects.size() + " specjalnych obiektów");
+        System.out.println("Pobrano " + paths.size() + " dróg");
     }
 
     public void loadPatients(String inputFilePath) throws MyException {
