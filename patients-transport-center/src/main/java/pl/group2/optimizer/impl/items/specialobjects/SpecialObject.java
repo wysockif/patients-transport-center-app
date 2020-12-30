@@ -1,6 +1,6 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
-import pl.group2.optimizer.impl.items.Point;
+import pl.group2.optimizer.impl.items.area.Point;
 
 public class SpecialObject implements Point {
     private int id;

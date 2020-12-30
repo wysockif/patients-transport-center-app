@@ -1,8 +1,8 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
 import pl.group2.optimizer.impl.items.Items;
-import pl.group2.optimizer.impl.items.Point;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,5 +102,10 @@ public class SpecialObjects implements Items {
 
     public Collection<SpecialObject> getCollection() {
         return specialObjectByIndex.values();
+    }
+
+    public void draw(Graphics g, double scalaX, double scalaY) {
+        g.drawRect(23,23,22,22);
+
     }
 }

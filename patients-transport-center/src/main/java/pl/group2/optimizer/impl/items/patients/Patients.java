@@ -5,6 +5,7 @@ import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
 import pl.group2.optimizer.impl.structures.queues.QueueInterface;
 import pl.group2.optimizer.impl.structures.queues.QueueLIFO;
 
+import java.awt.*;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
@@ -89,5 +90,9 @@ public class Patients implements Items {
             throw new DataFormatException(message);
         }
         return convertedAttributes;
+    }
+
+    public void draw(Graphics g, double scalaX, double scalaY) {
+        g.drawRect(23,23,22,22);
     }
 }

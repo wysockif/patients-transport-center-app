@@ -1,5 +1,6 @@
 package pl.group2.optimizer.impl.items;
 
+import java.awt.*;
 import java.util.zip.DataFormatException;
 
 public interface Items {
@@ -8,4 +9,6 @@ public interface Items {
     void validateAttributes(Object[] attributes) throws DataFormatException;
 
     void addNewElement(Object[] attributes);
+
+    void draw(Graphics g, double scalaX, double scalaY);
 }

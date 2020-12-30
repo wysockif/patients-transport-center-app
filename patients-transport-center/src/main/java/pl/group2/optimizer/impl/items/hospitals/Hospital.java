@@ -1,6 +1,6 @@
 package pl.group2.optimizer.impl.items.hospitals;
 
-import pl.group2.optimizer.impl.items.Point;
+import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.Vertex;
 
 public class Hospital extends Vertex implements Point {

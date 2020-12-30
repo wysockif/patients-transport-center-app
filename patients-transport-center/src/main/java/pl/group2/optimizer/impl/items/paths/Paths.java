@@ -3,6 +3,7 @@ package pl.group2.optimizer.impl.items.paths;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -73,6 +74,11 @@ public class Paths implements Items {
         int distance = (int) attributes[3];
 
         paths.add(new Path(id, hospitals.getHospitalById(from), hospitals.getHospitalById(to), distance));
+    }
+
+    @Override
+    public void draw(Graphics g, double scalaX, double scalaY) {
+
     }
 
     private void checkIfArgumentIsNotNull(Object argument) {

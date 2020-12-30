@@ -3,6 +3,7 @@ package pl.group2.optimizer.impl.items.hospitals;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.items.patients.Patient;
 
+import java.awt.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,6 +84,11 @@ public class Hospitals implements Items {
         int numberOfBeds = (int) attributes[4];
         int numberOfAvailableBeds = (int) attributes[5];
         add(new Hospital(id, name, x, y, numberOfBeds, numberOfAvailableBeds));
+    }
+
+    @Override
+    public void draw(Graphics g, double scalaX, double scalaY) {
+
     }
 
     private void checkIfArgumentIsNotNull(Object argument) {

@@ -1,13 +1,16 @@
 package pl.group2.optimizer.impl.algorithms.graham;
 
-import pl.group2.optimizer.impl.items.Point;
+import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.List;
 
 

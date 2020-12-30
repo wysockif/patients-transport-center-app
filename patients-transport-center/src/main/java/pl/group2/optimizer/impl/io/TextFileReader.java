@@ -27,10 +27,6 @@ public class TextFileReader {
     private SpecialObjects specialObjects;
     private Paths paths;
 
-    public TextFileReader() {
-
-    }
-
     public void readData(String path, int fileNumber) throws MyException {
         File inputFile = new File(path);
         scanner = createScannerIfSpecifiedFileExists(inputFile);
