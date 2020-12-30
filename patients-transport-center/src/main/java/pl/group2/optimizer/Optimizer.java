@@ -17,6 +17,22 @@ public class Optimizer {
     private SpecialObjects specialObjects;
     private Paths paths;
 
+    public Patients getPatients() {
+        return patients;
+    }
+
+    public Hospitals getHospitals() {
+        return hospitals;
+    }
+
+    public SpecialObjects getSpecialObjects() {
+        return specialObjects;
+    }
+
+    public Paths getPaths() {
+        return paths;
+    }
+
     public Optimizer() {
         timeFormat = "[ %.4fs ]\n";
     }
