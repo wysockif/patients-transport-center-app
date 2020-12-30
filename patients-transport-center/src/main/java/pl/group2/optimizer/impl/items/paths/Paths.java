@@ -55,6 +55,8 @@ public class Paths implements Items {
         checkIfArgumentIsNotNull(attributes);
         int id = (int) attributes[0];
         int distance = (int) attributes[3];
+        int from = (int) attributes[1];
+        int to = (int) attributes[2];
 
         if (id < 0) {
             String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi";
@@ -71,9 +73,22 @@ public class Paths implements Items {
             throw new DataFormatException(message);
         }
 
+        if (from < 0) {
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala w drogach";
+            throw new DataFormatException(message);
+        }
+
+        if (to < 0) {
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala w drogach";
+            throw new DataFormatException(message);
+        }
 
 //        if (contains(id)) {
 //            throw new DataFormatException("Nie można dodawać specjalnych obiektów o tym samym id.");
+//        }
+
+//        if (containsHospitals(id)) {
+//            throw new DataFormatException("Nie można dodawać drogi, która łączy te same szpitale.");
 //        }
     }
 
