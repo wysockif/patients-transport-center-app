@@ -25,20 +25,16 @@ public class Management extends JPanel {
     private boolean arePatientsAttached;
     private boolean isMapAttached;
     private final Optimizer optimizer;
-    private JLabel title;
-    private JLabel attachMapLabel;
     private JButton attachMapButton;
-    private JLabel attachPatientsLabel;
     private JButton attachPatientsButton;
 
-    private JButton runButton;
-
+    private final JButton runButton;
     private JLabel paceLabel;
     private JSlider paceSlider;
 
     public Management(Optimizer optimizer) {
         this.optimizer = optimizer;
-        title = createTitle();
+        createTitle();
         createMapElements();
         createPatientsElements();
         createSliderElements();
@@ -81,7 +77,7 @@ public class Management extends JPanel {
     }
 
     private void createPatientsElements() {
-        attachPatientsLabel = new JLabel("Załącz plik z pacjentami:", CENTER);
+        JLabel attachPatientsLabel = new JLabel("Załącz plik z pacjentami:", CENTER);
         attachPatientsLabel.setFont(new Font("TitleFont", Font.BOLD, 14));
         attachPatientsLabel.setBounds(0, 140, 235, 20);
         add(attachPatientsLabel);
@@ -96,7 +92,7 @@ public class Management extends JPanel {
     }
 
     private void createMapElements() {
-        attachMapLabel = new JLabel("Załącz plik z mapą:", CENTER);
+        JLabel attachMapLabel = new JLabel("Załącz plik z mapą:", CENTER);
         attachMapLabel.setFont(new Font("TitleFont", Font.BOLD, 14));
         attachMapLabel.setBounds(0, 60, 235, 20);
         add(attachMapLabel);

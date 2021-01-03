@@ -30,11 +30,18 @@ public class Graham {
         }
         findTheLowestPoint();
         points.sort(this::comparePoints);
+        print(points);
         if (points.size() < 2) {
             return new LinkedList<>();
         }
         runScanning();
         return rewriteStackToList(queueLIFO);
+    }
+
+    private void print(List<Point> points) {
+        for(Point p : points){
+            System.out.println(p);
+        }
     }
 
     private void runScanning() {
@@ -43,7 +50,7 @@ public class Graham {
         }
         for (int i = 3; i < points.size(); i++) {
             Point currentPoint = points.get(i);
-            while (queueLIFO.size() > 1 && counterClockwiseChecker(queueLIFO.nextToTop(), queueLIFO.top(), currentPoint) <= 0) {
+            while (queueLIFO.size() > 1 && counterClockwise(queueLIFO.nextToTop(), queueLIFO.top(), currentPoint) <= 0) {
                 queueLIFO.remove();
             }
             queueLIFO.add(currentPoint);
@@ -69,7 +76,7 @@ public class Graham {
             return 1;
         } else if (arePointsCollinear(dy1, dy2)) {
             return checkVerticalPosition(dx1, dx2);
-        } else return -counterClockwiseChecker(lowestPoint, q1, q2);
+        } else return -counterClockwise(lowestPoint, q1, q2);
     }
 
     private int checkVerticalPosition(double dx1, double dx2) {
@@ -102,7 +109,7 @@ public class Graham {
         return dy1 >= 0 && dy2 < 0;
     }
 
-    public static int counterClockwiseChecker(Point a, Point b, Point c) {
+    public static int counterClockwise(Point a, Point b, Point c) {
         double area = (b.getXCoordinate() - a.getXCoordinate()) *
                 (c.getYCoordinate() - a.getYCoordinate()) - (b.getYCoordinate() - a.getYCoordinate()) *
                 (c.getXCoordinate() - a.getXCoordinate());

@@ -102,9 +102,8 @@ public class Hospitals implements Items {
             int xShift = hospital.getImageWidth() / 2;
             int yShift = hospital.getImageHeight() / 2;
 
-            int x = (int)Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX);
-            int y = (int)Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift - minY);
-
+            int x = (int)Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+            int y = (int)Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
             g.drawImage(hospital.getImage(), x, y, null);
         }
     }

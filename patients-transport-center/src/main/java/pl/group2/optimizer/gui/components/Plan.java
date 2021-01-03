@@ -12,7 +12,7 @@ public class Plan extends JPanel {
     public static final int WIDTH = 950;
     public static final int HEIGHT = 650;
     public static final int MARGIN = 50;
-    public static final int PADDING = 15;
+    public static final int PADDING = 0;
 
     private final Optimizer optimizer;
     private double scalaX;

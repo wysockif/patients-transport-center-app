@@ -14,8 +14,8 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class SpecialObject implements Point{
     public static final String SPRITE_PATH = "/img/monument/monument.png";
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     private final int xCoordinate;
     private final int yCoordinate;

@@ -123,10 +123,10 @@ public class Paths implements Items {
             int xTo = path.getTo().getXCoordinate();
             int yTo = path.getTo().getYCoordinate();
 
-            int x1 = (int) Math.round(PADDING - minX + xFrom * scalaX + MARGIN);
-            int y1 = (int) Math.round(PADDING - minY + HEIGHT - (yFrom * scalaY) - MARGIN);
-            int x2 = (int) Math.round(PADDING - minX + xTo * scalaX + MARGIN);
-            int y2 = (int) Math.round(PADDING - minY + HEIGHT - (yTo * scalaY) - MARGIN);
+            int x1 = (int) Math.round(PADDING - minX * scalaX + xFrom * scalaX + MARGIN);
+            int y1 = (int) Math.round(PADDING + minY * scalaY + HEIGHT - (yFrom * scalaY) - MARGIN);
+            int x2 = (int) Math.round(PADDING - minX * scalaX + xTo * scalaX + MARGIN);
+            int y2 = (int) Math.round(PADDING + minY * scalaY + HEIGHT - (yTo * scalaY) - MARGIN);
             g.drawLine(x1, y1, x2, y2);
         }
     }

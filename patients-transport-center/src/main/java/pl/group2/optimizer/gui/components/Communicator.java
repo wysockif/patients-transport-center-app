@@ -5,8 +5,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
-import java.awt.Color;
 import java.awt.Font;
+
+import static java.awt.Color.DARK_GRAY;
+import static java.awt.Color.WHITE;
+import static javax.swing.text.DefaultCaret.ALWAYS_UPDATE;
 
 public class Communicator extends JPanel {
     private final JTextArea textArea;
@@ -23,18 +26,16 @@ public class Communicator extends JPanel {
     private JTextArea createTextArea() {
         JTextArea jTextArea = new JTextArea();
         jTextArea.setSize(950, 150);
-        jTextArea.setBackground(Color.darkGray.darker());
-        jTextArea.setForeground(Color.white);
+        jTextArea.setBackground(DARK_GRAY.darker());
+        jTextArea.setForeground(WHITE);
         jTextArea.setFont(new Font("Font", Font.ITALIC, 14));
         jTextArea.setEditable(false);
         DefaultCaret caret = (DefaultCaret) jTextArea.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-
+        caret.setUpdatePolicy(ALWAYS_UPDATE);
         JScrollPane jScrollPane = new JScrollPane(jTextArea);
         jScrollPane.setSize(950, 130);
         jScrollPane.setBorder(new EmptyBorder(1, 1, 1, 1));
         add(jScrollPane);
-
         return jTextArea;
     }
 

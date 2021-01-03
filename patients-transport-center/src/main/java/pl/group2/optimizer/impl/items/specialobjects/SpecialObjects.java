@@ -119,8 +119,8 @@ public class SpecialObjects implements Items {
             int xShift = specialObject.getImageWidth() / 2;
             int yShift = specialObject.getImageHeight() / 2;
 
-            int x = (int) Math.round(PADDING + specialObject.getXCoordinate() * scalaX + MARGIN - xShift - minX);
-            int y = (int) Math.round(PADDING + HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift - minY);
+            int x = (int) Math.round(PADDING + specialObject.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+            int y = (int) Math.round(PADDING + HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
 
             g.drawImage(specialObject.getImage(), x, y, null);
         }
