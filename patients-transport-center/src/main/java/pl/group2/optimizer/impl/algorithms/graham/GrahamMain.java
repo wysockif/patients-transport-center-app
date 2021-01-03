@@ -24,7 +24,7 @@ public class GrahamMain {
     public static void main(String[] args) throws MyException {
         Graham graham = new Graham();
         Optimizer optimizer = new Optimizer();
-        optimizer.loadMap("exemplaryData/correct/map2.txt");
+        optimizer.loadMap("exemplaryData/correct/map3.txt");
 
         Hospitals hospitals = optimizer.getHospitals();
         SpecialObjects specialObjects = optimizer.getSpecialObjects();

@@ -1,5 +1,6 @@
 package pl.group2.optimizer.impl.io;
 
+import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Paths;
@@ -27,19 +28,23 @@ public class TextFileReader {
     private SpecialObjects specialObjects;
     private Paths paths;
 
-    public void readData(String path, int fileNumber) throws MyException {
+    public void readData(String path) throws MyException {
+        prepareFile(path);
+        hospitals = loadHospitalsFromFile();
+        specialObjects = loadSpecialObjectsFromFile();
+        paths = loadPathsFromFile();
+    }
+
+    public void readData(String path, PatientsManagement patientsManagement) throws MyException {
+        prepareFile(path);
+        patients = loadPatientsFromFile(patientsManagement);
+    }
+
+    private void prepareFile(String path) throws MyException {
         File inputFile = new File(path);
         scanner = createScannerIfSpecifiedFileExists(inputFile);
         checkIfArgumentsAreNotNull(scanner);
         fileName = inputFile.getName();
-
-        if(fileNumber == 0) {
-            patients = loadPatientsFromFile();
-        } else {
-            hospitals = loadHospitalsFromFile();
-            specialObjects = loadSpecialObjectsFromFile();
-            paths = loadPathsFromFile();
-        }
     }
 
     private Items readDataFromFile(Items items) throws MyException {
@@ -74,9 +79,9 @@ public class TextFileReader {
         }
     }
 
-    private Patients loadPatientsFromFile() throws MyException {
+    private Patients loadPatientsFromFile(PatientsManagement patientsManagement) throws MyException {
         checkHeadline(true);
-        return (Patients) readDataFromFile(new Patients());
+        return (Patients) readDataFromFile(new Patients(patientsManagement));
     }
 
     private Hospitals loadHospitalsFromFile() throws MyException {

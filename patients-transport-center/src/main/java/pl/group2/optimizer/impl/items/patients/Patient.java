@@ -5,20 +5,20 @@ import java.util.Objects;
 public class Patient {
 
     private final int id;
-    private double xCoordinate;
-    private double yCoordinate;
+    private int xCoordinate;
+    private int yCoordinate;
 
-    public Patient(int id, double xCoordinate, double yCoordinate) {
+    public Patient(int id, int xCoordinate, int yCoordinate) {
         this.id = id;
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
 
-    public void setXCoordinate(double xCoordinate) {
+    public void setXCoordinate(int xCoordinate) {
         this.xCoordinate = xCoordinate;
     }
 
-    public void setYCoordinate(double yCoordinate) {
+    public void setYCoordinate(int yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
 
@@ -26,20 +26,20 @@ public class Patient {
         return id;
     }
 
-    public double getXCoordinate() {
+    public int getXCoordinate() {
         return xCoordinate;
     }
 
-    public double getYCoordinate() {
+    public int getYCoordinate() {
         return yCoordinate;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o){
+        if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()){
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Patient patient = (Patient) o;

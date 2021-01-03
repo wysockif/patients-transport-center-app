@@ -3,6 +3,7 @@ package pl.group2.optimizer.gui;
 import pl.group2.optimizer.Optimizer;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.gui.components.Management;
+import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.gui.components.Plan;
 
 import javax.swing.JFrame;
@@ -15,12 +16,13 @@ public class Window extends JFrame {
     public static final int HEIGHT = 820;
 
 
-    public Window(Optimizer optimizer, Plan plan) {
+    public Window(Optimizer optimizer, Plan plan, PatientsManagement patientsManagement) {
         super("Patients Transport Center");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addAskingIfUserWantToExit();
         add(plan);
+        add(patientsManagement);
         setResizable(false);
         setLayout(null);
         setLocationRelativeTo(null);
@@ -30,14 +32,13 @@ public class Window extends JFrame {
 
     private void createPanels(Optimizer optimizer) {
         Management management = new Management(optimizer);
-        Communicator communicator = new Communicator();
         add(management);
+        Communicator communicator = new Communicator();
         add(communicator);
     }
 
     private void addAskingIfUserWantToExit() {
         addWindowListener(new WindowAdapter() {
-
             @Override
             public void windowClosing(WindowEvent we) {
                 String[] ObjButtons = {"Tak", "Nie"};

@@ -1,6 +1,7 @@
 package pl.group2.optimizer;
 
 import pl.group2.optimizer.gui.Window;
+import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.gui.components.Plan;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
 import pl.group2.optimizer.impl.io.MyException;
@@ -30,6 +31,7 @@ public class Optimizer {
     private Paths paths;
     private Plan plan;
     private HandledArea area;
+    private PatientsManagement patientsManagement;
 
     public Optimizer() {
         timeFormat = "[ %.4fs ]\n";
@@ -50,7 +52,7 @@ public class Optimizer {
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
-        textFileReader.readData(inputFilePath, 0);
+        textFileReader.readData(inputFilePath, patientsManagement);
         patients = textFileReader.getPatients();
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
@@ -62,7 +64,7 @@ public class Optimizer {
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
-        textFileReader.readData(inputFilePath, 1);
+        textFileReader.readData(inputFilePath);
         hospitals = textFileReader.getHospitals();
         specialObjects = textFileReader.getSpecialObjects();
         paths = textFileReader.getPaths();
@@ -73,8 +75,8 @@ public class Optimizer {
 
     public void createWindow() {
         plan = new Plan(this);
-        System.out.println(plan);
-        new Window(this, plan);
+        patientsManagement = new PatientsManagement(this);
+        new Window(this, plan, patientsManagement);
     }
 
     public HandledArea prepareData() {
@@ -116,5 +118,9 @@ public class Optimizer {
 
     public HandledArea getHandledArea() {
         return area;
+    }
+
+    public PatientsManagement getPatientsManagement() {
+        return patientsManagement;
     }
 }

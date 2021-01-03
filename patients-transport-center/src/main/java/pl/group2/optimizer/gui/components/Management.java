@@ -39,7 +39,7 @@ public class Management extends JPanel {
         createPatientsElements();
         createSliderElements();
         runButton = createRunButton();
-        setSize(250, 820);
+        setSize(250, 400);
         setLocation(950, 0);
         setLayout(null);
     }
@@ -52,6 +52,7 @@ public class Management extends JPanel {
         button.addActionListener(e -> {
             optimizer.run();
             button.setEnabled(false);
+
         });
         button.setFocusable(false);
         button.setEnabled(false);
@@ -114,6 +115,7 @@ public class Management extends JPanel {
             attachPatientsButton.setForeground(GREEN.darker());
             attachPatientsButton.setText("Wczytano");
             arePatientsAttached = true;
+            optimizer.getPatientsManagement().enableButton();
             checkIfBothFilesAreAttached();
         } catch (MyException myException) {
             myException.printStackTrace();
@@ -160,6 +162,10 @@ public class Management extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.gray);
-        g.fillRect(0, 0, 250, 820);
+        g.fillRect(0, 0, 250, 400);
+        g.setColor(new Color(99,99,99));
+        g.fillRect(0, 385, 250, 5);
+        g.fillRect(0, 395, 250, 5);
+
     }
 }

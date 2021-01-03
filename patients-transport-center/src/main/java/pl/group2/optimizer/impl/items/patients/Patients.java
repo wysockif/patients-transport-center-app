@@ -1,23 +1,25 @@
 package pl.group2.optimizer.impl.items.patients;
 
+import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
-import pl.group2.optimizer.impl.structures.queues.QueueInterface;
-import pl.group2.optimizer.impl.structures.queues.QueueLIFO;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
 public class Patients implements Items {
     private final QueueFIFO<Patient> patientsQueue;
+    private final PatientsManagement patientsManagement;
 
-    public Patients() {
+    public Patients(PatientsManagement patientsManagement) {
+        this.patientsManagement = patientsManagement;
         patientsQueue = new QueueFIFO<>();
     }
 
     public void addNew(Patient patient) {
         patientsQueue.add(patient);
+        patientsManagement.addNewPatient(patient.getId(), patient.getXCoordinate(), patient.getYCoordinate());
     }
 
     public Patient getNextToHandle() {
@@ -67,6 +69,7 @@ public class Patients implements Items {
         int y = (int) attributes[1];
 
         Patient patient = new Patient(id, x, y);
+
         addNew(patient);
     }
 
