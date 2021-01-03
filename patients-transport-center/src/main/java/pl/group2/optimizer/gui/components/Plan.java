@@ -11,11 +11,14 @@ import java.util.TimerTask;
 public class Plan extends JPanel {
     public static final int WIDTH = 950;
     public static final int HEIGHT = 650;
-    public static final int MARGIN = 40;
+    public static final int MARGIN = 35;
+    public static final int PADDING = 20;
 
     private final Optimizer optimizer;
     private int scalaX;
     private int scalaY;
+    private int minX;
+    private int minY;
     private boolean running;
 
     public Plan(Optimizer optimizer) {
@@ -33,19 +36,21 @@ public class Plan extends JPanel {
         g.setColor(Color.BLACK);
         if (running) {
             optimizer.getHandledArea().draw(g, scalaX, scalaY);
-            optimizer.getPaths().draw(g, scalaX, scalaY);
-            optimizer.getHospitals().draw(g, scalaX, scalaY);
-            optimizer.getSpecialObjects().draw(g, scalaX, scalaY);
-            optimizer.getPatients().draw(g, scalaX, scalaY);
+            optimizer.getPaths().draw(g, scalaX, scalaY, minX, minY);
+            optimizer.getHospitals().draw(g, scalaX, scalaY, minX, minY);
+            optimizer.getSpecialObjects().draw(g, scalaX, scalaY, minX, minY);
+            optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
         } else {
             g.setFont( g.getFont().deriveFont( 20.0f ) );
             g.drawString("ZAŁADUJ DANE", 400, 300);
         }
     }
 
-    public void setScales(int scalaX, int scalaY) {
+    public void setProperties(int scalaX, int scalaY, int minX, int minY) {
         this.scalaX = scalaX;
         this.scalaY = scalaY;
+        this.minX = minX;
+        this.minY = minY;
     }
 
     public void runSimulation() {

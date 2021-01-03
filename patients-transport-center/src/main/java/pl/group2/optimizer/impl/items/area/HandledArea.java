@@ -7,6 +7,7 @@ import java.util.List;
 
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class HandledArea {
     private Polygon area;
@@ -94,8 +95,8 @@ public class HandledArea {
     private Polygon scaleArea(int scalaX, int scalaY) {
         Polygon scaledArea = new Polygon();
         for (Point p : points) {
-            int x = p.getXCoordinate() * scalaX + MARGIN;
-            int y = HEIGHT - p.getYCoordinate() * scalaY - MARGIN;
+            int x = PADDING + p.getXCoordinate() * scalaX + MARGIN - minX;
+            int y = PADDING + HEIGHT - p.getYCoordinate() * scalaY - MARGIN - minY;
 
             scaledArea.addPoint(x, y);
         }

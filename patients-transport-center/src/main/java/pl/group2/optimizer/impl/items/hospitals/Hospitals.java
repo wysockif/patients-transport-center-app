@@ -11,6 +11,7 @@ import java.util.zip.DataFormatException;
 
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class Hospitals implements Items {
     private final Map<Integer, Hospital> hospitalsByIndex;
@@ -96,13 +97,15 @@ public class Hospitals implements Items {
     }
 
     @Override
-    public void draw(Graphics g, int scalaX, int scalaY) {
+    public void draw(Graphics g, int scalaX, int scalaY, int minX, int minY) {
         for (Hospital hospital : getCollection()) {
             int xShift = hospital.getImageWidth() / 2;
             int yShift = hospital.getImageHeight() / 2;
 
-            g.drawImage(hospital.getImage(), hospital.getXCoordinate() * scalaX + MARGIN - xShift,
-                    HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift, null);
+            int x = PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX;
+            int y = PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift - minY;
+
+            g.drawImage(hospital.getImage(), x, y, null);
         }
     }
 

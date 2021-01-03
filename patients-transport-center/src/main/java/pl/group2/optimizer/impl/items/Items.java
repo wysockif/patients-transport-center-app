@@ -10,5 +10,5 @@ public interface Items {
 
     void addNewElement(Object[] attributes);
 
-    void draw(Graphics g, int scalaX, int scalaY);
+    void draw(Graphics g, int scalaX, int scalaY, int minX, int minY);
 }

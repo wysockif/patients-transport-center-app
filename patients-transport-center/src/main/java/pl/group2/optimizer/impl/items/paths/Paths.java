@@ -14,6 +14,7 @@ import java.util.zip.DataFormatException;
 import static java.awt.Color.DARK_GRAY;
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class Paths implements Items {
     private final List<Path> paths;
@@ -111,7 +112,7 @@ public class Paths implements Items {
     }
 
     @Override
-    public void draw(Graphics g, int scalaX, int scalaY) {
+    public void draw(Graphics g, int scalaX, int scalaY, int minX, int minY) {
         for (Path path : paths) {
             g.setColor(DARK_GRAY);
             Graphics2D g2d = (Graphics2D) g;
@@ -122,8 +123,8 @@ public class Paths implements Items {
             int xTo = path.getTo().getXCoordinate();
             int yTo = path.getTo().getYCoordinate();
 
-            g.drawLine(xFrom * scalaX + MARGIN, HEIGHT - (yFrom * scalaY) - MARGIN,
-                    xTo * scalaX + MARGIN, HEIGHT - (yTo * scalaY) - MARGIN);
+            g.drawLine(PADDING - minX + xFrom * scalaX + MARGIN, PADDING - minY + HEIGHT - (yFrom * scalaY) - MARGIN,
+                    PADDING - minX + xTo * scalaX + MARGIN, PADDING - minY + HEIGHT - (yTo * scalaY) - MARGIN);
         }
     }
 

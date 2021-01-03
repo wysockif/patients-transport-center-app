@@ -1,9 +1,8 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
 import pl.group2.optimizer.impl.items.Items;
-import pl.group2.optimizer.impl.items.hospitals.Hospital;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +11,7 @@ import java.util.zip.DataFormatException;
 
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class SpecialObjects implements Items {
     private final Map<Integer, SpecialObject> specialObjectByIndex;
@@ -114,12 +114,15 @@ public class SpecialObjects implements Items {
 
 
     @Override
-    public void draw(Graphics g, int scalaX, int scalaY) {
+    public void draw(Graphics g, int scalaX, int scalaY, int minX, int minY) {
         for (SpecialObject specialObject : getCollection()) {
             int xShift = specialObject.getImageWidth() / 2;
             int yShift = specialObject.getImageHeight() / 2;
-            g.drawImage(specialObject.getImage(), specialObject.getXCoordinate() * scalaX + MARGIN - xShift,
-                    HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift, null);
+
+            int x = PADDING + specialObject.getXCoordinate() * scalaX + MARGIN - xShift - minX;
+            int y = PADDING + HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift - minY;
+
+            g.drawImage(specialObject.getImage(), x, y, null);
         }
     }
 }

@@ -93,7 +93,7 @@ public class Patients implements Items {
     }
 
     @Override
-    public void draw(Graphics g, int scalaX, int scalaY) {
+    public void draw(Graphics g, int scalaX, int scalaY, int minX, int minY) {
 
     }
 }
