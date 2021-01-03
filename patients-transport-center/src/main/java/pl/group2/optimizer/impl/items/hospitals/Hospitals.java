@@ -2,7 +2,6 @@ package pl.group2.optimizer.impl.items.hospitals;
 
 import pl.group2.optimizer.impl.items.Items;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Collection;
 import java.util.HashMap;

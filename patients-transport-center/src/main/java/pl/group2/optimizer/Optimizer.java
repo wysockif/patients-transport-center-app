@@ -16,6 +16,8 @@ import java.util.List;
 
 public class Optimizer {
     public static final double NANOSECONDS_IN_SECOND = 1_000_000_000.0;
+    public static final int MARGIN = 20;
+
     private final String timeFormat;
 
     private Patients patients;

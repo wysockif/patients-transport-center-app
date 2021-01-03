@@ -112,9 +112,11 @@ public class SpecialObjects implements Items {
 
     @Override
     public void draw(Graphics g, int scalaX, int scalaY) {
-        g.setColor(Color.RED);
         for (SpecialObject specialObject : getCollection()) {
-            g.fillRect(specialObject.getXCoordinate() * scalaX + 75 - 5, 600 - (specialObject.getYCoordinate() * scalaY) - 75 - 5, 10, 10);
+            int xShift = specialObject.getImageWidth() / 2;
+            int yShift = specialObject.getImageHeight() / 2;
+            g.drawImage(specialObject.getImage(), specialObject.getXCoordinate() * scalaX + 75 - xShift,
+                    600 - (specialObject.getYCoordinate() * scalaY) - 75 - yShift, null);
         }
     }
 }
