@@ -14,9 +14,10 @@ import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
 import java.util.List;
 
+import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+
 public class Optimizer {
     public static final double NANOSECONDS_IN_SECOND = 1_000_000_000.0;
-    public static final int MARGIN = 20;
 
     private final String timeFormat;
 
@@ -84,9 +85,9 @@ public class Optimizer {
     }
 
     public void run() {
-         area = prepareData();
-        int scalaX = (int) Math.floor((double) (Plan.WIDTH - 150) / area.getMaxWidth());
-        int scalaY = (int) Math.floor((double) (Plan.HEIGHT - 150) / area.getMaxHeight());
+        area = prepareData();
+        int scalaX = (int) Math.floor((double) (Plan.WIDTH - MARGIN * 2) / area.getMaxWidth());
+        int scalaY = (int) Math.floor((double) (Plan.HEIGHT - MARGIN * 2) / area.getMaxHeight());
 
         plan.setScales(scalaX, scalaY);
         plan.runSimulation();
@@ -107,6 +108,7 @@ public class Optimizer {
     public Paths getPaths() {
         return paths;
     }
+
     public HandledArea getHandledArea() {
         return area;
     }

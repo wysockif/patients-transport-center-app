@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
+import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
+import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+
 public class SpecialObjects implements Items {
     private final Map<Integer, SpecialObject> specialObjectByIndex;
     private final Map<Integer, Integer> indexById;
@@ -115,8 +118,8 @@ public class SpecialObjects implements Items {
         for (SpecialObject specialObject : getCollection()) {
             int xShift = specialObject.getImageWidth() / 2;
             int yShift = specialObject.getImageHeight() / 2;
-            g.drawImage(specialObject.getImage(), specialObject.getXCoordinate() * scalaX + 75 - xShift,
-                    600 - (specialObject.getYCoordinate() * scalaY) - 75 - yShift, null);
+            g.drawImage(specialObject.getImage(), specialObject.getXCoordinate() * scalaX + MARGIN - xShift,
+                    HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift, null);
         }
     }
 }

@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
+import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
+import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+
 public class Hospitals implements Items {
     private final Map<Integer, Hospital> hospitalsByIndex;
     private final Map<Integer, Integer> indexById;
@@ -98,8 +101,8 @@ public class Hospitals implements Items {
             int xShift = hospital.getImageWidth() / 2;
             int yShift = hospital.getImageHeight() / 2;
 
-//            g.fillRect(hospital.getXCoordinate() * scalaX + 75 - 5, 600 - (hospital.getYCoordinate() * scalaY) - 75 - 5, 10, 10);
-            g.drawImage(hospital.getImage(), hospital.getXCoordinate() * scalaX + 75 - xShift, 600 - (hospital.getYCoordinate() * scalaY) - 75 - yShift, null);
+            g.drawImage(hospital.getImage(), hospital.getXCoordinate() * scalaX + MARGIN - xShift,
+                    HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift, null);
         }
     }
 

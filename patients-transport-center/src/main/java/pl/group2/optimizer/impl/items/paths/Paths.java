@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
 import static java.awt.Color.DARK_GRAY;
+import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
+import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 
 public class Paths implements Items {
     private final List<Path> paths;
@@ -120,7 +122,8 @@ public class Paths implements Items {
             int xTo = path.getTo().getXCoordinate();
             int yTo = path.getTo().getYCoordinate();
 
-            g.drawLine(xFrom * scalaX + 75, 600 - (yFrom * scalaY) - 75, xTo * scalaX + 75, 600 - (yTo * scalaY) - 75);
+            g.drawLine(xFrom * scalaX + MARGIN, HEIGHT - (yFrom * scalaY) - MARGIN,
+                    xTo * scalaX + MARGIN, HEIGHT - (yTo * scalaY) - MARGIN);
         }
     }
 

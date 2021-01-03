@@ -5,12 +5,16 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.List;
 
-import static java.awt.Color.GREEN;
+import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
+import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 
 public class HandledArea {
     private Polygon area;
     private List<Point> points;
     private Polygon scaledArea;
+
+    private int minX;
+    private int minY;
 
     public HandledArea() {
         area = new Polygon();
@@ -39,7 +43,7 @@ public class HandledArea {
     }
 
     private int getMinXCoordinate() {
-        int minX = points.get(0).getXCoordinate();
+        minX = points.get(0).getXCoordinate();
         for (Point point : points) {
             point.getXCoordinate();
             if (point.getXCoordinate() < minX) {
@@ -61,7 +65,7 @@ public class HandledArea {
     }
 
     private int getMinYCoordinate() {
-        int minY = points.get(0).getYCoordinate();
+        minY = points.get(0).getYCoordinate();
         for (Point point : points) {
             point.getYCoordinate();
             if (point.getYCoordinate() < minY) {
@@ -80,7 +84,7 @@ public class HandledArea {
     }
 
     public void draw(Graphics g, int scalaX, int scalaY) {
-        if(scaledArea == null) {
+        if (scaledArea == null) {
             scaledArea = scaleArea(scalaX, scalaY);
         }
         g.setColor(new Color(101, 171, 90));
@@ -89,9 +93,20 @@ public class HandledArea {
 
     private Polygon scaleArea(int scalaX, int scalaY) {
         Polygon scaledArea = new Polygon();
-        for(Point p : points){
-            scaledArea.addPoint(p.getXCoordinate() * scalaX + 75, 600 - p.getYCoordinate() * scalaY - 75);
+        for (Point p : points) {
+            int x = p.getXCoordinate() * scalaX + MARGIN;
+            int y = HEIGHT - p.getYCoordinate() * scalaY - MARGIN;
+
+            scaledArea.addPoint(x, y);
         }
         return scaledArea;
+    }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMinY() {
+        return minY;
     }
 }

@@ -11,6 +11,8 @@ import java.util.TimerTask;
 public class Plan extends JPanel {
     public static final int WIDTH = 950;
     public static final int HEIGHT = 650;
+    public static final int MARGIN = 40;
+
     private final Optimizer optimizer;
     private int scalaX;
     private int scalaY;
