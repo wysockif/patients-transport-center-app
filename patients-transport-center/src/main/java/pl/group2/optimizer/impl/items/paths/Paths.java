@@ -3,11 +3,15 @@ package pl.group2.optimizer.impl.items.paths;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
+
+import static java.awt.Color.DARK_GRAY;
 
 public class Paths implements Items {
     private final List<Path> paths;
@@ -105,8 +109,19 @@ public class Paths implements Items {
     }
 
     @Override
-    public void draw(Graphics g, double scalaX, double scalaY) {
+    public void draw(Graphics g, int scalaX, int scalaY) {
+        for (Path path : paths) {
+            g.setColor(DARK_GRAY);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setStroke(new BasicStroke(6.0F));
 
+            int xFrom = path.getFrom().getXCoordinate();
+            int yFrom = path.getFrom().getYCoordinate();
+            int xTo = path.getTo().getXCoordinate();
+            int yTo = path.getTo().getYCoordinate();
+
+            g.drawLine(xFrom * scalaX + 75, 600 - (yFrom * scalaY) - 75, xTo * scalaX + 75, 600 - (yTo * scalaY) - 75);
+        }
     }
 
     private void checkIfArgumentIsNotNull(Object argument) {

@@ -10,7 +10,6 @@ import java.awt.Font;
 
 public class Communicator extends JPanel {
     private final JTextArea textArea;
-    private JScrollPane jScrollPane;
     private String messages;
 
     public Communicator() {
@@ -31,7 +30,7 @@ public class Communicator extends JPanel {
         DefaultCaret caret = (DefaultCaret) jTextArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
-        jScrollPane = new JScrollPane(jTextArea);
+        JScrollPane jScrollPane = new JScrollPane(jTextArea);
         jScrollPane.setSize(950, 130);
         jScrollPane.setBorder(new EmptyBorder(1, 1, 1, 1));
         add(jScrollPane);

@@ -22,11 +22,8 @@ public class Optimizer {
     private Hospitals hospitals;
     private SpecialObjects specialObjects;
     private Paths paths;
-    private Window window;
-
-    public Paths getPaths() {
-        return paths;
-    }
+    private Plan plan;
+    private HandledArea area;
 
     public Optimizer() {
         timeFormat = "[ %.4fs ]\n";
@@ -69,8 +66,9 @@ public class Optimizer {
     }
 
     public void createWindow() {
-        Optimizer optimizer = new Optimizer();
-        window = new Window(optimizer);
+        plan = new Plan(this);
+        System.out.println(plan);
+        new Window(this, plan);
     }
 
     public HandledArea prepareData() {
@@ -84,11 +82,12 @@ public class Optimizer {
     }
 
     public void run() {
-        HandledArea area = prepareData();
-        double scalaX = (double) (Plan.WIDTH - 150) / area.getMaxWidth();
-        double scalaY = (double) (Plan.HEIGHT - 150) / area.getMaxHeight();
-        System.out.println(scalaX + " " + scalaY);
+         area = prepareData();
+        int scalaX = (int) Math.floor((double) (Plan.WIDTH - 150) / area.getMaxWidth());
+        int scalaY = (int) Math.floor((double) (Plan.HEIGHT - 150) / area.getMaxHeight());
 
+        plan.setScales(scalaX, scalaY);
+        plan.runSimulation();
     }
 
     public Patients getPatients() {
@@ -101,5 +100,12 @@ public class Optimizer {
 
     public SpecialObjects getSpecialObjects() {
         return specialObjects;
+    }
+
+    public Paths getPaths() {
+        return paths;
+    }
+    public HandledArea getHandledArea() {
+        return area;
     }
 }

@@ -1,11 +1,16 @@
 package pl.group2.optimizer.impl.items.area;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.List;
+
+import static java.awt.Color.GREEN;
 
 public class HandledArea {
     private Polygon area;
     private List<Point> points;
+    private Polygon scaledArea;
 
     public HandledArea() {
         area = new Polygon();
@@ -72,5 +77,21 @@ public class HandledArea {
 
     public int getMaxHeight() {
         return getMaxYCoordinate() - getMinYCoordinate();
+    }
+
+    public void draw(Graphics g, int scalaX, int scalaY) {
+        if(scaledArea == null) {
+            scaledArea = scaleArea(scalaX, scalaY);
+        }
+        g.setColor(new Color(101, 171, 90));
+        g.fillPolygon(scaledArea);
+    }
+
+    private Polygon scaleArea(int scalaX, int scalaY) {
+        Polygon scaledArea = new Polygon();
+        for(Point p : points){
+            scaledArea.addPoint(p.getXCoordinate() * scalaX + 75, 600 - p.getYCoordinate() * scalaY - 75);
+        }
+        return scaledArea;
     }
 }

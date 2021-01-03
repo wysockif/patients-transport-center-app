@@ -1,6 +1,7 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
 import pl.group2.optimizer.impl.items.Items;
+import pl.group2.optimizer.impl.items.hospitals.Hospital;
 
 import java.awt.*;
 import java.util.Collection;
@@ -30,11 +31,11 @@ public class SpecialObjects implements Items {
         counter++;
     }
 
-    public SpecialObject getSpecialObjectByIndex(int index){
+    public SpecialObject getSpecialObjectByIndex(int index) {
         return specialObjectByIndex.get(index);
     }
 
-    public boolean contain(int id){
+    public boolean contain(int id) {
         return indexById.containsKey(id);
     }
 
@@ -108,8 +109,12 @@ public class SpecialObjects implements Items {
         return specialObjectByIndex.values();
     }
 
-    public void draw(Graphics g, double scalaX, double scalaY) {
-        g.drawRect(23,23,22,22);
 
+    @Override
+    public void draw(Graphics g, int scalaX, int scalaY) {
+        g.setColor(Color.RED);
+        for (SpecialObject specialObject : getCollection()) {
+            g.fillRect(specialObject.getXCoordinate() * scalaX + 75 - 5, 600 - (specialObject.getYCoordinate() * scalaY) - 75 - 5, 10, 10);
+        }
     }
 }

@@ -18,4 +18,8 @@ public class Path {
     public Vertex getFrom() {
         return from;
     }
+
+    public Vertex getTo() {
+        return to;
+    }
 }

@@ -2,7 +2,8 @@ package pl.group2.optimizer.impl.items.hospitals;
 
 import pl.group2.optimizer.impl.items.Items;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,15 +35,15 @@ public class Hospitals implements Items {
         return hospitalsByIndex.get(index);
     }
 
-    public boolean contain(int id){
+    public boolean contain(int id) {
         return indexById.containsKey(id);
     }
 
-    public int getHospitalIndexById(int id){
+    public int getHospitalIndexById(int id) {
         return indexById.get(id);
     }
 
-    public Hospital getHospitalById(int id){
+    public Hospital getHospitalById(int id) {
         int index = indexById.get(id);
         return hospitalsByIndex.get(index);
     }
@@ -86,12 +87,21 @@ public class Hospitals implements Items {
         int y = (int) attributes[3];
         int numberOfBeds = (int) attributes[4];
         int numberOfAvailableBeds = (int) attributes[5];
-        add(new Hospital(id, name, x, y, numberOfBeds, numberOfAvailableBeds));
+        Hospital hospital = new Hospital(id, name, x, y, numberOfBeds, numberOfAvailableBeds);
+        int spriteType = hospitalsByIndex.size() % 5 + 1;
+        hospital.loadSprite(spriteType);
+        add(hospital);
     }
 
     @Override
-    public void draw(Graphics g, double scalaX, double scalaY) {
+    public void draw(Graphics g, int scalaX, int scalaY) {
+        for (Hospital hospital : getCollection()) {
+            int xShift = hospital.getImageWidth() / 2;
+            int yShift = hospital.getImageHeight() / 2;
 
+//            g.fillRect(hospital.getXCoordinate() * scalaX + 75 - 5, 600 - (hospital.getYCoordinate() * scalaY) - 75 - 5, 10, 10);
+            g.drawImage(hospital.getImage(), hospital.getXCoordinate() * scalaX + 75 - xShift, 600 - (hospital.getYCoordinate() * scalaY) - 75 - yShift, null);
+        }
     }
 
     private void checkIfArgumentIsNotNull(Object argument) {
@@ -119,7 +129,7 @@ public class Hospitals implements Items {
         return convertedAttributes;
     }
 
-    public Collection<Hospital> getCollection(){
+    public Collection<Hospital> getCollection() {
         return hospitalsByIndex.values();
     }
 }

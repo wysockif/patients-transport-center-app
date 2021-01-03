@@ -92,7 +92,8 @@ public class Patients implements Items {
         return convertedAttributes;
     }
 
-    public void draw(Graphics g, double scalaX, double scalaY) {
-        g.drawRect(23,23,22,22);
+    @Override
+    public void draw(Graphics g, int scalaX, int scalaY) {
+
     }
 }
