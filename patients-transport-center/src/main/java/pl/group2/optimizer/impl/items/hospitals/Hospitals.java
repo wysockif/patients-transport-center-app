@@ -97,13 +97,13 @@ public class Hospitals implements Items {
     }
 
     @Override
-    public void draw(Graphics g, int scalaX, int scalaY, int minX, int minY) {
+    public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         for (Hospital hospital : getCollection()) {
             int xShift = hospital.getImageWidth() / 2;
             int yShift = hospital.getImageHeight() / 2;
 
-            int x = PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX;
-            int y = PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift - minY;
+            int x = (int)Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX);
+            int y = (int)Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift - minY);
 
             g.drawImage(hospital.getImage(), x, y, null);
         }

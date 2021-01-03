@@ -11,12 +11,12 @@ import java.util.TimerTask;
 public class Plan extends JPanel {
     public static final int WIDTH = 950;
     public static final int HEIGHT = 650;
-    public static final int MARGIN = 35;
-    public static final int PADDING = 20;
+    public static final int MARGIN = 50;
+    public static final int PADDING = 15;
 
     private final Optimizer optimizer;
-    private int scalaX;
-    private int scalaY;
+    private double scalaX;
+    private double scalaY;
     private int minX;
     private int minY;
     private boolean running;
@@ -46,7 +46,7 @@ public class Plan extends JPanel {
         }
     }
 
-    public void setProperties(int scalaX, int scalaY, int minX, int minY) {
+    public void setProperties(double scalaX, double scalaY, int minX, int minY) {
         this.scalaX = scalaX;
         this.scalaY = scalaY;
         this.minX = minX;

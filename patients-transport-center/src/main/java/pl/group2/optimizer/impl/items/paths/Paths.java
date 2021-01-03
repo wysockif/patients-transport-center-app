@@ -112,7 +112,7 @@ public class Paths implements Items {
     }
 
     @Override
-    public void draw(Graphics g, int scalaX, int scalaY, int minX, int minY) {
+    public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         for (Path path : paths) {
             g.setColor(DARK_GRAY);
             Graphics2D g2d = (Graphics2D) g;
@@ -123,8 +123,11 @@ public class Paths implements Items {
             int xTo = path.getTo().getXCoordinate();
             int yTo = path.getTo().getYCoordinate();
 
-            g.drawLine(PADDING - minX + xFrom * scalaX + MARGIN, PADDING - minY + HEIGHT - (yFrom * scalaY) - MARGIN,
-                    PADDING - minX + xTo * scalaX + MARGIN, PADDING - minY + HEIGHT - (yTo * scalaY) - MARGIN);
+            int x1 = (int) Math.round(PADDING - minX + xFrom * scalaX + MARGIN);
+            int y1 = (int) Math.round(PADDING - minY + HEIGHT - (yFrom * scalaY) - MARGIN);
+            int x2 = (int) Math.round(PADDING - minX + xTo * scalaX + MARGIN);
+            int y2 = (int) Math.round(PADDING - minY + HEIGHT - (yTo * scalaY) - MARGIN);
+            g.drawLine(x1, y1, x2, y2);
         }
     }
 

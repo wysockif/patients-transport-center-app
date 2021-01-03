@@ -89,8 +89,10 @@ public class Optimizer {
 
     public void run() {
         area = prepareData();
-        int scalaX = (int) Math.floor((double) (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth());
-        int scalaY = (int) Math.floor((double) (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight());
+        int multiplier = 100;
+        double scalaX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
+        double scalaY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
+        System.out.println(scalaX + " " + scalaY);
 
         plan.setProperties(scalaX, scalaY, area.getMinX(), area.getMinY());
         plan.runSimulation();

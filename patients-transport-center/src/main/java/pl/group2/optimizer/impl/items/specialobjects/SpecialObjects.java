@@ -114,13 +114,13 @@ public class SpecialObjects implements Items {
 
 
     @Override
-    public void draw(Graphics g, int scalaX, int scalaY, int minX, int minY) {
+    public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         for (SpecialObject specialObject : getCollection()) {
             int xShift = specialObject.getImageWidth() / 2;
             int yShift = specialObject.getImageHeight() / 2;
 
-            int x = PADDING + specialObject.getXCoordinate() * scalaX + MARGIN - xShift - minX;
-            int y = PADDING + HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift - minY;
+            int x = (int) Math.round(PADDING + specialObject.getXCoordinate() * scalaX + MARGIN - xShift - minX);
+            int y = (int) Math.round(PADDING + HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift - minY);
 
             g.drawImage(specialObject.getImage(), x, y, null);
         }

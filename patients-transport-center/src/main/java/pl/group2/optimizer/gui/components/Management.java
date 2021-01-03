@@ -14,10 +14,16 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.io.File;
 
+import static java.awt.Color.DARK_GRAY;
+import static java.awt.Color.GRAY;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.WHITE;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static javax.swing.SwingConstants.CENTER;
 
 public class Management extends JPanel {
+    private boolean arePatientsAttached;
+    private boolean isMapAttached;
     private final Optimizer optimizer;
     private JLabel title;
     private JLabel attachMapLabel;
@@ -44,8 +50,15 @@ public class Management extends JPanel {
 
     private JButton createRunButton() {
         JButton button = new JButton("Uruchom symulację");
-        button.setBounds(40, 550, 155, 40);
-        button.addActionListener(e -> optimizer.run());
+        button.setBounds(40, 320, 155, 40);
+        button.setBackground(DARK_GRAY);
+        button.setForeground(WHITE);
+        button.addActionListener(e -> {
+            optimizer.run();
+            button.setEnabled(false);
+        });
+        button.setFocusable(false);
+        button.setEnabled(false);
         add(button);
         return button;
     }
@@ -58,7 +71,8 @@ public class Management extends JPanel {
 
         paceSlider = new JSlider(0, 100, 50);
         paceSlider.setBounds(20, 245, 195, 50);
-        paceSlider.setBackground(Color.gray);
+        paceSlider.setBackground(GRAY);
+        paceSlider.setForeground(DARK_GRAY);
         paceSlider.setMajorTickSpacing(25);
         paceSlider.setMinorTickSpacing(5);
         paceSlider.setPaintTicks(true);
@@ -74,15 +88,10 @@ public class Management extends JPanel {
 
         attachPatientsButton = new JButton("Wczytaj");
         attachPatientsButton.setBounds(40, 165, 155, 40);
-        attachPatientsButton.addActionListener(e -> {
-            try {
-                optimizer.loadPatients(getPathFromFileChooser());
-                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
-                        "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-            } catch (MyException myException) {
-                myException.printStackTrace();
-            }
-        });
+        attachPatientsButton.addActionListener(e -> attachPatients());
+        attachPatientsButton.setFocusable(false);
+        attachPatientsButton.setBackground(DARK_GRAY);
+        attachPatientsButton.setForeground(WHITE);
         add(attachPatientsButton);
     }
 
@@ -94,16 +103,45 @@ public class Management extends JPanel {
 
         attachMapButton = new JButton("Wczytaj");
         attachMapButton.setBounds(40, 85, 155, 40);
-        attachMapButton.addActionListener(e -> {
-            try {
-                optimizer.loadMap(getPathFromFileChooser());
-                JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
-                        "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-            } catch (MyException myException) {
-                myException.printStackTrace();
-            }
-        });
+        attachMapButton.addActionListener(e -> attachMap());
+        attachMapButton.setFocusable(false);
+        attachMapButton.setBackground(DARK_GRAY);
+        attachMapButton.setForeground(WHITE);
         add(attachMapButton);
+    }
+
+    private void attachPatients() {
+        try {
+            optimizer.loadPatients(getPathFromFileChooser());
+            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
+                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+            attachPatientsButton.setForeground(GREEN.darker());
+            attachPatientsButton.setText("Wczytano");
+            arePatientsAttached = true;
+            checkIfBothFilesAreAttached();
+        } catch (MyException myException) {
+            myException.printStackTrace();
+        }
+    }
+
+    private void attachMap() {
+        try {
+            optimizer.loadMap(getPathFromFileChooser());
+            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
+                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+            attachMapButton.setForeground(GREEN.darker());
+            attachMapButton.setText("Wczytano");
+            isMapAttached = true;
+            checkIfBothFilesAreAttached();
+        } catch (MyException myException) {
+            myException.printStackTrace();
+        }
+    }
+
+    private void checkIfBothFilesAreAttached() {
+        if (isMapAttached && arePatientsAttached) {
+            runButton.setEnabled(true);
+        }
     }
 
     private String getPathFromFileChooser() {

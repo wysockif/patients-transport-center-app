@@ -84,7 +84,7 @@ public class HandledArea {
         return getMaxYCoordinate() - getMinYCoordinate();
     }
 
-    public void draw(Graphics g, int scalaX, int scalaY) {
+    public void draw(Graphics g, double scalaX, double scalaY) {
         if (scaledArea == null) {
             scaledArea = scaleArea(scalaX, scalaY);
         }
@@ -92,11 +92,11 @@ public class HandledArea {
         g.fillPolygon(scaledArea);
     }
 
-    private Polygon scaleArea(int scalaX, int scalaY) {
+    private Polygon scaleArea(double scalaX, double scalaY) {
         Polygon scaledArea = new Polygon();
         for (Point p : points) {
-            int x = PADDING + p.getXCoordinate() * scalaX + MARGIN - minX;
-            int y = PADDING + HEIGHT - p.getYCoordinate() * scalaY - MARGIN - minY;
+            int x = (int)Math.round(PADDING + p.getXCoordinate() * scalaX + MARGIN - minX);
+            int y = (int)Math.round(PADDING + HEIGHT - p.getYCoordinate() * scalaY - MARGIN - minY);
 
             scaledArea.addPoint(x, y);
         }
