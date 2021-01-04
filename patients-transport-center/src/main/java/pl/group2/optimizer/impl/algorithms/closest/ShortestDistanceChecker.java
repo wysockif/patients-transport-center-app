@@ -1,16 +1,15 @@
 package pl.group2.optimizer.impl.algorithms.closest;
 
-import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.patients.Patient;
 
 public class ShortestDistanceChecker {
 
-    private int minIndex(double[] distances) throws MyException {
-        if (distances.length == 0) {
-            throw new MyException("No hospitals found");
-        }
+    private int minIndex(double[] distances) {
+//        if (distances.length == 0) {
+//            throw new MyException("No hospitals found");
+//        }
         double min = distances[0];
         int minIndex = 0;
 
@@ -24,14 +23,13 @@ public class ShortestDistanceChecker {
         return minIndex;
     }
 
-    public void closestHospital(Patient patient, Hospitals hospitals) throws MyException {
+    public Hospital closestHospital(Patient patient, Hospitals hospitals) {
         Hospital hospital;
         double[] distances = new double[hospitals.size()];
         for (int i = 0; i < hospitals.size(); i++) {
             hospital = hospitals.getHospitalByIndex(i);
             double dx = Math.pow((hospital.getXCoordinate() - patient.getXCoordinate()), 2);
             double dy = Math.pow((hospital.getYCoordinate() - patient.getYCoordinate()), 2);
-            System.out.println(dx + dy);
             distances[i] = dx + dy;
         }
 
@@ -40,5 +38,6 @@ public class ShortestDistanceChecker {
 
         System.out.println("Closest hospital to patient: " + patient.toString()
                 + " is " + closest.toString());
+        return closest;
     }
 }

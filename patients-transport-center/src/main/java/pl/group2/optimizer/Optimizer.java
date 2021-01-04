@@ -2,6 +2,7 @@ package pl.group2.optimizer;
 
 import pl.group2.optimizer.gui.Window;
 import pl.group2.optimizer.gui.components.Plan;
+import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
@@ -11,6 +12,7 @@ import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
+import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
 
 import java.util.List;
 
@@ -87,12 +89,35 @@ public class Optimizer {
         return area;
     }
 
+    private QueueFIFO<Hospitals> firstClosestHospitalsToPatients() {
+        QueueFIFO<Hospitals> closest = new QueueFIFO<>();
+        ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
+        int size = patients.size();
+        for (int i = 0; i < size; i++) {
+            hospitals.add(distanceChecker.closestHospital(patients.getNextToHandle(), hospitals));
+        }
+
+        return closest;
+    }
+
     public void run() {
         area = prepareData();
         int multiplier = 100;
         double scalaX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
         double scalaY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
         System.out.println(scalaX + " " + scalaY);
+
+
+        double NANOSECONDS_IN_SECOND = 1_000_000_000.0;
+        String timeFormat = "[ %.4fs ]\n";
+
+        long before = System.nanoTime();
+
+        firstClosestHospitalsToPatients();
+
+        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
+        System.out.print("SZUKANIE NAJBLIŻSZEGO SZPITALA DLA DANYCH PACJENTÓW... ");
+        System.out.printf(timeFormat, time);
 
         plan.setProperties(scalaX, scalaY, area.getMinX(), area.getMinY());
         plan.runSimulation();
