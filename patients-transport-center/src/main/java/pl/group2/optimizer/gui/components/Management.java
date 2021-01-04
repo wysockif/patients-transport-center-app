@@ -46,13 +46,13 @@ public class Management extends JPanel {
 
     private JButton createRunButton() {
         JButton button = new JButton("Uruchom symulację");
-        button.setBounds(40, 320, 155, 40);
+        button.setBounds(30, 320, 175, 40);
         button.setBackground(DARK_GRAY);
         button.setForeground(WHITE);
         button.addActionListener(e -> {
             optimizer.run();
             button.setEnabled(false);
-
+            button.setText("Uruchomiono symulację");
         });
         button.setFocusable(false);
         button.setEnabled(false);
@@ -83,7 +83,7 @@ public class Management extends JPanel {
         attachPatientsLabel.setBounds(0, 140, 235, 20);
         add(attachPatientsLabel);
 
-        attachPatientsButton = new JButton("Wczytaj");
+        attachPatientsButton = new JButton("Załącz");
         attachPatientsButton.setBounds(40, 165, 155, 40);
         attachPatientsButton.addActionListener(e -> attachPatients());
         attachPatientsButton.setFocusable(false);
@@ -98,7 +98,7 @@ public class Management extends JPanel {
         attachMapLabel.setBounds(0, 60, 235, 20);
         add(attachMapLabel);
 
-        attachMapButton = new JButton("Wczytaj");
+        attachMapButton = new JButton("Załącz");
         attachMapButton.setBounds(40, 85, 155, 40);
         attachMapButton.addActionListener(e -> attachMap());
         attachMapButton.setFocusable(false);
@@ -113,7 +113,8 @@ public class Management extends JPanel {
             JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
                     "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
             attachPatientsButton.setForeground(GREEN.darker());
-            attachPatientsButton.setText("Wczytano");
+            attachPatientsButton.setText("Załączono");
+            attachPatientsButton.setEnabled(false);
             arePatientsAttached = true;
             optimizer.getPatientsManagement().enablePanel();
             checkIfBothFilesAreAttached();
@@ -128,7 +129,8 @@ public class Management extends JPanel {
             JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
                     "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
             attachMapButton.setForeground(GREEN.darker());
-            attachMapButton.setText("Wczytano");
+            attachMapButton.setText("Załączono");
+            attachMapButton.setEnabled(false);
             isMapAttached = true;
             checkIfBothFilesAreAttached();
         } catch (MyException myException) {
@@ -163,7 +165,7 @@ public class Management extends JPanel {
     protected void paintComponent(Graphics g) {
         g.setColor(Color.gray);
         g.fillRect(0, 0, 250, 400);
-        g.setColor(new Color(99,99,99));
+        g.setColor(new Color(99, 99, 99));
         g.fillRect(0, 385, 250, 5);
         g.fillRect(0, 395, 250, 5);
 

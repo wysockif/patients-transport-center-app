@@ -39,9 +39,9 @@ public class Graham {
     }
 
     private void print(List<Point> points) {
-        for(Point p : points){
-            System.out.println(p);
-        }
+//        for(Point p : points){
+//            System.out.println(p);
+//        }
     }
 
     private void runScanning() {
