@@ -1,8 +1,10 @@
 package pl.group2.optimizer.impl.items.hospitals;
 
+import pl.group2.optimizer.gui.BufferedImageTools;
 import pl.group2.optimizer.impl.items.Items;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -102,9 +104,22 @@ public class Hospitals implements Items {
             int xShift = hospital.getImageWidth() / 2;
             int yShift = hospital.getImageHeight() / 2;
 
-            int x = (int)Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
-            int y = (int)Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
-            g.drawImage(hospital.getImage(), x, y, null);
+            int x = (int) Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+            int y = (int) Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
+
+            BufferedImage image = hospital.getImage();
+
+            if (hospitalsByIndex.size() > 50) {
+                int newWidth = hospital.getImageWidth() / 2;
+                int newHeight = hospital.getImageHeight() / 2;
+                image = BufferedImageTools.resize(image, newWidth, newHeight);
+                xShift = newWidth / 2;
+                yShift = newHeight / 2;
+                x = (int) Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+                y = (int) Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
+            }
+
+            g.drawImage(image, x, y, null);
         }
     }
 

@@ -1,12 +1,13 @@
 package pl.group2.optimizer.impl.items.patients;
 
+import pl.group2.optimizer.gui.BufferedImageTools;
 import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.impl.items.Items;
-import pl.group2.optimizer.impl.items.hospitals.Hospital;
-import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
@@ -108,6 +109,11 @@ public class Patients implements Items {
         return patientsQueue.getCollection();
     }
 
+    int hospitalsSize;
+
+    public void setHospitalsSize(int hospitalsSize) {
+        this.hospitalsSize = hospitalsSize;
+    }
 
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
@@ -118,7 +124,19 @@ public class Patients implements Items {
             int x = (int) Math.round(PADDING + patient.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (patient.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
 
-            g.drawImage(patient.getImage(), x, y, null);
+            Image image = patient.getImage();
+
+            if (hospitalsSize > 50) {
+                int newWidth = patient.getImageWidth() / 2;
+                int newHeight = patient.getImageHeight() / 2;
+                image = BufferedImageTools.resize((BufferedImage) image, newWidth, newHeight);
+                xShift = newWidth / 2;
+                yShift = newHeight / 2;
+                x = (int) Math.round(PADDING + patient.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+                y = (int) Math.round(PADDING + HEIGHT - (patient.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
+            }
+
+            g.drawImage(image, x, y, null);
         }
     }
 }

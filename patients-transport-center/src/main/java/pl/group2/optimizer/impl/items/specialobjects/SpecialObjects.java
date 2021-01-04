@@ -1,8 +1,11 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
+import pl.group2.optimizer.gui.BufferedImageTools;
 import pl.group2.optimizer.impl.items.Items;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,6 +115,11 @@ public class SpecialObjects implements Items {
         return specialObjectByIndex.values();
     }
 
+    int hospitalsSize = 0;
+
+    public void setHospitalsSize(int hospitalsSize) {
+        this.hospitalsSize = hospitalsSize;
+    }
 
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
@@ -122,7 +130,19 @@ public class SpecialObjects implements Items {
             int x = (int) Math.round(PADDING + specialObject.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
 
-            g.drawImage(specialObject.getImage(), x, y, null);
+            Image image = specialObject.getImage();
+
+            if (hospitalsSize > 50) {
+                int newWidth = specialObject.getImageWidth() / 2;
+                int newHeight = specialObject.getImageHeight() / 2;
+                image = BufferedImageTools.resize((BufferedImage) image, newWidth, newHeight);
+                xShift = newWidth / 2;
+                yShift = newHeight / 2;
+                x = (int) Math.round(PADDING + specialObject.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+                y = (int) Math.round(PADDING + HEIGHT - (specialObject.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
+            }
+
+            g.drawImage(image, x, y, null);
         }
     }
 }

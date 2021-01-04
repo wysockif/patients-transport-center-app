@@ -57,7 +57,9 @@ public class Optimizer {
 
         TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath, patientsManagement);
+
         patients = textFileReader.getPatients();
+        patients.setHospitalsSize(hospitals.size());
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         System.out.printf(timeFormat, time);
@@ -70,8 +72,12 @@ public class Optimizer {
         TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath);
         hospitals = textFileReader.getHospitals();
+
         specialObjects = textFileReader.getSpecialObjects();
+        specialObjects.setHospitalsSize(hospitals.size());
+
         paths = textFileReader.getPaths();
+        paths.setHospitalsSize(hospitals.size());
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         System.out.printf(timeFormat, time);
