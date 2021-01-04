@@ -2,10 +2,8 @@ package pl.group2.optimizer.impl.items.patients;
 
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
-import pl.group2.optimizer.impl.structures.queues.QueueInterface;
-import pl.group2.optimizer.impl.structures.queues.QueueLIFO;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
@@ -64,7 +62,7 @@ public class Patients implements Items {
         checkIfArgumentIsNotNull(attributes);
         int id = (int) attributes[0];
         int x = (int) attributes[1];
-        int y = (int) attributes[1];
+        int y = (int) attributes[2];
 
         Patient patient = new Patient(id, x, y);
         addNew(patient);
