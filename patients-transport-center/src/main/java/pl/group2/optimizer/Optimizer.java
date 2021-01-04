@@ -98,7 +98,7 @@ public class Optimizer {
         int multiplier = 100;
         scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
-        System.out.println(scaleX + " " + scaleY);
+//        System.out.println(scaleX + " " + scaleY);
 
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.runSimulation();

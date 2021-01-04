@@ -5,6 +5,7 @@ import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 import pl.group2.optimizer.impl.structures.queues.QueueLIFO;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,19 +30,12 @@ public class Graham {
             throw new UnsupportedOperationException("Cannot handle the empty list");
         }
         findTheLowestPoint();
-        points.sort(this::comparePoints);
-        print(points);
+        points.sort((o1, o2) -> comparePoints(o1, o2));
         if (points.size() < 2) {
             return new LinkedList<>();
         }
         runScanning();
         return rewriteStackToList(queueLIFO);
-    }
-
-    private void print(List<Point> points) {
-//        for(Point p : points){
-//            System.out.println(p);
-//        }
     }
 
     private void runScanning() {
@@ -135,10 +129,12 @@ public class Graham {
         for (Point point : points) {
             if (point.getYCoordinate() < lowestPoint.getYCoordinate()) {
                 lowestPoint = point;
-            } else if (point.getYCoordinate() == lowestPoint.getYCoordinate()) {
+            } else if (point.getYCoordinate() == lowestPoint.getYCoordinate() ) {
                 lowestPoint = findLeftmostPoint(point, lowestPoint);
             }
         }
+        points.remove(lowestPoint);
+        points.add(0, lowestPoint);
     }
 
     private Point findLeftmostPoint(Point currentPoint, Point lowestPoint) {

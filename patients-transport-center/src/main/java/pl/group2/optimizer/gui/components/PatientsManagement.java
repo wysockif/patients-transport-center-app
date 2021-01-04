@@ -12,7 +12,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -25,10 +24,10 @@ import static javax.swing.SwingConstants.CENTER;
 
 public class PatientsManagement extends JPanel {
     private final Optimizer optimizer;
-    private JTextArea area;
-    private List<String> patients;
+    private final JTextArea area;
+    private final List<String> patients;
+    private final JButton addButton;
     private JTextField idField, xField, yField;
-    private JButton addButton;
 
     public PatientsManagement(Optimizer optimizer) {
         this.optimizer = optimizer;
@@ -158,7 +157,7 @@ public class PatientsManagement extends JPanel {
         return xField;
     }
 
-    public JTextField getYField(){
+    public JTextField getYField() {
         return yField;
     }
 }
