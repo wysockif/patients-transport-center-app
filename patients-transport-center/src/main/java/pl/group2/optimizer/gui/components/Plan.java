@@ -1,6 +1,7 @@
 package pl.group2.optimizer.gui.components;
 
 import pl.group2.optimizer.Optimizer;
+import pl.group2.optimizer.gui.MouseClickListener;
 
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -26,6 +27,7 @@ public class Plan extends JPanel {
         running = false;
         setSize(WIDTH, HEIGHT);
         setLocation(0, 0);
+        addMouseListener(new MouseClickListener(optimizer));
     }
 
     @Override

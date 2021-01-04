@@ -115,7 +115,7 @@ public class Management extends JPanel {
             attachPatientsButton.setForeground(GREEN.darker());
             attachPatientsButton.setText("Wczytano");
             arePatientsAttached = true;
-            optimizer.getPatientsManagement().enableButton();
+            optimizer.getPatientsManagement().enablePanel();
             checkIfBothFilesAreAttached();
         } catch (MyException myException) {
             myException.printStackTrace();

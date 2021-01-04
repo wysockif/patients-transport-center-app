@@ -2,15 +2,23 @@ package pl.group2.optimizer.impl.items.patients;
 
 import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.impl.items.Items;
+import pl.group2.optimizer.impl.items.hospitals.Hospital;
+import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
 
 import java.awt.Graphics;
+import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
+
+import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
+import static pl.group2.optimizer.gui.components.Plan.MARGIN;
+import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class Patients implements Items {
     private final QueueFIFO<Patient> patientsQueue;
     private final PatientsManagement patientsManagement;
+
 
     public Patients(PatientsManagement patientsManagement) {
         this.patientsManagement = patientsManagement;
@@ -18,6 +26,7 @@ public class Patients implements Items {
     }
 
     public void addNew(Patient patient) {
+        patient.loadSprite(patientsQueue.size() % 6);
         patientsQueue.add(patient);
         patientsManagement.addNewPatient(patient.getId(), patient.getXCoordinate(), patient.getYCoordinate());
     }
@@ -66,7 +75,7 @@ public class Patients implements Items {
         checkIfArgumentIsNotNull(attributes);
         int id = (int) attributes[0];
         int x = (int) attributes[1];
-        int y = (int) attributes[1];
+        int y = (int) attributes[2];
 
         Patient patient = new Patient(id, x, y);
 
@@ -95,8 +104,21 @@ public class Patients implements Items {
         return convertedAttributes;
     }
 
+    public Collection<Patient> getCollectionToDraw() {
+        return patientsQueue.getCollection();
+    }
+
+
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
+        for (Patient patient : getCollectionToDraw()) {
+            int xShift = patient.getImageWidth() / 2;
+            int yShift = patient.getImageHeight() / 2;
 
+            int x = (int) Math.round(PADDING + patient.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+            int y = (int) Math.round(PADDING + HEIGHT - (patient.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
+
+            g.drawImage(patient.getImage(), x, y, null);
+        }
     }
 }

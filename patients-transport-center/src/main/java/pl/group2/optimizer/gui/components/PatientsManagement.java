@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -65,9 +66,17 @@ public class PatientsManagement extends JPanel {
             Object[] convertedAttributes = optimizer.getPatients().convertAttributes(attributes);
             optimizer.getPatients().validateAttributes(convertedAttributes);
             optimizer.getPatients().addNewElement(convertedAttributes);
+            System.out.println(Arrays.asList(convertedAttributes));
+            resetFields();
         } catch (DataFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Błąd", ERROR_MESSAGE);
         }
+    }
+
+    private void resetFields() {
+        idField.setText("");
+        xField.setText("");
+        yField.setText("");
     }
 
     private void addingComponents() {
@@ -91,6 +100,7 @@ public class PatientsManagement extends JPanel {
         textField.setBackground(DARK_GRAY.darker());
         textField.setForeground(WHITE);
         textField.setBounds(x, 255, 60, 40);
+        textField.setEnabled(false);
         add(textField);
         return textField;
     }
@@ -138,7 +148,18 @@ public class PatientsManagement extends JPanel {
     }
 
 
-    public void enableButton() {
+    public void enablePanel() {
         addButton.setEnabled(true);
+        idField.setEnabled(true);
+        xField.setEnabled(true);
+        yField.setEnabled(true);
+    }
+
+    public JTextField getXField() {
+        return xField;
+    }
+
+    public JTextField getYField(){
+        return yField;
     }
 }

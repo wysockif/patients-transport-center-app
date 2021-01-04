@@ -33,6 +33,10 @@ public class Optimizer {
     private HandledArea area;
     private PatientsManagement patientsManagement;
 
+    private double scaleX;
+    private double scaleY;
+    private boolean running;
+
     public Optimizer() {
         timeFormat = "[ %.4fs ]\n";
     }
@@ -92,12 +96,13 @@ public class Optimizer {
     public void run() {
         area = prepareData();
         int multiplier = 100;
-        double scalaX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
-        double scalaY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
-        System.out.println(scalaX + " " + scalaY);
+        scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
+        scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
+        System.out.println(scaleX + " " + scaleY);
 
-        plan.setProperties(scalaX, scalaY, area.getMinX(), area.getMinY());
+        plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.runSimulation();
+        running = true;
     }
 
     public Patients getPatients() {
@@ -122,5 +127,25 @@ public class Optimizer {
 
     public PatientsManagement getPatientsManagement() {
         return patientsManagement;
+    }
+
+    public double getScaleX() {
+        return scaleX;
+    }
+
+    public double getScaleY(){
+        return scaleY;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+
+    public int getMinY() {
+        return area.getMinY();
+    }
+
+    public int getMinX(){
+        return area.getMinX();
     }
 }

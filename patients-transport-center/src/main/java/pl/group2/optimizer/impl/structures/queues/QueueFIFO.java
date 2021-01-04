@@ -1,5 +1,6 @@
 package pl.group2.optimizer.impl.structures.queues;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 public class QueueFIFO<T> implements QueueInterface<T> {
@@ -44,5 +45,9 @@ public class QueueFIFO<T> implements QueueInterface<T> {
 
     public T front() {
         return queue.getFirst();
+    }
+
+    public Collection<T> getCollection() {
+        return queue;
     }
 }
