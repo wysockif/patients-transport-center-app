@@ -13,11 +13,9 @@ import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Paths;
-import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
-import javax.swing.JOptionPane;
 import java.util.List;
 
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
@@ -48,15 +46,15 @@ public class Optimizer {
 
     public String messageAboutDownloadedPatients() {
         String time = String.format("[ %.4fs ]", timeOfDownloadingPatients);
-        return "Pobrano " + patients.size() + " pacjentów" + '\n' + "w " + time;
+        return "Pobrano " + patients.size() + " pacjentów" + " w " + time;
     }
 
     public String messageAboutDownloadedMap() {
         String time = String.format("[ %.4fs ]", timeOfDownloadingMap);
-        return "Pobrano " + hospitals.size() + " szpitali" + '\n' +
-                "Pobrano " + specialObjects.size() + " specjalnych obiektów" + '\n' +
-                "Pobrano " + paths.size() + " dróg" + '\n' +
-                "w " + time;
+        return "Pobrano " + hospitals.size() + " szpitali, " +
+                specialObjects.size() + " specjalnych obiektów, " +
+                paths.size() + " dróg" +
+                " w " + time;
 
     }
 
@@ -68,7 +66,7 @@ public class Optimizer {
     double timeOfDownloadingPatients = 0;
 
     public void loadPatients(String inputFilePath) throws MyException {
-        System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH PACJENTÓW... ");
+        //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH PACJENTÓW... ");
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
@@ -80,12 +78,13 @@ public class Optimizer {
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingPatients = time;
-        System.out.printf(timeFormat, time);
+        //System.out.printf(timeFormat, time);
     }
 
     double timeOfDownloadingMap = 0;
+
     public void loadMap(String inputFilePath) throws MyException {
-        System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
+        //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
@@ -100,10 +99,15 @@ public class Optimizer {
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingMap = time;
-        System.out.printf(timeFormat, time);
+        //System.out.printf(timeFormat, time);
     }
 
     Window window;
+
+    public Communicator getCommunicator() {
+        return communicator;
+    }
+
     public void createWindow() {
         plan = new Plan(this);
         patientsManagement = new PatientsManagement(this);
@@ -120,36 +124,44 @@ public class Optimizer {
         return area;
     }
 
+    Communicator communicator;
     private void showMessagesAboutClosesHospitals() {
-        Communicator communicator = window.getCommunicator();
-
         ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
 
         Hospital closest;
 
         int size = patients.size();
-        communicator.saveMessage("Obsługa pacjentów z pliku:");
-        for (int i = 0; i < size; i++) {
-            Patient first = patients.getFirst();
-            closest = distanceChecker.closestHospital(patients.getNextToHandle(), hospitals);
 
-            String message = "Closest hospital to patient: " + first.toString()
-                    + " is " + closest.toString();
+        closest = distanceChecker.closestHospital(patients.getFirst(), hospitals);
+        String message = "Closest hospital to patient: " + patients.getFirst().toString()
+                + " is " + closest.toString();
 
-            communicator.saveMessage(message);
+        communicator.saveMessage(message);
 
-            // tymczasowo, żeby wszyscy pacjenci naraz nie zniknęli
-            JOptionPane.showMessageDialog(null, message,
-                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-        }
+//        for (int i = 0; i < size; i++) {
+//            Patient first = patients.getFirst();
+//            closest = distanceChecker.closestHospital(patients.getNextToHandle(), hospitals);
+//
+//            String message = "Closest hospital to patient: " + first.toString()
+//                    + " is " + closest.toString();
+//
+//            communicator.saveMessage(message);
+//
+//            // tymczasowo, żeby wszyscy pacjenci naraz nie zniknęli
+//            JOptionPane.showMessageDialog(null, message,
+//                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+//        }
     }
 
     public void run() {
         long before = System.nanoTime();
+
         area = prepareData();
+
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
-                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+
+//        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
+//                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
 
         int multiplier = 100;
         scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
@@ -160,6 +172,11 @@ public class Optimizer {
         plan.runSimulation();
         running = true;
 
+        communicator = window.getCommunicator();
+
+        communicator.saveMessage(messageAboutDownloadedMap());
+        communicator.saveMessage(messageAboutDownloadedPatients());
+        communicator.saveMessage(messageAboutTimeOfGraham(time));
         showMessagesAboutClosesHospitals();
     }
 
@@ -191,7 +208,7 @@ public class Optimizer {
         return scaleX;
     }
 
-    public double getScaleY(){
+    public double getScaleY() {
         return scaleY;
     }
 
@@ -203,7 +220,7 @@ public class Optimizer {
         return area.getMinY();
     }
 
-    public int getMinX(){
+    public int getMinX() {
         return area.getMinX();
     }
 }

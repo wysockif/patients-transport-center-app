@@ -6,7 +6,6 @@ import pl.group2.optimizer.impl.io.MyException;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import java.awt.Color;
@@ -111,8 +110,8 @@ public class Management extends JPanel {
         try {
             optimizer.loadPatients(getPathFromFileChooser());
 
-            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
-                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+//            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
+//                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
 
             attachPatientsButton.setForeground(GREEN.darker());
             attachPatientsButton.setText("Załączono");
@@ -129,8 +128,8 @@ public class Management extends JPanel {
         try {
             optimizer.loadMap(getPathFromFileChooser());
 
-            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
-                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+//            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
+//                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
 
             attachMapButton.setForeground(GREEN.darker());
             attachMapButton.setText("Załączono");
