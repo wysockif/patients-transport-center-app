@@ -29,7 +29,6 @@ public class Management extends JPanel {
     private JButton attachPatientsButton;
 
     private final JButton runButton;
-    private JLabel paceLabel;
     private JSlider paceSlider;
 
     public Management(Optimizer optimizer) {
@@ -61,7 +60,7 @@ public class Management extends JPanel {
     }
 
     private void createSliderElements() {
-        paceLabel = new JLabel("Tempo:", CENTER);
+        JLabel paceLabel = new JLabel("Tempo:", CENTER);
         paceLabel.setFont(new Font("TitleFont", Font.BOLD, 14));
         paceLabel.setBounds(0, 220, 235, 20);
         add(paceLabel);
@@ -111,9 +110,6 @@ public class Management extends JPanel {
         try {
             optimizer.loadPatients(getPathFromFileChooser());
 
-            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
-                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-
             attachPatientsButton.setForeground(GREEN.darker());
             attachPatientsButton.setText("Załączono");
             attachPatientsButton.setEnabled(false);
@@ -128,10 +124,6 @@ public class Management extends JPanel {
     private void attachMap() {
         try {
             optimizer.loadMap(getPathFromFileChooser());
-
-            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
-                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-
             attachMapButton.setForeground(GREEN.darker());
             attachMapButton.setText("Załączono");
             attachMapButton.setEnabled(false);
@@ -172,6 +164,5 @@ public class Management extends JPanel {
         g.setColor(new Color(99, 99, 99));
         g.fillRect(0, 385, 250, 5);
         g.fillRect(0, 395, 250, 5);
-
     }
 }

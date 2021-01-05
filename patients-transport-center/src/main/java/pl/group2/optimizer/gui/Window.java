@@ -15,32 +15,24 @@ public class Window extends JFrame {
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 820;
 
-
-    public Window(Optimizer optimizer, Plan plan, PatientsManagement patientsManagement) {
+    public Window(Optimizer optimizer, Plan plan, PatientsManagement patientsManagement, Communicator communicator) {
         super("Patients Transport Center");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addAskingIfUserWantToExit();
         add(plan);
-        add(patientsManagement);
         setResizable(false);
         setLayout(null);
         setLocationRelativeTo(null);
-        createPanels(optimizer);
+        createPanels(optimizer, patientsManagement, communicator);
         setVisible(true);
     }
 
-    Communicator communicator;
-
-    private void createPanels(Optimizer optimizer) {
+    private void createPanels(Optimizer optimizer, PatientsManagement patientsManagement, Communicator communicator) {
         Management management = new Management(optimizer);
         add(management);
-        communicator = new Communicator();
+        add(patientsManagement);
         add(communicator);
-    }
-
-    public Communicator getCommunicator() {
-        return communicator;
     }
 
     private void addAskingIfUserWantToExit() {
