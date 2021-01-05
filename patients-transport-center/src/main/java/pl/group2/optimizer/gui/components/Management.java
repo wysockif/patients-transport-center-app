@@ -110,8 +110,10 @@ public class Management extends JPanel {
     private void attachPatients() {
         try {
             optimizer.loadPatients(getPathFromFileChooser());
+
             JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
                     "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+
             attachPatientsButton.setForeground(GREEN.darker());
             attachPatientsButton.setText("Załączono");
             attachPatientsButton.setEnabled(false);
@@ -126,8 +128,10 @@ public class Management extends JPanel {
     private void attachMap() {
         try {
             optimizer.loadMap(getPathFromFileChooser());
+
             JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedMap(),
                     "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+
             attachMapButton.setForeground(GREEN.darker());
             attachMapButton.setText("Załączono");
             attachMapButton.setEnabled(false);

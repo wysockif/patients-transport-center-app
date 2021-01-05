@@ -13,6 +13,7 @@ import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
+import javax.swing.JOptionPane;
 import java.util.List;
 
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
@@ -42,14 +43,25 @@ public class Optimizer {
     }
 
     public String messageAboutDownloadedPatients() {
-        return "Pobrano " + patients.size() + " pacjentów" + '\n';
+        String time = String.format("[ %.4fs ]", timeOfDownloadingPatients);
+        return "Pobrano " + patients.size() + " pacjentów" + '\n' + "w " + time;
     }
 
     public String messageAboutDownloadedMap() {
+        String time = String.format("[ %.4fs ]", timeOfDownloadingMap);
         return "Pobrano " + hospitals.size() + " szpitali" + '\n' +
                 "Pobrano " + specialObjects.size() + " specjalnych obiektów" + '\n' +
-                "Pobrano " + paths.size() + " dróg";
+                "Pobrano " + paths.size() + " dróg" + '\n' +
+                "w " + time;
+
     }
+
+    public String messageAboutTimeOfGraham(double timeOfGraham) {
+        String time = String.format("[ %.4fs ]", timeOfGraham);
+        return "Algorytm tworzenia obszaru trwał " + time;
+    }
+
+    double timeOfDownloadingPatients = 0;
 
     public void loadPatients(String inputFilePath) throws MyException {
         System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH PACJENTÓW... ");
@@ -59,12 +71,15 @@ public class Optimizer {
         textFileReader.readData(inputFilePath, patientsManagement);
 
         patients = textFileReader.getPatients();
+        // if patients are the first to download it will throw null exception
         patients.setHospitalsSize(hospitals.size());
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
+        timeOfDownloadingPatients = time;
         System.out.printf(timeFormat, time);
     }
 
+    double timeOfDownloadingMap = 0;
     public void loadMap(String inputFilePath) throws MyException {
         System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
         long before = System.nanoTime();
@@ -80,6 +95,7 @@ public class Optimizer {
         paths.setHospitalsSize(hospitals.size());
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
+        timeOfDownloadingMap = time;
         System.out.printf(timeFormat, time);
     }
 
@@ -100,7 +116,12 @@ public class Optimizer {
     }
 
     public void run() {
+        long before = System.nanoTime();
         area = prepareData();
+        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
+        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
+                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+
         int multiplier = 100;
         scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
