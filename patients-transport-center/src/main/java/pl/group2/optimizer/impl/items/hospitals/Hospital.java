@@ -1,8 +1,8 @@
 package pl.group2.optimizer.impl.items.hospitals;
 
 import pl.group2.optimizer.gui.sprites.Sprite;
-import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.Vertex;
+import pl.group2.optimizer.impl.items.area.Point;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -68,5 +68,15 @@ public class Hospital extends Vertex implements Point, Sprite {
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    @Override
+    public String toString() {
+        return "Hospital{" +
+                "id=" + super.getId() +
+                ", name=" + this.getName() +
+                ", x=" + this.getXCoordinate() +
+                ", y=" + this.getYCoordinate() +
+                '}';
     }
 }
