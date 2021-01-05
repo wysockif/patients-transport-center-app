@@ -38,9 +38,32 @@ public class Management extends JPanel {
         createPatientsElements();
         createSliderElements();
         runButton = createRunButton();
+        createRunWithDefaultButton();
+
         setSize(250, 400);
         setLocation(950, 0);
         setLayout(null);
+    }
+
+    private JButton createRunWithDefaultButton() {
+        JButton button = new JButton("Dane przykładowe");
+        button.setBounds(30, 360, 175, 30);
+        button.setBackground(DARK_GRAY);
+        button.setForeground(WHITE);
+        button.addActionListener(e -> {
+            button.setEnabled(false);
+            button.setText("Uruchomiono symulację");
+            try {
+                optimizer.loadMap("exemplaryData/correct/map1.txt");
+                optimizer.loadPatients("exemplaryData/correct/patients1.txt");
+            } catch (MyException myException) {
+                myException.printStackTrace();
+            }
+            optimizer.run();
+        });
+        button.setFocusable(false);
+        add(button);
+        return button;
     }
 
     private JButton createRunButton() {
