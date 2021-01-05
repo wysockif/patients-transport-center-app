@@ -163,4 +163,8 @@ public class Paths implements Items {
         }
         return convertedAttributes;
     }
+
+    public List<Path> getList() {
+        return paths;
+    }
 }

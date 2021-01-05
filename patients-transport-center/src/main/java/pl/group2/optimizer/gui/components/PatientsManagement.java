@@ -65,6 +65,8 @@ public class PatientsManagement extends JPanel {
             Object[] convertedAttributes = optimizer.getPatients().convertAttributes(attributes);
             optimizer.getPatients().validateAttributes(convertedAttributes);
             optimizer.getPatients().addNewElement(convertedAttributes);
+            String message = "Dodano pacjenta o id = " + idField.getText();
+            optimizer.getCommunicator().saveMessage(message);
             resetFields();
         } catch (DataFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Błąd", ERROR_MESSAGE);
@@ -121,7 +123,6 @@ public class PatientsManagement extends JPanel {
         JTextArea jTextArea = new JTextArea();
         jTextArea.setBackground(DARK_GRAY.darker());
         jTextArea.setForeground(WHITE);
-//        jTextArea.setFont(new Font("Font", Font.ITALIC, 14));
         jTextArea.setEditable(false);
         JScrollPane jScrollPane = new JScrollPane(jTextArea);
         jScrollPane.setLocation(5, 40);

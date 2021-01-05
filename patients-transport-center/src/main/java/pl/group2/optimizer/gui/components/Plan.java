@@ -39,6 +39,7 @@ public class Plan extends JPanel {
         if (running) {
             optimizer.getHandledArea().draw(g, scalaX, scalaY);
             optimizer.getPaths().draw(g, scalaX, scalaY, minX, minY);
+            optimizer.getIntersections().draw(g, scalaX, scalaY, minX, minY);
             optimizer.getHospitals().draw(g, scalaX, scalaY, minX, minY);
             optimizer.getSpecialObjects().draw(g, scalaX, scalaY, minX, minY);
             optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
