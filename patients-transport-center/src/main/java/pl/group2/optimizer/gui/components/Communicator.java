@@ -20,7 +20,7 @@ public class Communicator extends JPanel {
         setLayout(null);
         textArea = createTextArea();
         messages = "";
-        createSomeMessages();
+       // createSomeMessages();
     }
 
     private JTextArea createTextArea() {

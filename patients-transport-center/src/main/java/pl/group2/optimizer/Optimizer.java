@@ -1,15 +1,19 @@
 package pl.group2.optimizer;
 
 import pl.group2.optimizer.gui.Window;
+import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.gui.components.Plan;
+import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
+import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Paths;
+import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
@@ -99,10 +103,11 @@ public class Optimizer {
         System.out.printf(timeFormat, time);
     }
 
+    Window window;
     public void createWindow() {
         plan = new Plan(this);
         patientsManagement = new PatientsManagement(this);
-        new Window(this, plan, patientsManagement);
+        window = new Window(this, plan, patientsManagement);
     }
 
     public HandledArea prepareData() {
@@ -113,6 +118,30 @@ public class Optimizer {
         HandledArea area = new HandledArea();
         area.createArea(points);
         return area;
+    }
+
+    private void showMessagesAboutClosesHospitals() {
+        Communicator communicator = window.getCommunicator();
+
+        ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
+
+        Hospital closest;
+
+        int size = patients.size();
+        communicator.saveMessage("Obsługa pacjentów z pliku:");
+        for (int i = 0; i < size; i++) {
+            Patient first = patients.getFirst();
+            closest = distanceChecker.closestHospital(patients.getNextToHandle(), hospitals);
+
+            String message = "Closest hospital to patient: " + first.toString()
+                    + " is " + closest.toString();
+
+            communicator.saveMessage(message);
+
+            // tymczasowo, żeby wszyscy pacjenci naraz nie zniknęli
+            JOptionPane.showMessageDialog(null, message,
+                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     public void run() {
@@ -130,6 +159,8 @@ public class Optimizer {
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.runSimulation();
         running = true;
+
+        showMessagesAboutClosesHospitals();
     }
 
     public Patients getPatients() {

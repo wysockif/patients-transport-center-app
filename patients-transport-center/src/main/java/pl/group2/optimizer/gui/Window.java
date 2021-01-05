@@ -30,11 +30,17 @@ public class Window extends JFrame {
         setVisible(true);
     }
 
+    Communicator communicator;
+
     private void createPanels(Optimizer optimizer) {
         Management management = new Management(optimizer);
         add(management);
-        Communicator communicator = new Communicator();
+        communicator = new Communicator();
         add(communicator);
+    }
+
+    public Communicator getCommunicator() {
+        return communicator;
     }
 
     private void addAskingIfUserWantToExit() {
