@@ -68,6 +68,9 @@ public class PatientsManagement extends JPanel {
             String message = "Dodano pacjenta o id = " + idField.getText();
             optimizer.getCommunicator().saveMessage(message);
             resetFields();
+//            if(patients.size() == 0){
+//                optimizer.getAmbulanceService().attendToPatients();
+//            }
         } catch (DataFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Błąd", ERROR_MESSAGE);
         }
@@ -160,5 +163,13 @@ public class PatientsManagement extends JPanel {
 
     public JTextField getYField() {
         return yField;
+    }
+
+    public void removeFirst() {
+        if (patients.size() > 0) {
+            patients.remove(0);
+            String allPatients = String.join("\n", patients);
+            area.setText(allPatients);
+        }
     }
 }

@@ -32,7 +32,8 @@ public class Patients implements Items {
         patientsManagement.addNewPatient(patient.getId(), patient.getXCoordinate(), patient.getYCoordinate());
     }
 
-    public Patient getNextToHandle() {
+    public Patient popFirst() {
+        patientsManagement.removeFirst();
         return patientsQueue.remove();
     }
 

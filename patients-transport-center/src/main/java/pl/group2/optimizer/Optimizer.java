@@ -8,6 +8,7 @@ import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
+import pl.group2.optimizer.impl.items.ambulance.AmbulanceService;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
@@ -36,6 +37,7 @@ public class Optimizer {
     private Plan plan;
     private HandledArea area;
     private PatientsManagement patientsManagement;
+    private AmbulanceService ambulanceService;
     private Communicator communicator;
 
     private double scaleX;
@@ -156,18 +158,10 @@ public class Optimizer {
     }
 
     public void run() {
-        long before = System.nanoTime();
+        ambulanceService = new AmbulanceService(patients, hospitals, area,100, running);
+        ambulanceService.start();
 
-
-        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-
-//        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
-//                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-
-//        System.out.println(scaleX + " " + scaleY);
-
-
-        running = true;
+        // tu będzie symulacja
     }
 
     public void showMap() {
@@ -177,6 +171,7 @@ public class Optimizer {
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.showMap();
+        running = true;
     }
 
     public Patients getPatients() {
@@ -229,5 +224,9 @@ public class Optimizer {
 
     public Intersections getIntersections() {
         return intersections;
+    }
+
+    public AmbulanceService getAmbulanceService() {
+        return ambulanceService;
     }
 }
