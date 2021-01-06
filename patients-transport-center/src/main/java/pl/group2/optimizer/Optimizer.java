@@ -14,8 +14,10 @@ import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
+import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
@@ -99,6 +101,10 @@ public class Optimizer {
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingMap = time;
+
+        scaleMap(numberOfElements);
+        area = prepareData();
+
         //System.out.printf(timeFormat, time);
     }
 
@@ -155,11 +161,11 @@ public class Optimizer {
     }
 
     public void run() {
-        long before = System.nanoTime();
+        //long before = System.nanoTime();
 
-        area = prepareData();
+        //area = prepareData();
 
-        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
+        //double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
 
 //        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
 //                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
@@ -172,28 +178,37 @@ public class Optimizer {
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.runSimulation();
 
-        scaleMap(numberOfElements);
-
         running = true;
 
         communicator = window.getCommunicator();
 
         communicator.saveMessage(messageAboutDownloadedMap());
         communicator.saveMessage(messageAboutDownloadedPatients());
-        communicator.saveMessage(messageAboutTimeOfGraham(time));
+        // communicator.saveMessage(messageAboutTimeOfGraham(time));
         showMessagesAboutClosesHospitals();
     }
 
     public void scaleMap(int numberOfElements) {
-        double scale = 0.5;
-
-        for (int i = 0; i < hospitals.size(); i++) {
-
+        double scale;
+        if (numberOfElements < 20) {
+            scale = 1;
+        } else if (numberOfElements < 100) {
+            scale = 0.7;
+        } else {
+            scale = 0.5;
         }
 
-        for (int i = 0; i < specialObjects.size(); i++) {
-
+        for (Hospital hospital : hospitals.getCollection()) {
+            hospital.setImage(hospital.scale(hospital.getImage(), scale));
         }
+
+        for (SpecialObject specialObject : specialObjects.getCollection()) {
+            specialObject.setImage(specialObject.scale((BufferedImage) specialObject.getImage(), scale));
+        }
+    }
+
+    private void scalePatients(int numberOfPatients) {
+
     }
 
     public Patients getPatients() {

@@ -65,6 +65,10 @@ public class SpecialObject implements Point, Sprite {
                 ')';
     }
 
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
     public Image getImage() {
         return image;
     }
@@ -73,7 +77,7 @@ public class SpecialObject implements Point, Sprite {
         return image.getWidth();
     }
 
-    public int getImageHeight(){
+    public int getImageHeight() {
         return image.getHeight();
     }
 }
