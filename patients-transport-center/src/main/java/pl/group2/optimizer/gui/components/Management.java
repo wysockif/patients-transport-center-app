@@ -62,6 +62,7 @@ public class Management extends JPanel {
             optimizer.run();
         });
         button.setFocusable(false);
+        button.setEnabled(true);
         add(button);
         return button;
     }

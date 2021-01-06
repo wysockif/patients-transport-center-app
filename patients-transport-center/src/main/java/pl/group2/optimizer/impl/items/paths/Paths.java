@@ -122,11 +122,8 @@ public class Paths implements Items {
         for (Path path : paths) {
             g.setColor(DARK_GRAY);
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setStroke(new BasicStroke(6.0F));
 
-            if (numberOfMapElements > 50) {
-                g2d.setStroke(new BasicStroke(1.0F));
-            }
+            g2d.setStroke(new BasicStroke(6.0F));
 
             int xFrom = path.getFrom().getXCoordinate();
             int yFrom = path.getFrom().getYCoordinate();

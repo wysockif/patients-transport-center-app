@@ -171,6 +171,9 @@ public class Optimizer {
 
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.runSimulation();
+
+        scaleMap(numberOfElements);
+
         running = true;
 
         communicator = window.getCommunicator();
@@ -179,6 +182,18 @@ public class Optimizer {
         communicator.saveMessage(messageAboutDownloadedPatients());
         communicator.saveMessage(messageAboutTimeOfGraham(time));
         showMessagesAboutClosesHospitals();
+    }
+
+    public void scaleMap(int numberOfElements) {
+        double scale = 0.5;
+
+        for (int i = 0; i < hospitals.size(); i++) {
+
+        }
+
+        for (int i = 0; i < specialObjects.size(); i++) {
+
+        }
     }
 
     public Patients getPatients() {
