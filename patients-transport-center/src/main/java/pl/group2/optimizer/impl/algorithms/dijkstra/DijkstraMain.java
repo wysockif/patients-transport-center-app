@@ -7,10 +7,9 @@ import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Paths;
-import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
-import pl.group2.optimizer.impl.structures.graph.Graph;
-import pl.group2.optimizer.impl.structures.graph.WeightedGraph;
+
+import java.util.ArrayList;
 
 
 public class DijkstraMain {
@@ -25,21 +24,16 @@ public class DijkstraMain {
         Patients patients = optimizer.getPatients();
         Paths paths = optimizer.getPaths();
 
+        ArrayList<Vertex> Q = new ArrayList<>(hospitals.getCollection());
+
         ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
 
-        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm();
+        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(Q);
 
         int size = patients.size();
         Hospital closest;
         for (int i = 0; i < size; i++) {
-            Patient first = patients.getFirst();
             closest = distanceChecker.closestHospital(patients.getNextToHandle(), hospitals);
-
-            Vertex v = closest;
-            int n = hospitals.size();
-            int m = paths.size();
-
-            Graph graph = new WeightedGraph(m);
         }
     }
 }

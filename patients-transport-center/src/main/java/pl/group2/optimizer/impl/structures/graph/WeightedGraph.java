@@ -20,6 +20,7 @@ public class WeightedGraph implements Graph {
     public void addEdge(int from, int to, int weight) {
         checkCorrectnessOfOperation(from, to);
         weights[from][to] = weight;
+        weights[to][from] = weight;
     }
 
     @Override
@@ -36,6 +37,7 @@ public class WeightedGraph implements Graph {
     public void setWeightOfEdge(int from, int to, int weight) {
         checkCorrectnessOfOperation(from, to);
         weights[from][to] = weight;
+        weights[to][from] = weight;
     }
 
     private boolean containsVertices(int from, int to) {
