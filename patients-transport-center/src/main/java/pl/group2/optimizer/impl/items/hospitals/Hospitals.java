@@ -3,7 +3,10 @@ package pl.group2.optimizer.impl.items.hospitals;
 import pl.group2.optimizer.gui.BufferedImageTools;
 import pl.group2.optimizer.impl.items.Items;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,6 +14,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
+import static java.awt.Color.WHITE;
+import static java.awt.Font.BOLD;
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 import static pl.group2.optimizer.gui.components.Plan.PADDING;
@@ -120,7 +125,19 @@ public class Hospitals implements Items {
             }
 
             g.drawImage(image, x, y, null);
+
+            drawCenteredString(g, hospital.getId() + " | " + hospital.getNumberOfAvailableBeds(),
+                    new Rectangle(x, y - yShift /2, 2 * xShift,  yShift),
+                    new Font("id-font", Font.PLAIN, 12));
         }
+    }
+    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
+        FontMetrics metrics = g.getFontMetrics(font);
+        int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+        int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+        g.setColor(WHITE);
+        g.setFont(font);
+        g.drawString(text, x, y);
     }
 
     private void checkIfArgumentIsNotNull(Object argument) {

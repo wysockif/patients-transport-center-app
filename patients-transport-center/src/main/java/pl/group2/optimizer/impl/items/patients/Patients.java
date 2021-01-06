@@ -5,13 +5,19 @@ import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.structures.queues.QueueFIFO;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
+import static java.awt.Color.WHITE;
+import static java.awt.Font.BOLD;
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 import static pl.group2.optimizer.gui.components.Plan.PADDING;
@@ -138,6 +144,18 @@ public class Patients implements Items {
             }
 
             g.drawImage(image, x, y, null);
+
+            drawCenteredString(g, String.valueOf(patient.getId()),
+                    new Rectangle(x + 1, y - yShift, 2 * xShift, yShift),
+                    new Font("id-font", BOLD, 11));
         }
+    }
+    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
+        FontMetrics metrics = g.getFontMetrics(font);
+        int x = rect.x + (rect.width - metrics.stringWidth(text)) / 2;
+        int y = rect.y + ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+        g.setColor(WHITE);
+        g.setFont(font);
+        g.drawString(text, x, y);
     }
 }

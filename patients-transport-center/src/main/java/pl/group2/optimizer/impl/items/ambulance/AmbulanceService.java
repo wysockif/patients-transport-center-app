@@ -27,7 +27,7 @@ public class AmbulanceService extends Thread {
     private List<Grave> graveList;
     private Patients patients;
     private Hospitals hospitals;
-    private long period;
+    private long interval;
     private boolean running;
 
     private Ambulance ambulance;
@@ -35,21 +35,21 @@ public class AmbulanceService extends Thread {
     private double rotation;
     private AffineTransform af;
 
-    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area, Communicator communicator, boolean running) {
+    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area, Communicator communicator) {
         this.patients = patients;
         this.hospitals = hospitals;
         this.area = area;
         this.communicator = communicator;
-        this.running = running;
+        running = true;
         shortestDistanceChecker = new ShortestDistanceChecker();
         graveList = new LinkedList<>();
-        this.period = 60;
+        interval = 1200000;
     }
 
     @Override
     public void run() {
         while (running) {
-            System.out.println(patients.size());
+            System.out.print("");
             if (patients.size() > 0) {
                 attendToPatients();
             }
@@ -65,7 +65,25 @@ public class AmbulanceService extends Thread {
             createGrave(patient);
         } else {
             transportPatient(ambulance, hospital);
+            if (hospital.getNumberOfAvailableBeds() > 0) {
+                leavePatient(patient, hospital);
+            } else {
+                findAnotherHospital(patient, hospital, ambulance);
+            }
         }
+    }
+
+    private void findAnotherHospital(Patient patient, Hospital hospital, Ambulance ambulance) {
+        communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
+                "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
+
+        //algotytm najkrótszej ścieżki
+    }
+
+    private void leavePatient(Patient patient, Hospital hospital) {
+        hospital.decreaseNumberOfAvailableBeds();
+        communicator.saveMessage("Pacjent o id = " + patient.getId() + " został przyjęty " +
+                "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
     }
 
     private void createGrave(Patient patient) {
@@ -96,9 +114,9 @@ public class AmbulanceService extends Thread {
         double vy = destY - sourceY;
 
         double distance = Math.sqrt((destX - sourceX) * (destX - sourceX) + (destY - sourceY) * (destY - sourceY));
-        double step = 1 / (100 * distance);
+        double step = 1 / (200 * distance);
 
-        System.out.println(Thread.currentThread().getName());
+//        System.out.println(Thread.currentThread().getName());
 
 //        final Double[] ti = {0.0};
 //
@@ -119,17 +137,19 @@ public class AmbulanceService extends Thread {
         for (double dist = 0.0; dist <= 1; dist += step) {
             ambulance.setXCoordinate((sourceX + vx * dist));
             ambulance.setYCoordinate((sourceY + vy * dist));
-            try {
-                sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            long start = System.nanoTime();
+            long end;
+            do {
+                end = System.nanoTime();
+            } while (start + interval >= end);
+
         }
         visible = false;
 
-        String message = "Pacjent o id = " + ambulance.getPatientId() + " został przetransportowany " +
-                "do szpitala o id = " + hospital.getId() + " (" + hospital.getName() + ")";
-        communicator.saveMessage(message);
+//        String message = "Pacjent o id = " + ambulance.getPatientId() + " został przetransportowany " +
+//                "do szpitala o id = " + hospital.getId() + " (" + hospital.getName() + ")";
+//        communicator.saveMessage(message);
     }
 
 
@@ -173,5 +193,9 @@ public class AmbulanceService extends Thread {
 
             g.drawImage(grave.getImage(), x, y, null);
         }
+    }
+
+    public void setInterval(long interval) {
+        this.interval = interval;
     }
 }

@@ -129,37 +129,11 @@ public class Optimizer {
         return area;
     }
 
-    private void showMessagesAboutClosesHospitals() {
-        ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
-
-        Hospital closest;
-
-        int size = patients.size();
-
-        closest = distanceChecker.closestHospital(patients.getFirst(), hospitals);
-        String message = "Closest hospital to patient: " + patients.getFirst().toString()
-                + " is " + closest.toString();
-
-        communicator.saveMessage(message);
-
-//        for (int i = 0; i < size; i++) {
-//            Patient first = patients.getFirst();
-//            closest = distanceChecker.closestHospital(patients.getNextToHandle(), hospitals);
-//
-//            String message = "Closest hospital to patient: " + first.toString()
-//                    + " is " + closest.toString();
-//
-//            communicator.saveMessage(message);
-//
-//            // tymczasowo, żeby wszyscy pacjenci naraz nie zniknęli
-//            JOptionPane.showMessageDialog(null, message,
-//                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-//        }
-    }
 
     public void run() {
-        ambulanceService = new AmbulanceService(patients, hospitals, area, communicator, running);
+        ambulanceService = new AmbulanceService(patients, hospitals, area, communicator);
         ambulanceService.start();
+
 
         // tu będzie symulacja
     }
@@ -228,5 +202,12 @@ public class Optimizer {
 
     public AmbulanceService getAmbulanceService() {
         return ambulanceService;
+    }
+
+    public void changePeriod(long value) {
+        if(ambulanceService != null){
+            long interval = 1500000 - 150000 * value;
+            ambulanceService.setInterval(interval);
+        }
     }
 }

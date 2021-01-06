@@ -35,9 +35,6 @@ public class ShortestDistanceChecker {
 
         Hospital closest = hospitals.getHospitalByIndex(minIndex(distances));
 
-
-        System.out.println("Closest hospital to patient: " + patient.toString()
-                + " is " + closest.toString());
         return closest;
     }
 }

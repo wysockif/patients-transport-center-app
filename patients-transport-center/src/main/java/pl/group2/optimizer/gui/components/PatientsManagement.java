@@ -65,8 +65,8 @@ public class PatientsManagement extends JPanel {
             Object[] convertedAttributes = optimizer.getPatients().convertAttributes(attributes);
             optimizer.getPatients().validateAttributes(convertedAttributes);
             optimizer.getPatients().addNewElement(convertedAttributes);
-            String message = "Dodano pacjenta o id = " + idField.getText();
-            optimizer.getCommunicator().saveMessage(message);
+//            String message = "Dodano pacjenta o id = " + idField.getText();
+//            optimizer.getCommunicator().saveMessage(message);
             resetFields();
 //            if(patients.size() == 0){
 //                optimizer.getAmbulanceService().attendToPatients();
