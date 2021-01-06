@@ -32,7 +32,7 @@ public class PatientsManagement extends JPanel {
     public PatientsManagement(Optimizer optimizer) {
         this.optimizer = optimizer;
         setSize(250, 420);
-        setLocation(950, 400);
+        setLocation(950, 420);
         setLayout(null);
         addTitle();
         addLabel();
@@ -65,6 +65,7 @@ public class PatientsManagement extends JPanel {
             Object[] convertedAttributes = optimizer.getPatients().convertAttributes(attributes);
             optimizer.getPatients().validateAttributes(convertedAttributes);
             optimizer.getPatients().addNewElement(convertedAttributes);
+            optimizer.getCommunicator().saveMessage("Dodano pacjenta o id = " + idField.getText());
             resetFields();
         } catch (DataFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Błąd", ERROR_MESSAGE);

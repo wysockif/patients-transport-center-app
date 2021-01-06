@@ -35,10 +35,12 @@ public class Optimizer {
     private Plan plan;
     private HandledArea area;
     private PatientsManagement patientsManagement;
+    private Communicator communicator;
 
     private double scaleX;
     private double scaleY;
     private boolean running;
+
 
     public Optimizer() {
         timeFormat = "[ %.4fs ]\n";
@@ -46,24 +48,20 @@ public class Optimizer {
 
     public String messageAboutDownloadedPatients() {
         String time = String.format("[ %.4fs ]", timeOfDownloadingPatients);
-        return "Pobrano " + patients.size() + " pacjentów" + " w " + time;
+        return "Wczytano " + patients.size() + " pacjentów" + " w " + time;
     }
 
     public String messageAboutDownloadedMap() {
         String time = String.format("[ %.4fs ]", timeOfDownloadingMap);
-        return "Pobrano " + hospitals.size() + " szpitali, " +
+        return "Wczytano " + hospitals.size() + " szpitali, " +
                 specialObjects.size() + " specjalnych obiektów, " +
                 paths.size() + " dróg" +
                 " w " + time;
 
     }
 
-    public String messageAboutTimeOfGraham(double timeOfGraham) {
-        String time = String.format("[ %.4fs ]", timeOfGraham);
-        return "Algorytm tworzenia obszaru trwał " + time;
-    }
-
     double timeOfDownloadingPatients = 0;
+
 
     public void loadPatients(String inputFilePath) throws MyException {
         //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH PACJENTÓW... ");
@@ -79,9 +77,11 @@ public class Optimizer {
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingPatients = time;
         //System.out.printf(timeFormat, time);
+        communicator.saveMessage(messageAboutDownloadedPatients());
     }
 
     double timeOfDownloadingMap = 0;
+
 
     public void loadMap(String inputFilePath) throws MyException {
         //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
@@ -99,19 +99,17 @@ public class Optimizer {
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingMap = time;
+        communicator.saveMessage(messageAboutDownloadedMap());
+
         //System.out.printf(timeFormat, time);
     }
 
-    Window window;
-
-    public Communicator getCommunicator() {
-        return communicator;
-    }
 
     public void createWindow() {
         plan = new Plan(this);
         patientsManagement = new PatientsManagement(this);
-        window = new Window(this, plan, patientsManagement);
+        communicator = new Communicator();
+        new Window(this, plan, patientsManagement, communicator);
     }
 
     public HandledArea prepareData() {
@@ -124,7 +122,6 @@ public class Optimizer {
         return area;
     }
 
-    Communicator communicator;
     private void showMessagesAboutClosesHospitals() {
         ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
 
@@ -156,28 +153,25 @@ public class Optimizer {
     public void run() {
         long before = System.nanoTime();
 
-        area = prepareData();
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
 
 //        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
 //                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
 
+//        System.out.println(scaleX + " " + scaleY);
+
+
+        running = true;
+    }
+
+    public void showMap() {
+        area = prepareData();
         int multiplier = 100;
         scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
-//        System.out.println(scaleX + " " + scaleY);
-
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
-        plan.runSimulation();
-        running = true;
-
-        communicator = window.getCommunicator();
-
-        communicator.saveMessage(messageAboutDownloadedMap());
-        communicator.saveMessage(messageAboutDownloadedPatients());
-        communicator.saveMessage(messageAboutTimeOfGraham(time));
-        showMessagesAboutClosesHospitals();
+        plan.showMap();
     }
 
     public Patients getPatients() {
@@ -222,5 +216,9 @@ public class Optimizer {
 
     public int getMinX() {
         return area.getMinX();
+    }
+
+    public Communicator getCommunicator() {
+        return communicator;
     }
 }
