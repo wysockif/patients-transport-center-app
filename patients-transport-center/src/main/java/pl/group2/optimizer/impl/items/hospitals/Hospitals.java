@@ -1,6 +1,5 @@
 package pl.group2.optimizer.impl.items.hospitals;
 
-import pl.group2.optimizer.gui.BufferedImageTools;
 import pl.group2.optimizer.impl.items.Items;
 
 import java.awt.Graphics;
@@ -98,26 +97,23 @@ public class Hospitals implements Items {
         add(hospital);
     }
 
+    int numberOfMapElements;
+
+    public void setNumberOfMapElements(int numberOfMapElements) {
+        this.numberOfMapElements = numberOfMapElements;
+    }
+
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
+
         for (Hospital hospital : getCollection()) {
+            BufferedImage image = hospital.getImage();
+
             int xShift = hospital.getImageWidth() / 2;
             int yShift = hospital.getImageHeight() / 2;
 
             int x = (int) Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
-
-            BufferedImage image = hospital.getImage();
-
-            if (hospitalsByIndex.size() > 50) {
-                int newWidth = hospital.getImageWidth() / 2;
-                int newHeight = hospital.getImageHeight() / 2;
-                image = BufferedImageTools.resize(image, newWidth, newHeight);
-                xShift = newWidth / 2;
-                yShift = newHeight / 2;
-                x = (int) Math.round(PADDING + hospital.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
-                y = (int) Math.round(PADDING + HEIGHT - (hospital.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
-            }
 
             g.drawImage(image, x, y, null);
         }

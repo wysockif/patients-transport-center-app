@@ -15,8 +15,10 @@ import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
+import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
@@ -62,20 +64,17 @@ public class Optimizer {
 
     }
 
+
     double timeOfDownloadingPatients = 0;
 
 
     public void loadPatients(String inputFilePath) throws MyException {
-        //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH PACJENTÓW... ");
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath, patientsManagement);
 
         patients = textFileReader.getPatients();
-        // if patients are the first to download it will throw null exception
-        patients.setHospitalsSize(hospitals.size());
-
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingPatients = time;
         //System.out.printf(timeFormat, time);
@@ -85,19 +84,21 @@ public class Optimizer {
     double timeOfDownloadingMap = 0;
 
 
+    private int numberOfElements = 0;
+
     public void loadMap(String inputFilePath) throws MyException {
-        //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath);
         hospitals = textFileReader.getHospitals();
-
         specialObjects = textFileReader.getSpecialObjects();
-        specialObjects.setHospitalsSize(hospitals.size());
-
         paths = textFileReader.getPaths();
-        paths.setHospitalsSize(hospitals.size());
+
+        numberOfElements = hospitals.size() + specialObjects.size();
+        specialObjects.setNumberOfMapElements(numberOfElements);
+        hospitals.setNumberOfMapElements(numberOfElements);
+        paths.setNumberOfMapElements(numberOfElements);
 
         intersections = new Intersections();
         intersections.lookForIntersections(paths.getList());
@@ -107,8 +108,13 @@ public class Optimizer {
         communicator.saveMessage(messageAboutDownloadedMap());
 
         //System.out.printf(timeFormat, time);
+
+        scaleMap(numberOfElements);
+        area = prepareData();
     }
 
+
+    Window window;
 
     public void createWindow() {
         plan = new Plan(this);
@@ -177,6 +183,29 @@ public class Optimizer {
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.showMap();
+    }
+
+    public void scaleMap(int numberOfElements) {
+        double scale;
+        if (numberOfElements < 20) {
+            scale = 1;
+        } else if (numberOfElements < 100) {
+            scale = 0.7;
+        } else {
+            scale = 0.5;
+        }
+
+        for (Hospital hospital : hospitals.getCollection()) {
+            hospital.setImage(hospital.scale(hospital.getImage(), scale));
+        }
+
+        for (SpecialObject specialObject : specialObjects.getCollection()) {
+            specialObject.setImage(specialObject.scale((BufferedImage) specialObject.getImage(), scale));
+        }
+    }
+
+    private void scalePatients(int numberOfPatients) {
+
     }
 
     public Patients getPatients() {

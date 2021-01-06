@@ -111,10 +111,10 @@ public class Paths implements Items {
         paths.add(new Path(id, hospitals.getHospitalById(from), hospitals.getHospitalById(to), distance));
     }
 
-    int hospitalsSize;
+    int numberOfMapElements;
 
-    public void setHospitalsSize(int hospitalsSize) {
-        this.hospitalsSize = hospitalsSize;
+    public void setNumberOfMapElements(int numberOfMapElements) {
+        this.numberOfMapElements = numberOfMapElements;
     }
 
     @Override
@@ -122,11 +122,8 @@ public class Paths implements Items {
         for (Path path : paths) {
             g.setColor(DARK_GRAY);
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setStroke(new BasicStroke(6.0F));
 
-            if (hospitalsSize > 50) {
-                g2d.setStroke(new BasicStroke(1.0F));
-            }
+            g2d.setStroke(new BasicStroke(6.0F));
 
             int xFrom = path.getFrom().getXCoordinate();
             int yFrom = path.getFrom().getYCoordinate();

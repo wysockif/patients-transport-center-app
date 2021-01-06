@@ -8,7 +8,7 @@ import static java.awt.image.AffineTransformOp.TYPE_BILINEAR;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 public interface Sprite {
-    default BufferedImage scaleCell(BufferedImage imageToScale, double scale) {
+    default BufferedImage scale(BufferedImage imageToScale, double scale) {
         int w = imageToScale.getWidth();
         int h = imageToScale.getHeight();
         BufferedImage after = new BufferedImage((int) Math.round(scale * w), (int) Math.round(scale * h), TYPE_INT_ARGB);
