@@ -73,15 +73,14 @@ public class Optimizer {
         textFileReader.readData(inputFilePath, patientsManagement);
 
         patients = textFileReader.getPatients();
-        // if patients are the first to download it will throw null exception
-        patients.setHospitalsSize(hospitals.size());
-
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingPatients = time;
         //System.out.printf(timeFormat, time);
     }
 
     double timeOfDownloadingMap = 0;
+
+    private int numberOfElements = 0;
 
     public void loadMap(String inputFilePath) throws MyException {
         //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
@@ -90,12 +89,13 @@ public class Optimizer {
         TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath);
         hospitals = textFileReader.getHospitals();
-
         specialObjects = textFileReader.getSpecialObjects();
-        specialObjects.setHospitalsSize(hospitals.size());
-
         paths = textFileReader.getPaths();
-        paths.setHospitalsSize(hospitals.size());
+
+        numberOfElements = hospitals.size() + specialObjects.size();
+        specialObjects.setNumberOfMapElements(numberOfElements);
+        hospitals.setNumberOfMapElements(numberOfElements);
+        paths.setNumberOfMapElements(numberOfElements);
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingMap = time;
@@ -125,6 +125,7 @@ public class Optimizer {
     }
 
     Communicator communicator;
+
     private void showMessagesAboutClosesHospitals() {
         ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
 
