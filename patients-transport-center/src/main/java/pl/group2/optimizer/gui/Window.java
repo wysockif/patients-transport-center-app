@@ -32,6 +32,13 @@ public class Window extends JFrame {
         Management management = new Management(optimizer);
         add(management);
         add(patientsManagement);
+        createPanels(optimizer, communicator);
+        setVisible(true);
+    }
+
+    private void createPanels(Optimizer optimizer, Communicator communicator) {
+        Management management = new Management(optimizer);
+        add(management);
         add(communicator);
     }
 

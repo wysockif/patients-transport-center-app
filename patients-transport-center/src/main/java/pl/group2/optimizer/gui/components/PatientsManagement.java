@@ -32,7 +32,7 @@ public class PatientsManagement extends JPanel {
     public PatientsManagement(Optimizer optimizer) {
         this.optimizer = optimizer;
         setSize(250, 420);
-        setLocation(950, 400);
+        setLocation(950, 420);
         setLayout(null);
         addTitle();
         addLabel();
