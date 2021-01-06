@@ -25,7 +25,7 @@ import static javax.swing.SwingConstants.CENTER;
 public class PatientsManagement extends JPanel {
     private final Optimizer optimizer;
     private final JTextArea area;
-    private final List<String> patients;
+    private final LinkedList<String> patients;
     private final JButton addButton;
     private JTextField idField, xField, yField;
 
@@ -166,10 +166,10 @@ public class PatientsManagement extends JPanel {
     }
 
     public void removeFirst() {
-        if (patients.size() > 0) {
-            patients.remove(0);
+//        if (patients.size() > 0) {
+            patients.removeFirst();
             String allPatients = String.join("\n", patients);
             area.setText(allPatients);
-        }
+//        }
     }
 }

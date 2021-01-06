@@ -158,7 +158,7 @@ public class Optimizer {
     }
 
     public void run() {
-        ambulanceService = new AmbulanceService(patients, hospitals, area,100, running);
+        ambulanceService = new AmbulanceService(patients, hospitals, area, communicator, running);
         ambulanceService.start();
 
         // tu będzie symulacja

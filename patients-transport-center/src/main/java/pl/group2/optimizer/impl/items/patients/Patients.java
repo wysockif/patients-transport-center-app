@@ -28,8 +28,8 @@ public class Patients implements Items {
 
     public void addNew(Patient patient) {
         patient.loadSprite(patientsQueue.size() % 6);
-        patientsQueue.add(patient);
         patientsManagement.addNewPatient(patient.getId(), patient.getXCoordinate(), patient.getYCoordinate());
+        patientsQueue.add(patient);
     }
 
     public Patient popFirst() {

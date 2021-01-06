@@ -95,4 +95,8 @@ public class Ambulance {
     public void setYCoordinate(double y) {
         this.y = y;
     }
+
+    public int getPatientId() {
+        return patientId;
+    }
 }
