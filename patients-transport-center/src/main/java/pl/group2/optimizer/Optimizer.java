@@ -59,16 +59,10 @@ public class Optimizer {
                 " w " + time;
 
     }
-
-    public String messageAboutTimeOfGraham(double timeOfGraham) {
-        String time = String.format("[ %.4fs ]", timeOfGraham);
-        return "Algorytm tworzenia obszaru trwał " + time;
-    }
-
+    
     double timeOfDownloadingPatients = 0;
 
     public void loadPatients(String inputFilePath) throws MyException {
-        //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH PACJENTÓW... ");
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
@@ -77,7 +71,6 @@ public class Optimizer {
         patients = textFileReader.getPatients();
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
         timeOfDownloadingPatients = time;
-        //System.out.printf(timeFormat, time);
     }
 
     double timeOfDownloadingMap = 0;
@@ -85,7 +78,6 @@ public class Optimizer {
     private int numberOfElements = 0;
 
     public void loadMap(String inputFilePath) throws MyException {
-        //System.out.print("TRWA ODCZYTYWANIE I WALIDACJA DANYCH SZPITALI, S. OBIEKTÓW I DRÓG... ");
         long before = System.nanoTime();
 
         TextFileReader textFileReader = new TextFileReader();
@@ -104,15 +96,9 @@ public class Optimizer {
 
         scaleMap(numberOfElements);
         area = prepareData();
-
-        //System.out.printf(timeFormat, time);
     }
 
     Window window;
-
-    public Communicator getCommunicator() {
-        return communicator;
-    }
 
     public void createWindow() {
         plan = new Plan(this);
@@ -161,19 +147,9 @@ public class Optimizer {
     }
 
     public void run() {
-        //long before = System.nanoTime();
-
-        //area = prepareData();
-
-        //double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-
-//        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
-//                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-
         int multiplier = 100;
         scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
-//        System.out.println(scaleX + " " + scaleY);
 
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.runSimulation();
@@ -184,7 +160,6 @@ public class Optimizer {
 
         communicator.saveMessage(messageAboutDownloadedMap());
         communicator.saveMessage(messageAboutDownloadedPatients());
-        // communicator.saveMessage(messageAboutTimeOfGraham(time));
         showMessagesAboutClosesHospitals();
     }
 
