@@ -60,8 +60,8 @@ public class Management extends JPanel {
             defaultDataButton.setEnabled(false);
             defaultDataButton.setText("Załączono");
             try {
-                optimizer.loadMap("exemplaryData/correct/map1.txt");
-                optimizer.loadPatients("exemplaryData/correct/patients1.txt");
+                optimizer.loadMap("/data/map.txt");
+                optimizer.loadPatients("/data/patients.txt");
             } catch (MyException myException) {
                 myException.printStackTrace();
             }
