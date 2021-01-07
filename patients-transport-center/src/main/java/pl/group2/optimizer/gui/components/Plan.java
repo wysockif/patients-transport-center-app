@@ -40,7 +40,6 @@ public class Plan extends JPanel {
             optimizer.getHandledArea().draw(g, scalaX, scalaY);
             optimizer.getPaths().draw(g, scalaX, scalaY, minX, minY);
             optimizer.getIntersections().draw(g, scalaX, scalaY, minX, minY);
-            optimizer.getHospitals().draw(g, scalaX, scalaY, minX, minY);
             optimizer.getSpecialObjects().draw(g, scalaX, scalaY, minX, minY);
             if (optimizer.getPatients() != null) {
                 optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
@@ -49,6 +48,7 @@ public class Plan extends JPanel {
                 optimizer.getAmbulanceService().drawAmbulance(g, scalaX, scalaY, minX, minY);
                 optimizer.getAmbulanceService().drawDeadPatients(g, scalaX, scalaY, minX, minY);
             }
+            optimizer.getHospitals().draw(g, scalaX, scalaY, minX, minY);
         } else {
             g.setFont(g.getFont().deriveFont(20.0f));
             g.drawString("ZAŁADUJ DANE", 400, 300);
@@ -66,12 +66,15 @@ public class Plan extends JPanel {
 
     public void showMap() {
         running = true;
+        double framesPerSecond = 60;
+        double millisecondsInSecond = 1000;
+
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 repaint();
             }
-        }, 0, 100);
+        }, 0, (long) (millisecondsInSecond / framesPerSecond));
     }
 }

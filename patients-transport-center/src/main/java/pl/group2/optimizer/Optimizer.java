@@ -18,6 +18,8 @@ import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
+import javax.swing.SwingUtilities;
+import java.awt.EventQueue;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -115,13 +117,11 @@ public class Optimizer {
     }
 
 
-    Window window;
-
-    public void createWindow() {
-        plan = new Plan(this);
-        patientsManagement = new PatientsManagement(this);
+    public void createWindow(Optimizer optimizer) {
+        plan = new Plan(optimizer);
+        patientsManagement = new PatientsManagement(optimizer);
         communicator = new Communicator();
-        new Window(this, plan, patientsManagement, communicator);
+        EventQueue.invokeLater(() -> new Window(optimizer, plan, patientsManagement, communicator));
     }
 
     public HandledArea prepareData() {
@@ -150,6 +150,7 @@ public class Optimizer {
         int multiplier = 100;
         scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
+        area.setScales(scaleX, scaleY);
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.showMap();
         running = true;
@@ -236,7 +237,7 @@ public class Optimizer {
 
     public void changePeriod(long value) {
         if (ambulanceService != null) {
-            long interval = 1500000 - 150000 * value;
+            long interval = 1200000 - 120000 * value;
             ambulanceService.setInterval(interval);
         }
     }

@@ -6,10 +6,13 @@ import pl.group2.optimizer.gui.components.Management;
 import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.gui.components.Plan;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 public class Window extends JFrame {
     public static final int WIDTH = 1200;
@@ -26,6 +29,17 @@ public class Window extends JFrame {
         setLocationRelativeTo(null);
         createPanels(optimizer, patientsManagement, communicator);
         setVisible(true);
+        createIcon();
+    }
+
+    private void createIcon() {
+        try {
+            setIconImage(new ImageIcon(Window.class.getResource("/img/icon/1.png")).getImage());
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null, "Błąd krytyczny!\n" +
+                    "Nie mogę znaleźć pliku z ikoną pacjenta!", "Błąd krytyczny!", ERROR_MESSAGE);
+            System.exit(2);
+        }
     }
 
     private void createPanels(Optimizer optimizer, PatientsManagement patientsManagement, Communicator communicator) {

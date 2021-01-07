@@ -16,6 +16,8 @@ public class HandledArea {
 
     private int minX;
     private int minY;
+    private double scaleX;
+    private double scaleY;
 
     public HandledArea() {
         area = new Polygon();
@@ -109,5 +111,18 @@ public class HandledArea {
 
     public int getMinY() {
         return minY;
+    }
+
+    public void setScales(double scaleX, double scaleY) {
+        this.scaleX = scaleX;
+        this.scaleY = scaleY;
+    }
+
+    public double getScaleX() {
+        return scaleX;
+    }
+
+    public double getScaleY() {
+        return scaleY;
     }
 }
