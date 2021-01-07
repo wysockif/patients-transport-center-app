@@ -25,7 +25,7 @@ import static javax.swing.SwingConstants.CENTER;
 public class PatientsManagement extends JPanel {
     private final Optimizer optimizer;
     private final JTextArea area;
-    private final List<String> patients;
+    private final LinkedList<String> patients;
     private final JButton addButton;
     private JTextField idField, xField, yField;
 
@@ -65,8 +65,8 @@ public class PatientsManagement extends JPanel {
             Object[] convertedAttributes = optimizer.getPatients().convertAttributes(attributes);
             optimizer.getPatients().validateAttributes(convertedAttributes);
             optimizer.getPatients().addNewElement(convertedAttributes);
-            String message = "Dodano pacjenta o id = " + idField.getText();
-            optimizer.getCommunicator().saveMessage(message);
+//            String message = "Dodano pacjenta o id = " + idField.getText();
+//            optimizer.getCommunicator().saveMessage(message);
             resetFields();
         } catch (DataFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Błąd", ERROR_MESSAGE);
@@ -160,5 +160,12 @@ public class PatientsManagement extends JPanel {
 
     public JTextField getYField() {
         return yField;
+    }
+
+    public void removeFirst() {
+        patients.removeFirst();
+        String allPatients = String.join("\n", patients);
+        area.setText(allPatients);
+
     }
 }

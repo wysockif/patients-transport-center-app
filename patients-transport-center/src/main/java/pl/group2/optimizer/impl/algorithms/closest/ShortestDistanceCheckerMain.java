@@ -24,7 +24,7 @@ public class ShortestDistanceCheckerMain {
         distanceChecker.closestHospital(patients.getFirst(), hospitals);
 
         double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-        System.out.print("SZUKANIE NAJBLIŻSZEGO SZPITALA DLA DANEGO PACJENTA... ");
-        System.out.printf(timeFormat, time);
+//        System.out.print("SZUKANIE NAJBLIŻSZEGO SZPITALA DLA DANEGO PACJENTA... ");
+//        System.out.printf(timeFormat, time);
     }
 }
