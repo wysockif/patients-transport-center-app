@@ -3,8 +3,10 @@ package pl.group2.optimizer.impl.items.ambulance;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.items.area.HandledArea;
+import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
+import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.patients.Grave;
 import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
@@ -77,7 +79,43 @@ public class AmbulanceService extends Thread {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
 
-        //algotytm najkrótszej ścieżki
+        // Bartek tutaj algotytm najkrótszej ścieżki
+        // np. List<Points> pointsToVisit = twójAlgorytm.znajdźNajkrótsząŚcieżkę(zTegoSzpitala);
+        // ja zakładam w dalszej części, że w tej liście będzie też szpital z którego startujemy
+        // i chyba ten algorytm jak już ustali najkrótsze ścieżki do każdego szpitala to powinien
+        // zwrócić najkrótszą, ale do tego w którym jeszcze są wolne łóżka, bo bez sensu jakby tam
+        // go znowu nie przyjeli, bo z tamtego szpitala najkrótsza ścieżka może być spowrotem do tego
+        // 1 szpitala i tak by krążył w kółko
+
+        // poniższy kod zostawia ich na skrzyżowaniu
+
+//        List<Point> pointsToVisit = new LinkedList<>();
+//        pointsToVisit.add(hospital);
+//        pointsToVisit.add(new Point() {
+//            @Override
+//            public int getXCoordinate() {
+//                return 68;
+//            }
+//
+//            @Override
+//            public int getYCoordinate() {
+//                return 81;
+//            }
+//        });
+//
+//        if (pointsToVisit.size() < 2) {
+//            throw new UnsupportedOperationException();
+//        }
+//
+//        for (int i = 1; i < pointsToVisit.size(); i++) {
+//            ambulance.setXCoordinate(pointsToVisit.get(i - 1).getXCoordinate());
+//            ambulance.setYCoordinate(pointsToVisit.get(i - 1).getYCoordinate());
+//
+//            Point point = pointsToVisit.get(i);
+//            transportPatient(ambulance, point);
+//
+//        }
+
     }
 
     private void leavePatient(Patient patient, Hospital hospital) {
@@ -102,17 +140,18 @@ public class AmbulanceService extends Thread {
         return !area.contains(patient.getXCoordinate(), patient.getYCoordinate());
     }
 
-    private void transportPatient(Ambulance ambulance, Hospital hospital) {
-
-
+    private void transportPatient(Ambulance ambulance, Point point) {
         double sourceX = ambulance.getXCoordinate();
         double sourceY = ambulance.getYCoordinate();
-        int destX = hospital.getXCoordinate();
-        int destY = hospital.getYCoordinate();
+        int destX = point.getXCoordinate();
+        int destY = point.getYCoordinate();
 
-        rotation = -Math.atan((destY - sourceY) / (destX - sourceX));
+        rotation = Math.toRadians(90);
+        if(destX - sourceX != 0) {
+            rotation = -Math.atan((destY - sourceY) / (destX - sourceX));
+        }
 
-        if(destX < sourceX){
+        if (destX < sourceX) {
             ambulance.setRightSprite();
         } else {
             ambulance.setLeftSprite();
@@ -123,23 +162,6 @@ public class AmbulanceService extends Thread {
 
         double distance = Math.sqrt((destX - sourceX) * (destX - sourceX) + (destY - sourceY) * (destY - sourceY));
         double step = 1 / (200 * distance);
-
-//        System.out.println(Thread.currentThread().getName());
-
-//        final Double[] ti = {0.0};
-//
-//        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(0);
-//        scheduledExecutorService.scheduleAtFixedRate(() -> {
-//            ti[0] += step;
-//            System.out.println(Thread.currentThread().getName());
-//            if (ti[0] >= 1.0) {
-//                scheduledExecutorService.shutdown();
-//                scheduledExecutorService.shutdownNow();
-//            }
-
-//
-//        }, 0, 10, TimeUnit.MILLISECONDS);
-
 
         visible = true;
         for (double dist = 0.0; dist <= 1; dist += step) {
@@ -154,30 +176,19 @@ public class AmbulanceService extends Thread {
 
         }
         visible = false;
-
-//        String message = "Pacjent o id = " + ambulance.getPatientId() + " został przetransportowany " +
-//                "do szpitala o id = " + hospital.getId() + " (" + hospital.getName() + ")";
-//        communicator.saveMessage(message);
     }
-
-
-    public Ambulance getAmbulance() {
-        return ambulance;
-    }
-
 
     public void drawAmbulance(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         if (visible) {
             int xShift = 37;
-            int yShift = 37;
+            int yShift = 65;
 
             int x = (int) Math.round(PADDING + ambulance.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (ambulance.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
 
-            double rotationRequired = rotation;
-            double locationX = ambulance.getCurrentImage().getWidth() / 2;
-            double locationY = ambulance.getCurrentImage().getHeight() / 2;
-            AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+            double locationX = 37;
+            double locationY = 30;
+            AffineTransform tx = AffineTransform.getRotateInstance(rotation, locationX, locationY);
             AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
             Graphics2D g2d = (Graphics2D) g;

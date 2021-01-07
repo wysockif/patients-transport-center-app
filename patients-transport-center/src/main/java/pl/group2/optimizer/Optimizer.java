@@ -131,11 +131,13 @@ public class Optimizer {
 
 
     public void run() {
+        // komentarz dla Bartka
+        // możesz tutaj stworzyć obiekt klasy reprezentującej ten algorytm
+        // i wstrzyknąć go w poniższym konstruktorze do Ambulance Service
+        // żeby nie wciągać tam oddzielnie skrzyżowań, ścieżek, a juz sam algorytm
+
         ambulanceService = new AmbulanceService(patients, hospitals, area, communicator);
         ambulanceService.start();
-
-
-        // tu będzie symulacja
     }
 
     public void showMap() {

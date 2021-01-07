@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
-import static java.awt.Color.ORANGE;
 import static java.awt.Color.WHITE;
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
@@ -159,7 +158,7 @@ public class Patients implements Items {
             int x = (int) Math.round(PADDING + firstPatient.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (firstPatient.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
             g.setColor(new Color(193, 116, 13, 100));
-            g.fillOval(x -10, y -10, 45, 45);
+            g.fillOval(x - 10, y - 10, 45, 45);
         }
     }
 
