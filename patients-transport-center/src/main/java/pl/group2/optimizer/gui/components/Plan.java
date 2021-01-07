@@ -39,13 +39,18 @@ public class Plan extends JPanel {
         if (running) {
             optimizer.getHandledArea().draw(g, scalaX, scalaY);
             optimizer.getPaths().draw(g, scalaX, scalaY, minX, minY);
+            optimizer.getIntersections().draw(g, scalaX, scalaY, minX, minY);
             optimizer.getHospitals().draw(g, scalaX, scalaY, minX, minY);
             optimizer.getSpecialObjects().draw(g, scalaX, scalaY, minX, minY);
-            optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
+            if (optimizer.getPatients() != null) {
+                optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
+            }
         } else {
-            g.setFont( g.getFont().deriveFont( 20.0f ) );
+            g.setFont(g.getFont().deriveFont(20.0f));
             g.drawString("ZAŁADUJ DANE", 400, 300);
         }
+
+
     }
 
     public void setProperties(double scalaX, double scalaY, int minX, int minY) {
@@ -55,7 +60,7 @@ public class Plan extends JPanel {
         this.minY = minY;
     }
 
-    public void runSimulation() {
+    public void showMap() {
         running = true;
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {

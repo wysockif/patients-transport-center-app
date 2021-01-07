@@ -1,5 +1,6 @@
 package pl.group2.optimizer.impl.items.specialobjects;
 
+import pl.group2.optimizer.gui.sprites.Sprite;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 
@@ -11,7 +12,7 @@ import java.io.IOException;
 
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
-public class SpecialObject implements Point{
+public class SpecialObject implements Point, Sprite {
     public static final String SPRITE_PATH = "/img/monument/monument.png";
 
     private final int id;
@@ -64,6 +65,10 @@ public class SpecialObject implements Point{
                 ')';
     }
 
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
+
     public Image getImage() {
         return image;
     }
@@ -72,7 +77,7 @@ public class SpecialObject implements Point{
         return image.getWidth();
     }
 
-    public int getImageHeight(){
+    public int getImageHeight() {
         return image.getHeight();
     }
 }

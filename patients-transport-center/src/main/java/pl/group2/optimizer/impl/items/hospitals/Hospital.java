@@ -28,7 +28,7 @@ public class Hospital extends Vertex implements Point, Sprite {
     public void loadSprite(int type){
         String path = String.format("/img/hospitals/hospital%d.png", type);
         readSprite(path);
-        image = scaleCell(image, 0.3);
+        image = scale(image, 0.3);
     }
 
     private void readSprite(String spritePath) {
@@ -41,12 +41,15 @@ public class Hospital extends Vertex implements Point, Sprite {
         }
     }
 
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
 
-    public int getImageWidth(){
+    public int getImageWidth() {
         return image.getWidth();
     }
 
-    public int getImageHeight(){
+    public int getImageHeight() {
         return image.getHeight();
     }
 

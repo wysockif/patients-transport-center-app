@@ -20,7 +20,6 @@ public class Communicator extends JPanel {
         setLayout(null);
         textArea = createTextArea();
         messages = "";
-       // createSomeMessages();
     }
 
     private JTextArea createTextArea() {
@@ -49,18 +48,4 @@ public class Communicator extends JPanel {
         messages += singleMessage;
         textArea.setText(messages);
     }
-
-    // do skasowania
-    private void createSomeMessages() {
-        saveMessage("Pacjent o id 3 został przyjęty do szpitala o id 2");
-        saveMessage("Pacjent o id 4 został przyjęty do szpitala o id 2");
-        saveMessage("Pacjent o id 5 został przyjęty do szpitala o id 4");
-        saveMessage("Pacjent o id 6 nie został przyjęty do szpitala o id 1");
-        saveMessage("Pacjent o id 6 został przyjęty do szpitala o id 3");
-        saveMessage("Pacjent o id 1 nie został przyjęty do szpitala o id 3");
-        saveMessage("Pacjent o id 7 nie został przyjęty do szpitala o id 1");
-        saveMessage("Pacjent o id 8 został przyjęty do szpitala o id 3");
-        saveMessage("Pacjent o id 9 nie został przyjęty do szpitala o id 3");
-    }
-
 }
