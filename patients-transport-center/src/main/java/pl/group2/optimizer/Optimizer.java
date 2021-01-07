@@ -4,7 +4,6 @@ import pl.group2.optimizer.gui.Window;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.gui.components.Plan;
-import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
@@ -236,7 +235,7 @@ public class Optimizer {
     }
 
     public void changePeriod(long value) {
-        if(ambulanceService != null){
+        if (ambulanceService != null) {
             long interval = 1500000 - 150000 * value;
             ambulanceService.setInterval(interval);
         }

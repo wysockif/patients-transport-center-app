@@ -6,7 +6,6 @@ import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
-import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.patients.Grave;
 import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
@@ -79,7 +78,7 @@ public class AmbulanceService extends Thread {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
 
-        // Bartek tutaj algotytm najkrótszej ścieżki
+        // BBartek tutaj algotytm najkrótszej ścieżki
         // np. List<Points> pointsToVisit = twójAlgorytm.znajdźNajkrótsząŚcieżkę(zTegoSzpitala);
         // ja zakładam w dalszej części, że w tej liście będzie też szpital z którego startujemy
         // i chyba ten algorytm jak już ustali najkrótsze ścieżki do każdego szpitala to powinien
@@ -146,16 +145,23 @@ public class AmbulanceService extends Thread {
         int destX = point.getXCoordinate();
         int destY = point.getYCoordinate();
 
-        rotation = Math.toRadians(90);
-        if(destX - sourceX != 0) {
-            rotation = -Math.atan((destY - sourceY) / (destX - sourceX));
-        }
-
         if (destX < sourceX) {
             ambulance.setRightSprite();
         } else {
             ambulance.setLeftSprite();
         }
+
+        rotation = Math.toRadians(90);
+        if (destX - sourceX != 0) {
+            rotation = -Math.atan((destY - sourceY) / (destX - sourceX));
+        } else {
+            if (destY > sourceY) {
+                ambulance.setRightSprite();
+            } else {
+                ambulance.setLeftSprite();
+            }
+        }
+
 
         double vx = destX - sourceX;
         double vy = destY - sourceY;
