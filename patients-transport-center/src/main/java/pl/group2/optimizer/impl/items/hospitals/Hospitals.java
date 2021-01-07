@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
@@ -17,21 +19,34 @@ import static pl.group2.optimizer.gui.components.Plan.PADDING;
 public class Hospitals implements Items {
     private final Map<Integer, Hospital> hospitalsByIndex;
     private final Map<Integer, Integer> indexById;
+    private List<Integer> indexes;
     private int counter;
 
     public Hospitals() {
         hospitalsByIndex = new HashMap<>();
         indexById = new HashMap<>();
+        indexes = new LinkedList<>();
     }
 
     public int size() {
         return hospitalsByIndex.size();
     }
 
+    public int getMaxId() {
+        int max = indexes.get(0);
+        for (int i = 1; i < indexes.size(); i++) {
+            if (indexes.get(i) > max) {
+                max = indexes.get(i);
+            }
+        }
+        return max;
+    }
+
     public void add(Hospital hospital) {
         int id = hospital.getId();
         hospitalsByIndex.put(counter, hospital);
         indexById.put(id, counter);
+        indexes.add(id);
         counter++;
     }
 

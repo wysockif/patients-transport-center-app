@@ -6,9 +6,9 @@ public class Path {
     private final int id;
     private final Vertex from;
     private final Vertex to;
-    private final double distance;
+    private final int distance;
 
-    public Path(int id, Vertex from, Vertex to, double distance) {
+    public Path(int id, Vertex from, Vertex to, int distance) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -21,5 +21,9 @@ public class Path {
 
     public Vertex getTo() {
         return to;
+    }
+
+    public int getDistance() {
+        return distance;
     }
 }
