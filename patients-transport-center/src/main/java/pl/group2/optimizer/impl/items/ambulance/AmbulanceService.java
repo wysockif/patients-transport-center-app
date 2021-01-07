@@ -2,11 +2,11 @@ package pl.group2.optimizer.impl.items.ambulance;
 
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
+import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
-import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.patients.Grave;
 import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
@@ -36,8 +36,9 @@ public class AmbulanceService extends Thread {
     private boolean visible;
     private double rotation;
     private AffineTransform af;
+    DijkstraAlgorithm dijkstraAlgorithm;
 
-    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area, Communicator communicator) {
+    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area, Communicator communicator, DijkstraAlgorithm dijkstraAlgorithm) {
         this.patients = patients;
         this.hospitals = hospitals;
         this.area = area;
@@ -46,6 +47,8 @@ public class AmbulanceService extends Thread {
         shortestDistanceChecker = new ShortestDistanceChecker();
         graveList = new LinkedList<>();
         interval = 1200000;
+
+        this.dijkstraAlgorithm = dijkstraAlgorithm;
     }
 
     @Override
@@ -87,34 +90,29 @@ public class AmbulanceService extends Thread {
         // go znowu nie przyjeli, bo z tamtego szpitala najkrótsza ścieżka może być spowrotem do tego
         // 1 szpitala i tak by krążył w kółko
 
-        // poniższy kod zostawia ich na skrzyżowaniu
+        Hospital closest = (Hospital) dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
 
-//        List<Point> pointsToVisit = new LinkedList<>();
-//        pointsToVisit.add(hospital);
-//        pointsToVisit.add(new Point() {
-//            @Override
-//            public int getXCoordinate() {
-//                return 68;
-//            }
-//
-//            @Override
-//            public int getYCoordinate() {
-//                return 81;
-//            }
-//        });
-//
-//        if (pointsToVisit.size() < 2) {
-//            throw new UnsupportedOperationException();
-//        }
-//
-//        for (int i = 1; i < pointsToVisit.size(); i++) {
-//            ambulance.setXCoordinate(pointsToVisit.get(i - 1).getXCoordinate());
-//            ambulance.setYCoordinate(pointsToVisit.get(i - 1).getYCoordinate());
-//
-//            Point point = pointsToVisit.get(i);
-//            transportPatient(ambulance, point);
-//
-//        }
+        if (closest.getNumberOfAvailableBeds() == 0) {
+            closest = hospital;
+        } else {
+            leavePatient(patient, closest);
+        }
+        List<Point> pointsToVisit = new LinkedList<>();
+        pointsToVisit.add(hospital);
+        pointsToVisit.add(closest);
+
+        if (pointsToVisit.size() < 2) {
+            throw new UnsupportedOperationException();
+        }
+
+        for (int i = 1; i < pointsToVisit.size(); i++) {
+            ambulance.setXCoordinate(pointsToVisit.get(i - 1).getXCoordinate());
+            ambulance.setYCoordinate(pointsToVisit.get(i - 1).getYCoordinate());
+
+            Point point = pointsToVisit.get(i);
+            transportPatient(ambulance, point);
+
+        }
 
     }
 

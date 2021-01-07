@@ -4,7 +4,7 @@ import pl.group2.optimizer.gui.Window;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.gui.components.Plan;
-import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
+import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
@@ -142,7 +142,8 @@ public class Optimizer {
         // i wstrzyknąć go w poniższym konstruktorze do Ambulance Service
         // żeby nie wciągać tam oddzielnie skrzyżowań, ścieżek, a juz sam algorytm
 
-        ambulanceService = new AmbulanceService(patients, hospitals, area, communicator);
+        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(hospitals, patients, paths);
+        ambulanceService = new AmbulanceService(patients, hospitals, area, communicator, dijkstraAlgorithm);
         ambulanceService.start();
     }
 

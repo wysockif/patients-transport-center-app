@@ -5,7 +5,9 @@ import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
+import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.structures.graph.Graph;
+import pl.group2.optimizer.impl.structures.graph.WeightedGraph;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +16,19 @@ public class DijkstraAlgorithm {
     public static final int INFINITY = 1_000_000_000;
     public static final int UNDEFINED = -1;
 
-    public List<Vertex> neighbours(Hospital hospital, Paths paths) {
+    Hospitals hospitals;
+    Patients patients;
+    Paths paths;
+    Graph graph;
+
+    public DijkstraAlgorithm(Hospitals hospitals, Patients patients, Paths paths) {
+        this.hospitals = hospitals;
+        this.patients = patients;
+        this.paths = paths;
+        graph = makeGraph();
+    }
+
+    public List<Vertex> neighbours(Hospital hospital) {
         List<Vertex> neighbours = new LinkedList<>();
         int id = hospital.getId();
         for (Path path : paths.getList()) {
@@ -29,8 +43,20 @@ public class DijkstraAlgorithm {
         return neighbours;
     }
 
-    public Vertex shortestPathFromSelectedVertexToHospital(Vertex start, Paths paths, Graph graph, Hospitals hospitals) {
-        List<Vertex> neighbours = neighbours((Hospital) start, paths);
+    public Graph makeGraph() {
+        Graph graph = new WeightedGraph(hospitals.getMaxId() + 1);
+        for (Path path : paths.getList()) {
+            graph.addEdge(path.getFrom().getId(), path.getTo().getId(), path.getDistance());
+
+            System.out.print("Krawędź grafu, która łączy szpitale o id: ");
+            System.out.print(path.getFrom().getId() + " " + path.getTo().getId());
+            System.out.println(" ma odległość " + graph.getWeightOfEdge(path.getFrom().getId(), path.getTo().getId()));
+        }
+        return graph;
+    }
+
+    public Vertex shortestPathFromSelectedVertexToHospital(Vertex start) {
+        List<Vertex> neighbours = neighbours((Hospital) start);
 
         List<Integer> distances = new LinkedList<>();
 
@@ -48,7 +74,7 @@ public class DijkstraAlgorithm {
         System.out.print("SĄSIAD, który jest najbliżej to: ");
         System.out.println(hospitals.getHospitalById(closestNeighbourId));
         System.out.println("z odległością " + graph.getWeightOfEdge(start.getId(), closestNeighbourId));
-        return hospitals.getHospitalByIndex(closestNeighbourId);
+        return hospitals.getHospitalById(closestNeighbourId);
     }
 
 }
