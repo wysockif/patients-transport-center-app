@@ -8,6 +8,7 @@ import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
+import pl.group2.optimizer.impl.items.ambulance.AmbulanceService;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
@@ -38,6 +39,7 @@ public class Optimizer {
     private Plan plan;
     private HandledArea area;
     private PatientsManagement patientsManagement;
+    private AmbulanceService ambulanceService;
     private Communicator communicator;
 
     private double scaleX;
@@ -133,47 +135,15 @@ public class Optimizer {
         return area;
     }
 
-    private void showMessagesAboutClosesHospitals() {
-        ShortestDistanceChecker distanceChecker = new ShortestDistanceChecker();
-
-        Hospital closest;
-
-        int size = patients.size();
-
-        closest = distanceChecker.closestHospital(patients.getFirst(), hospitals);
-        String message = "Closest hospital to patient: " + patients.getFirst().toString()
-                + " is " + closest.toString();
-
-        communicator.saveMessage(message);
-
-//        for (int i = 0; i < size; i++) {
-//            Patient first = patients.getFirst();
-//            closest = distanceChecker.closestHospital(patients.getNextToHandle(), hospitals);
-//
-//            String message = "Closest hospital to patient: " + first.toString()
-//                    + " is " + closest.toString();
-//
-//            communicator.saveMessage(message);
-//
-//            // tymczasowo, żeby wszyscy pacjenci naraz nie zniknęli
-//            JOptionPane.showMessageDialog(null, message,
-//                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-//        }
-    }
 
     public void run() {
-        long before = System.nanoTime();
+        // komentarz dla Bartka
+        // możesz tutaj stworzyć obiekt klasy reprezentującej ten algorytm
+        // i wstrzyknąć go w poniższym konstruktorze do Ambulance Service
+        // żeby nie wciągać tam oddzielnie skrzyżowań, ścieżek, a juz sam algorytm
 
-
-        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-
-//        JOptionPane.showMessageDialog(null, messageAboutTimeOfGraham(time),
-//                "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-
-//        System.out.println(scaleX + " " + scaleY);
-
-
-        running = true;
+        ambulanceService = new AmbulanceService(patients, hospitals, area, communicator);
+        ambulanceService.start();
     }
 
     public void showMap() {
@@ -183,6 +153,7 @@ public class Optimizer {
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.showMap();
+        running = true;
     }
 
     public void scaleMap(int numberOfElements) {
@@ -258,5 +229,16 @@ public class Optimizer {
 
     public Intersections getIntersections() {
         return intersections;
+    }
+
+    public AmbulanceService getAmbulanceService() {
+        return ambulanceService;
+    }
+
+    public void changePeriod(long value) {
+        if(ambulanceService != null){
+            long interval = 1500000 - 150000 * value;
+            ambulanceService.setInterval(interval);
+        }
     }
 }

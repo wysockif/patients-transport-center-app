@@ -82,4 +82,8 @@ public class Hospital extends Vertex implements Point, Sprite {
                 ", y=" + this.getYCoordinate() +
                 '}';
     }
+
+    public void decreaseNumberOfAvailableBeds() {
+        numberOfAvailableBeds--;
+    }
 }

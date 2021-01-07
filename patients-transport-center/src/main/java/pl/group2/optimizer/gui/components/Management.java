@@ -92,6 +92,7 @@ public class Management extends JPanel {
             optimizer.run();
             button.setEnabled(false);
             button.setText("Uruchomiono");
+            optimizer.changePeriod(paceSlider.getValue());
         });
         button.setFocusable(false);
         button.setEnabled(false);
@@ -105,14 +106,15 @@ public class Management extends JPanel {
         paceLabel.setBounds(0, 340, 235, 20);
         add(paceLabel);
 
-        paceSlider = new JSlider(0, 100, 50);
+        paceSlider = new JSlider(1, 7, 4);
         paceSlider.setBounds(20, 360, 195, 50);
         paceSlider.setBackground(GRAY);
         paceSlider.setForeground(DARK_GRAY);
-        paceSlider.setMajorTickSpacing(25);
-        paceSlider.setMinorTickSpacing(5);
+        paceSlider.setMajorTickSpacing(1);
+        paceSlider.setMinorTickSpacing(1);
         paceSlider.setPaintTicks(true);
         paceSlider.setPaintLabels(true);
+        paceSlider.addChangeListener(e -> optimizer.changePeriod(paceSlider.getValue()));
         add(paceSlider);
     }
 

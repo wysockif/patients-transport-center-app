@@ -30,8 +30,8 @@ public class Intersections {
         // skasować z paths drogi, które się skrzyżowały
 
 //        po odkomentowaniu pojawi się na mapce na sztywno
-        Intersection intersection = new Intersection(-intersections.size() - 1, 69, 81);
-        intersections.add(intersection);
+//        Intersection intersection = new Intersection(-intersections.size() - 1, 69, 81);
+//        intersections.add(intersection);
     }
 
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {

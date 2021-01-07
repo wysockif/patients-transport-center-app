@@ -15,6 +15,10 @@ public class Path {
         this.distance = distance;
     }
 
+    public double getDistance() {
+        return distance;
+    }
+
     public Vertex getFrom() {
         return from;
     }
