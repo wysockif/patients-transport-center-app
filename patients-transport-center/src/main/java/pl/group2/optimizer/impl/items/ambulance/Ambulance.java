@@ -99,4 +99,12 @@ public class Ambulance {
     public int getPatientId() {
         return patientId;
     }
+
+    public void setRightSprite() {
+        currentImage = imageRightBlue;
+    }
+
+    public void setLeftSprite(){
+        currentImage = imageLeftBlue;
+    }
 }

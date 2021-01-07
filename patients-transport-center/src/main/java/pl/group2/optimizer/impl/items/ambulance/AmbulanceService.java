@@ -110,6 +110,14 @@ public class AmbulanceService extends Thread {
         int destX = hospital.getXCoordinate();
         int destY = hospital.getYCoordinate();
 
+        rotation = -Math.atan((destY - sourceY) / (destX - sourceX));
+
+        if(destX < sourceX){
+            ambulance.setRightSprite();
+        } else {
+            ambulance.setLeftSprite();
+        }
+
         double vx = destX - sourceX;
         double vy = destY - sourceY;
 
@@ -160,26 +168,20 @@ public class AmbulanceService extends Thread {
 
     public void drawAmbulance(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         if (visible) {
-            int xShift = 29;
-            int yShift = 30;
+            int xShift = 37;
+            int yShift = 37;
 
             int x = (int) Math.round(PADDING + ambulance.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (ambulance.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
 
-//            g.drawImage(rotate(ambulance.getCurrentImage(), rotation), x, y, null);
-
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.rotate(rotation);
-
-
-            double rotationRequired = Math.toRadians(45);
-            AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, xShift, yShift);
+            double rotationRequired = rotation;
+            double locationX = ambulance.getCurrentImage().getWidth() / 2;
+            double locationY = ambulance.getCurrentImage().getHeight() / 2;
+            AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
             AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
-// Drawing the rotated image at the required drawing locations
+            Graphics2D g2d = (Graphics2D) g;
             g2d.drawImage(op.filter(ambulance.getCurrentImage(), null), x, y, null);
-
-//            g.drawImage(ambulance.getCurrentImage(), x, y, null);
         }
     }
 

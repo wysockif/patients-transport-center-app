@@ -4,14 +4,19 @@ import pl.group2.optimizer.impl.items.Items;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 
 import java.awt.BasicStroke;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
 import static java.awt.Color.DARK_GRAY;
+import static java.awt.Color.WHITE;
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 import static pl.group2.optimizer.gui.components.Plan.PADDING;
@@ -138,7 +143,19 @@ public class Paths implements Items {
             int x2 = (int) Math.round(PADDING - minX * scalaX + xTo * scalaX + MARGIN);
             int y2 = (int) Math.round(PADDING + minY * scalaY + HEIGHT - (yTo * scalaY) - MARGIN);
             g.drawLine(x1, y1, x2, y2);
+            drawCenteredString(g, String.valueOf(path.getDistance()), x1, y1, x2, y2,
+                    new Font("id-font", Font.PLAIN, 12));
         }
+    }
+
+    public void drawCenteredString(Graphics g, String text, int x1, int y1, int x2, int y2, Font font) {
+        FontMetrics metrics = g.getFontMetrics(font);
+        int x = (x1 + x2 - metrics.stringWidth(text)) /2;
+        int y = (y1 + y2 - metrics.getHeight()) /2 + metrics.getAscent();
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(WHITE);
+        g2d.setFont(font);
+        g2d.drawString(text, x, y);
     }
 
     private void checkIfArgumentIsNotNull(Object argument) {
