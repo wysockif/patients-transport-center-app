@@ -28,18 +28,27 @@ public class DijkstraAlgorithm {
         graph = makeGraph();
     }
 
-    public List<Vertex> neighbours(Hospital hospital) {
-        List<Vertex> neighbours = new LinkedList<>();
+    public List<Hospital> neighboursWithMoreThanZeroBeds(Hospital hospital) {
+        List<Hospital> neighbours = new LinkedList<>();
         int id = hospital.getId();
         for (Path path : paths.getList()) {
             if (path.getFrom().getId() == id) {
-                neighbours.add(path.getTo());
+                Hospital neighbour = (Hospital) path.getTo();
+
+                if (neighbour.getNumberOfAvailableBeds() != 0) {
+                    neighbours.add(neighbour);
+                }
+
             } else if (path.getTo().getId() == id) {
-                neighbours.add(path.getFrom());
+                Hospital neighbour = (Hospital) path.getFrom();
+
+                if (neighbour.getNumberOfAvailableBeds() != 0) {
+                    neighbours.add(neighbour);
+                }
             }
         }
-        System.out.print("Sąsiadami szpitala " + hospital);
-        System.out.println(" są szpitale " + neighbours);
+//        System.out.print("Sąsiadami szpitala " + hospital);
+//        System.out.println(" są szpitale " + neighbours);
         return neighbours;
     }
 
@@ -48,17 +57,21 @@ public class DijkstraAlgorithm {
         for (Path path : paths.getList()) {
             graph.addEdge(path.getFrom().getId(), path.getTo().getId(), path.getDistance());
 
-            System.out.print("Krawędź grafu, która łączy szpitale o id: ");
-            System.out.print(path.getFrom().getId() + " " + path.getTo().getId());
-            System.out.println(" ma odległość " + graph.getWeightOfEdge(path.getFrom().getId(), path.getTo().getId()));
+//            System.out.print("Krawędź grafu, która łączy szpitale o id: ");
+//            System.out.print(path.getFrom().getId() + " " + path.getTo().getId());
+//            System.out.println(" ma odległość " + graph.getWeightOfEdge(path.getFrom().getId(), path.getTo().getId()));
         }
         return graph;
     }
 
-    public Vertex shortestPathFromSelectedVertexToHospital(Vertex start) {
-        List<Vertex> neighbours = neighbours((Hospital) start);
+    private Vertex findClosestNeighbour(Vertex start) {
+        List<Hospital> neighbours = neighboursWithMoreThanZeroBeds((Hospital) start);
 
         List<Integer> distances = new LinkedList<>();
+
+        if (neighbours.size() == 0) {
+            return start;
+        }
 
         int min = graph.getWeightOfEdge(start.getId(), neighbours.get(0).getId());
         int closestNeighbourId = neighbours.get(0).getId();
@@ -71,10 +84,17 @@ public class DijkstraAlgorithm {
             }
         }
 
-        System.out.print("SĄSIAD, który jest najbliżej to: ");
-        System.out.println(hospitals.getHospitalById(closestNeighbourId));
-        System.out.println("z odległością " + graph.getWeightOfEdge(start.getId(), closestNeighbourId));
+//        System.out.print("SĄSIAD, który jest najbliżej to: ");
+//        System.out.println(hospitals.getHospitalById(closestNeighbourId));
+//        System.out.println("z odległością " + graph.getWeightOfEdge(start.getId(), closestNeighbourId));
         return hospitals.getHospitalById(closestNeighbourId);
+    }
+
+    public Vertex shortestPathFromSelectedVertexToHospital(Vertex start) {
+//        int[] distances = new int[hospitals.getMaxId()+1];
+//        distances[start.getId()] = 0;
+
+        return findClosestNeighbour(start);
     }
 
 }
