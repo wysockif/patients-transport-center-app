@@ -15,6 +15,8 @@ public class Path {
         this.distance = distance;
     }
 
+    public int getId() {return id; }
+
     public double getDistance() {
         return distance;
     }
