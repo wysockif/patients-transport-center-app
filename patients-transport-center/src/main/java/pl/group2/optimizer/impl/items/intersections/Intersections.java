@@ -1,6 +1,10 @@
 package pl.group2.optimizer.impl.items.intersections;
 
+import pl.group2.optimizer.impl.algorithms.intersectionFinder.IntersectionFinder;
+import pl.group2.optimizer.impl.io.TextFileReader;
 import pl.group2.optimizer.impl.items.paths.Path;
+import pl.group2.optimizer.impl.items.pathspoints.PathPoint;
+import pl.group2.optimizer.impl.items.pathspoints.PathsPoints;
 
 import java.awt.Graphics;
 import java.util.Collection;
@@ -14,6 +18,9 @@ import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class Intersections {
     private final List<Intersection> intersections;
+    private PathsPoints pathsPoints;
+    private List<PathPoint> pathsPointsList;
+    private IntersectionFinder intersectionFinder;
 
     public Intersections() {
         intersections = new LinkedList<>();
@@ -24,6 +31,9 @@ public class Intersections {
     }
 
     public void lookForIntersections(List<Path> paths) {
+        intersectionFinder = new IntersectionFinder(paths);
+        intersectionFinder.findIntersections();
+
         // jak znajdzie się jakieś przecięcie dróg:
         // dodać je do listy "intersections"
         // dodać do "paths" nowe drogi

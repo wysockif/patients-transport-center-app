@@ -52,7 +52,7 @@ public class PathsPoints {
                     rightX = startingPoint.getXCoordinate();
                     rightY = startingPoint.getYCoordinate();
                 } else {
-                    throw new IllegalArgumentException("Nie ma takiej drogi, jest to punkt, w którym leży szpital");
+                    throw new IllegalArgumentException("Nie ma takiej drogi. Jest to punkt, w którym leży szpital");
                 }
             }
 

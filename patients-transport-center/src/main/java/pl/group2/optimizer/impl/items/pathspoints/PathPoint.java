@@ -16,18 +16,13 @@ public class PathPoint extends Vertex implements Point {
         return leftOrRight == 0;
     }
 
-    public int getPathId() {
-        return getId();
-    }
-
     @Override
     public String toString() {
         return "PathPoint{" +
-                "id=" + this.getId() +
+                "path id=" + this.getId() +
                 ", x=" + this.getXCoordinate() +
                 ", y=" + this.getYCoordinate() +
-                "left?=" + this.isLeft() +
-                "path id=" + this.getPathId() +
+                ", left?=" + this.isLeft() +
                 '}';
     }
 }
