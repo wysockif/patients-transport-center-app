@@ -68,19 +68,11 @@ public class Ambulance {
         }, 0, 250);
     }
 
-    public int getImageWidth() {
-        return currentImage.getWidth();
-    }
-
-    public int getImageHeight(){
-        return currentImage.getHeight();
-    }
-
     public double getXCoordinate() {
         return x;
     }
 
-    public double getYCoordinate(){
+    public double getYCoordinate() {
         return y;
     }
 
@@ -104,7 +96,7 @@ public class Ambulance {
         currentImage = imageRightBlue;
     }
 
-    public void setLeftSprite(){
+    public void setLeftSprite() {
         currentImage = imageLeftBlue;
     }
 }

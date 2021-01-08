@@ -32,10 +32,10 @@ public class SpecialObject implements Point, Sprite {
 
     private void loadSprite() {
         try {
-            image = ImageIO.read(Hospital.class.getResource(SPRITE_PATH));
+            image = ImageIO.read(SpecialObject.class.getResource(SPRITE_PATH));
         } catch (IOException | IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, "Błąd krytyczny!\n" +
-                    "Nie mogę znaleźć pliku z obrazem pocisku!", "Błąd krytyczny!", ERROR_MESSAGE);
+                    "Nie mogę znaleźć pliku z obrazem obiektu specjalnego!", "Błąd krytyczny!", ERROR_MESSAGE);
             System.exit(2);
         }
     }

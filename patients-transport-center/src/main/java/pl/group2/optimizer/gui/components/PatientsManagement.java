@@ -65,8 +65,6 @@ public class PatientsManagement extends JPanel {
             Object[] convertedAttributes = optimizer.getPatients().convertAttributes(attributes);
             optimizer.getPatients().validateAttributes(convertedAttributes);
             optimizer.getPatients().addNewElement(convertedAttributes);
-//            String message = "Dodano pacjenta o id = " + idField.getText();
-//            optimizer.getCommunicator().saveMessage(message);
             resetFields();
         } catch (DataFormatException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Błąd", ERROR_MESSAGE);

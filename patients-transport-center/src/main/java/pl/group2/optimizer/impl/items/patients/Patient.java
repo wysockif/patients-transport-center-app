@@ -23,7 +23,8 @@ public class Patient {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
-    public void loadSprite(int type){
+
+    public void loadSprite(int type) {
         String path = String.format("/img/patients/%d.png", type);
         readSprite(path);
     }
@@ -89,7 +90,7 @@ public class Patient {
         return image.getWidth();
     }
 
-    public int getImageHeight(){
+    public int getImageHeight() {
         return image.getHeight();
     }
 

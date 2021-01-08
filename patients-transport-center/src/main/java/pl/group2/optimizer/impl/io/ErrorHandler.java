@@ -20,13 +20,5 @@ public class ErrorHandler {
 
         throw new MyException(informationAboutError);
 
-//        System.err.println("\n| Błąd " + codeError + " | " + message + "!");
-//        exit(codeError);
-    }
-
-    public static void handleError(int codeError, String message, String tip) {
-        System.err.println("\n| Błąd " + codeError + " | " + message + "!");
-        System.out.println("\nWskazówka: " + tip);
-        exit(codeError);
     }
 }

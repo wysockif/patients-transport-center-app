@@ -29,10 +29,10 @@ public class Window extends JFrame {
         setLocationRelativeTo(null);
         createPanels(optimizer, patientsManagement, communicator);
         setVisible(true);
-        createIcon();
+        setIcon();
     }
 
-    private void createIcon() {
+    private void setIcon() {
         try {
             setIconImage(new ImageIcon(Window.class.getResource("/img/icon/1.png")).getImage());
         } catch (NullPointerException e) {

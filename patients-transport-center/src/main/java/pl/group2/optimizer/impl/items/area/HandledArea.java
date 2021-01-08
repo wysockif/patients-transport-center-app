@@ -97,8 +97,8 @@ public class HandledArea {
     private Polygon scaleArea(double scalaX, double scalaY) {
         Polygon scaledArea = new Polygon();
         for (Point p : points) {
-            int x = (int)Math.round(PADDING + p.getXCoordinate() * scalaX + MARGIN - minX * scalaX);
-            int y = (int)Math.round(PADDING + HEIGHT - p.getYCoordinate() * scalaY - MARGIN + minY * scalaY);
+            int x = (int) Math.round(PADDING + p.getXCoordinate() * scalaX + MARGIN - minX * scalaX);
+            int y = (int) Math.round(PADDING + HEIGHT - p.getYCoordinate() * scalaY - MARGIN + minY * scalaY);
 
             scaledArea.addPoint(x, y);
         }

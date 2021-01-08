@@ -5,7 +5,6 @@ import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 import pl.group2.optimizer.impl.structures.queues.QueueLIFO;
 
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class Graham {
             throw new UnsupportedOperationException("Cannot handle the empty list");
         }
         findTheLowestPoint();
-        points.sort((o1, o2) -> comparePoints(o1, o2));
+        points.sort(this::comparePoints);
         if (points.size() < 2) {
             return new LinkedList<>();
         }
@@ -103,7 +102,7 @@ public class Graham {
         return dy1 >= 0 && dy2 < 0;
     }
 
-    public static int counterClockwise(Point a, Point b, Point c) {
+    public int counterClockwise(Point a, Point b, Point c) {
         double area = (b.getXCoordinate() - a.getXCoordinate()) *
                 (c.getYCoordinate() - a.getYCoordinate()) - (b.getYCoordinate() - a.getYCoordinate()) *
                 (c.getXCoordinate() - a.getXCoordinate());
@@ -116,20 +115,12 @@ public class Graham {
         }
     }
 
-    private static boolean isCounterClockwise(double area) {
-        return area > 0;
-    }
-
-    private static boolean isClockwise(double area) {
-        return area < 0;
-    }
-
     private void findTheLowestPoint() {
         lowestPoint = points.get(0);
         for (Point point : points) {
             if (point.getYCoordinate() < lowestPoint.getYCoordinate()) {
                 lowestPoint = point;
-            } else if (point.getYCoordinate() == lowestPoint.getYCoordinate() ) {
+            } else if (point.getYCoordinate() == lowestPoint.getYCoordinate()) {
                 lowestPoint = findLeftmostPoint(point, lowestPoint);
             }
         }
@@ -150,5 +141,13 @@ public class Graham {
                 throw new IllegalArgumentException("The argument is null");
             }
         }
+    }
+
+    private boolean isCounterClockwise(double area) {
+        return area > 0;
+    }
+
+    private boolean isClockwise(double area) {
+        return area < 0;
     }
 }

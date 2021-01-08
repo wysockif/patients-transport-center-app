@@ -25,7 +25,7 @@ public class Hospital extends Vertex implements Point, Sprite {
         this.numberOfAvailableBeds = numberOfAvailableBeds;
     }
 
-    public void loadSprite(int type){
+    public void loadSprite(int type) {
         String path = String.format("/img/hospitals/hospital%d.png", type);
         readSprite(path);
         image = scale(image, 0.3);
@@ -36,7 +36,7 @@ public class Hospital extends Vertex implements Point, Sprite {
             image = ImageIO.read(Hospital.class.getResource(spritePath));
         } catch (IOException | IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, "Błąd krytyczny!\n" +
-                    "Nie mogę znaleźć pliku z obrazem pocisku!", "Błąd krytyczny!", ERROR_MESSAGE);
+                    "Nie mogę znaleźć pliku z obrazem szpitala!", "Błąd krytyczny!", ERROR_MESSAGE);
             System.exit(2);
         }
     }
@@ -63,10 +63,6 @@ public class Hospital extends Vertex implements Point, Sprite {
 
     public int getNumberOfAvailableBeds() {
         return numberOfAvailableBeds;
-    }
-
-    public void setNumberOfAvailableBeds(int numberOfAvailableBeds) {
-        this.numberOfAvailableBeds = numberOfAvailableBeds;
     }
 
     public BufferedImage getImage() {
