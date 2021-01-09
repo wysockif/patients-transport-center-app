@@ -6,11 +6,13 @@ import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
-import pl.group2.optimizer.impl.structures.graph.Graph;
-import pl.group2.optimizer.impl.structures.graph.WeightedGraph;
 
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
 
 public class DijkstraAlgorithm {
     public static final int INFINITY = 1_000_000_000;
@@ -52,18 +54,6 @@ public class DijkstraAlgorithm {
         return neighbours;
     }
 
-    public Graph makeGraph() {
-        Graph graph = new WeightedGraph(hospitals.getMaxId() + 1);
-        for (Path path : paths.getList()) {
-            graph.addEdge(path.getFrom().getId(), path.getTo().getId(), path.getDistance());
-
-//            System.out.print("Krawędź grafu, która łączy szpitale o id: ");
-//            System.out.print(path.getFrom().getId() + " " + path.getTo().getId());
-//            System.out.println(" ma odległość " + graph.getWeightOfEdge(path.getFrom().getId(), path.getTo().getId()));
-        }
-        return graph;
-    }
-
     private Vertex findClosestNeighbour(Vertex start) {
         List<Hospital> neighbours = neighboursWithMoreThanZeroBeds((Hospital) start);
 
@@ -90,11 +80,95 @@ public class DijkstraAlgorithm {
         return hospitals.getHospitalById(closestNeighbourId);
     }
 
+    public List<Vertex> neighbours(int id) {
+        List<Vertex> neighbours = new LinkedList<>();
+        for (Path path : paths.getList()) {
+            if (path.getFrom().getId() == id) {
+                neighbours.add(path.getTo());
+            } else if (path.getTo().getId() == id) {
+                neighbours.add(path.getFrom());
+            }
+        }
+        return neighbours;
+    }
+
+    private Graph makeGraph() {
+        Graph graph = new Graph(hospitals.getMaxId() + 1);
+        for (Path path : paths.getList()) {
+            graph.addEdge(path.getFrom().getId(), path.getTo().getId(), (int) path.getDistance());
+
+//            System.out.print("Krawędź grafu, która łączy szpitale o id: ");
+//            System.out.print(path.getFrom().getId() + " " + path.getTo().getId());
+//            System.out.println(" ma odległość " + graph.getWeightOfEdge(path.getFrom().getId(), path.getTo().getId()));
+        }
+        return graph;
+    }
+
+    int poprzednicy[];
+    int odległości[];
+    PriorityQueue<PoprzednikZOdlegloscia> q;
+
     public Vertex shortestPathFromSelectedVertexToHospital(Vertex start) {
 //        int[] distances = new int[hospitals.getMaxId()+1];
 //        distances[start.getId()] = 0;
 
+        // inicjalizacja
+        poprzednicy = new int[graph.getNumberOfVertices()];
+        odległości = new int[graph.getNumberOfVertices()];
+        for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+            odległości[i] = INFINITY;
+            poprzednicy[i] = 0;
+        }
+        odległości[start.getId()] = 0;
+
+        // algorytm
+        Set<Integer> w = new HashSet<>();
+
+        q = new PriorityQueue<>(new Comparator<PoprzednikZOdlegloscia>() {
+            @Override
+            public int compare(PoprzednikZOdlegloscia o1, PoprzednikZOdlegloscia o2) {
+                return o1.odleglosc - o2.odleglosc;
+            }
+        });
+
+        for (int i = 0; i < poprzednicy.length; i++) {
+            q.add(new PoprzednikZOdlegloscia(poprzednicy[i], odległości[i]));
+        }
+
+        while (!q.isEmpty()) {
+            PoprzednikZOdlegloscia u = q.remove();
+            w.add(u.getId());
+            for (Vertex v : neighbours(u.getId())) {
+                relax(u.getId(), v.getId());
+            }
+        }
+
+        System.out.println("Dla szpitala najkrótsza " + start + " odległość biegnie przez: ");
+        System.out.println(w);
+
+
         return findClosestNeighbour(start);
+    }
+
+    public void resetQuery() {
+        q = new PriorityQueue<>(new Comparator<PoprzednikZOdlegloscia>() {
+            @Override
+            public int compare(PoprzednikZOdlegloscia o1, PoprzednikZOdlegloscia o2) {
+                return o1.odleglosc - o2.odleglosc;
+            }
+        });
+        for (int i = 0; i < poprzednicy.length; i++) {
+            q.add(new PoprzednikZOdlegloscia(poprzednicy[i], odległości[i]));
+        }
+    }
+
+
+    public void relax(int u, int v) {
+        if (odległości[u] > odległości[v] + graph.getWeightOfEdge(u, v)) {
+            odległości[u] = odległości[v] + graph.getWeightOfEdge(u, v);
+            poprzednicy[u] = v;
+            resetQuery();
+        }
     }
 
 }
