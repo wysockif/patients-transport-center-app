@@ -6,12 +6,9 @@ import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
 
 public class DijkstraAlgorithm {
@@ -52,27 +49,16 @@ public class DijkstraAlgorithm {
 
     int predecessors[];
     int distances[];
-    PriorityQueue<Predecessor> q;
+    MyPQ q;
 
     public Vertex shortestPathFromSelectedVertexToHospital(Vertex start) {
 
-        System.out.println("Sąsiedzi poszukwianego wierzchołka to " + neighbours(start.getId()));
+//        System.out.println("Sąsiedzi poszukwianego wierzchołka to " + neighbours(start.getId()));
 
         predecessors = new int[graph.getNumberOfVertices()];
         distances = new int[graph.getNumberOfVertices()];
 
-        q = new PriorityQueue<>(new Comparator<Predecessor>() {
-            @Override
-            public int compare(Predecessor o1, Predecessor o2) {
-                if (o1.distance - o2.distance < 0) {
-                    return -1;
-                } else if (o1.distance - o2.distance > 0) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
+        q = new MyPQ();
 
         for (int i = 0; i < graph.getNumberOfVertices(); i++) {
             if (i == start.getId()) {
@@ -84,8 +70,8 @@ public class DijkstraAlgorithm {
             }
 
             q.add(new Predecessor(predecessors[i], distances[i]));
-            System.out.println("Dodaje do kolejki id równe " + predecessors[i]);
-            System.out.println("Dodaje do kolejki odległość równą " + distances[i]);
+//            System.out.println("Dodaje do kolejki id równe " + predecessors[i]);
+//            System.out.println("Dodaje do kolejki odległość równą " + distances[i]);
         }
 
         Set<Integer> w = new HashSet<>();
@@ -93,40 +79,80 @@ public class DijkstraAlgorithm {
         System.out.println();
 
         while (!q.isEmpty()) {
-            Predecessor u = q.poll();
-            System.out.println(q.size());
+//            q.printQuery();
+            Predecessor u = q.remove();
 
-            System.out.println("Wyjmuje z kolejki odległość równą " + u.getDistance());
-            System.out.println("Wyjmuje z kolejki id równe " + u.getId());
+//            System.out.println("Wyjmuje z kolejki odległość równą " + u.getDistance());
+//            System.out.println("Wyjmuje z kolejki id równe " + u.getId());
 
             w.add(u.getId());
-            System.out.println("Odwiedzony wierzchołek to: " + u.getId());
+//            System.out.println("Odwiedzony wierzchołek to: " + u.getId());
             for (Vertex v : neighbours(u.getId())) {
-                System.out.println("Sąsiad to " + v.getId());
-                relax(u.getId(), v.getId());
+                if (!w.contains(v.getId())) {
+//                    System.out.println("Sąsiad to " + v.getId());
+                    relax(u.getId(), v.getId());
+                }
+
+            }
+        }
+//
+//        System.out.println();
+//        System.out.println("--------------------------------");
+//        System.out.println("Od szpitala " + start + " najkrótsza  odległość biegnie przez: ");
+//        System.out.println(Arrays.toString(predecessors));
+//        System.out.println(Arrays.toString(distances));
+//        System.out.println(Arrays.toString(w.toArray()));
+//        System.out.println("-------------------------------");
+//        System.out.println();
+
+        int min = INFINITY;
+        int index = 0;
+        for (int i = 0; i < distances.length; i++) {
+            if (distances[i] < min && distances[i] != 0) {
+                min = distances[i];
+                index = i;
             }
         }
 
-        System.out.println("Dla szpitala najkrótsza " + start + " odległość biegnie przez: ");
-        System.out.println(Arrays.toString(predecessors));
-
+        System.out.println();
+        System.out.println("Najkrótsza droga jest do szpitala o id: " + index);
+        System.out.println("I wiedzie ona przez " + predecessors[index]
+                + " (jeżeli id = id początku to znaczy, że jest połączenie bezpośrednie)");
+        System.out.println();
         return null;
     }
 
     public void decreasePriority(int id, int distance) {
-
+        q.setNewPriority(id, distance);
     }
 
     public void relax(int u, int v) {
-        System.out.println("Dla sąsiada o id = " + v);
-        System.out.println("Odległość u wynosi " + distances[u]);
+//        System.out.print("Dla sąsiada o id = " + v);
+//        System.out.print(" Odległość v wynosi " + distances[v]);
 
         int alt = distances[u] + graph.getWeightOfEdge(u, v);
-        System.out.println("Odległość v + graph wynosi " + alt);
+
+//        System.out.println(" Odległość alternatywna " + alt);
         if (alt < distances[v]) {
+//            System.out.println("Odległość alternatywna jest mniejsza");
             distances[v] = alt;
             predecessors[v] = u;
-            decreasePriority(v, u);
+            decreasePriority(v, alt);
         }
     }
+
+//    public void relax(int u, int v) {
+//        System.out.print("Dla sąsiada o id = " + v);
+//        System.out.print(" Odległość v wynosi " + distances[v]);
+//
+//        int alt = distances[v] + graph.getWeightOfEdge(u, v);
+//
+//        System.out.println(" Odległość alternatywna " + alt);
+//        if (distances[u] > alt) {
+//            System.out.println("Odległość alternatywna jest mniejsza");
+//            distances[u] = alt;
+//            predecessors[u] = v;
+//            decreasePriority(u, alt);
+//        }
+//    }
 }

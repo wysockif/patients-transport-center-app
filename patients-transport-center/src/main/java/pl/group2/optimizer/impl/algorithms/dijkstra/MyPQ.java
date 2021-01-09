@@ -1,7 +1,6 @@
 package pl.group2.optimizer.impl.algorithms.dijkstra;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class MyPQ {
@@ -11,19 +10,56 @@ public class MyPQ {
         predecessors = new ArrayList<>();
     }
 
+    public void printQuery() {
+        System.out.print("Kolejka zawiera: ");
+        for (int i = 0; i < predecessors.size(); i++) {
+            System.out.print(predecessors.get(i).getId() + " " + predecessors.get(i).getDistance() + ", ");
+        }
+        System.out.println();
+    }
+
     public void add(Predecessor predecessor) {
         predecessors.add(predecessor);
-        predecessors.sort(new Comparator<Predecessor>() {
-            @Override
-            public int compare(Predecessor o1, Predecessor o2) {
-                if (o1.distance - o2.distance < 0) {
-                    return -1;
-                } else if (o1.distance - o2.distance > 0) {
-                    return 1;
-                } else {
-                    return 0;
+        predecessors.sort((o1, o2) -> Integer.compare(o1.distance - o2.distance, 0));
+    }
+
+    public Predecessor remove() {
+        return predecessors.remove(0);
+    }
+
+    //    public void setNewPriority(int id, int distance) {
+//        for(int i = 0; i < predecessors.size(); i++) {
+//            if(predecessors.get(i).getId() == id) {
+//                predecessors.set(i, new Predecessor(predecessors.get(i).getId(), distance));
+//            }
+//        }
+//        predecessors.sort((o1, o2) -> Integer.compare(o1.distance - o2.distance, 0));
+//    }
+    public void setNewPriority(int id, int distance) {
+
+        boolean isIn = false;
+
+        for (int i = 0; i < predecessors.size(); i++) {
+            if (predecessors.get(i).getId() == id) {
+                predecessors.set(i, new Predecessor(predecessors.get(i).getId(), distance));
+                isIn = true;
+            }
+        }
+        if (!isIn) {
+            for (int i = 0; i < predecessors.size(); i++) {
+                if (predecessors.get(i).getDistance() == DijkstraAlgorithm.INFINITY) {
+                    predecessors.set(i, new Predecessor(id, distance));
+                    break;
                 }
             }
-        });
+
+        }
+
+        predecessors.sort((o1, o2) -> Integer.compare(o1.distance - o2.distance, 0));
+    }
+
+
+    public boolean isEmpty() {
+        return predecessors.size() == 0;
     }
 }

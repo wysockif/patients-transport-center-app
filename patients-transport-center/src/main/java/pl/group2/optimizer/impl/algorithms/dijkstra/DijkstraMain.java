@@ -26,10 +26,14 @@ public class DijkstraMain {
         DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(hospitals, patients, paths);
 
         //Hospital closest = distanceChecker.closestHospital(patients.getFirst(), hospitals);
-        Hospital closest = hospitals.getHospitalById(4);
+        for (int i = 0; i < hospitals.size(); i++) {
+            Hospital closest = hospitals.getHospitalByIndex(i);
+            System.out.println("Dla szpitala: " + closest.getId());
+            dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(closest);
+        }
 
-
-        dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(closest);
+        //Hospital closest = hospitals.getHospitalByIndex(0);
+        //dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(closest);
 
     }
 }
