@@ -1,11 +1,14 @@
 package pl.group2.optimizer.impl.algorithms.dijkstra;
 
 import pl.group2.optimizer.impl.items.Vertex;
+import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,7 +54,7 @@ public class DijkstraAlgorithm {
     int distances[];
     MyPQ q;
 
-    public Vertex shortestPathFromSelectedVertexToHospital(Vertex start) {
+    public List<Vertex> shortestPathFromSelectedVertexToHospital(Vertex start) {
 
 //        System.out.println("Sąsiedzi poszukwianego wierzchołka to " + neighbours(start.getId()));
 
@@ -108,7 +111,7 @@ public class DijkstraAlgorithm {
         int min = INFINITY;
         int index = 0;
         for (int i = 0; i < distances.length; i++) {
-            if (distances[i] < min && distances[i] != 0) {
+            if (distances[i] < min && distances[i] != 0 && hospitals.getHospitalById(i).getNumberOfAvailableBeds() != 0) {
                 min = distances[i];
                 index = i;
             }
@@ -116,10 +119,27 @@ public class DijkstraAlgorithm {
 
         System.out.println();
         System.out.println("Najkrótsza droga jest do szpitala o id: " + index);
-        System.out.println("I wiedzie ona przez " + predecessors[index]
-                + " (jeżeli id = id początku to znaczy, że jest połączenie bezpośrednie)");
+        System.out.println(Arrays.toString(predecessors));
+
+        newHospital = hospitals.getHospitalById(index);
+
+//        System.out.println("I wiedzie ona przez " + predecessors[index]
+//                + " (jeżeli id = id początku to znaczy, że jest połączenie bezpośrednie)");
         System.out.println();
-        return null;
+
+        List<Vertex> pointsToVisit = new ArrayList<>();
+
+        // ...
+
+        pointsToVisit.add(hospitals.getHospitalById(index));
+
+        return pointsToVisit;
+    }
+
+    Hospital newHospital;
+
+    public Hospital getNewHospital() {
+        return newHospital;
     }
 
     public void decreasePriority(int id, int distance) {

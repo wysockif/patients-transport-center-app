@@ -3,6 +3,7 @@ package pl.group2.optimizer.impl.items.ambulance;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
+import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
@@ -90,16 +91,24 @@ public class AmbulanceService extends Thread {
         // go znowu nie przyjeli, bo z tamtego szpitala najkrótsza ścieżka może być spowrotem do tego
         // 1 szpitala i tak by krążył w kółko
 
-        Hospital closest = (Hospital) dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        List<Vertex> points = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
+        Point ppoint = new Point() {
+            @Override
+            public int getXCoordinate() {
+                return points.get(0).getXCoordinate();
+            }
 
-        if (closest.getNumberOfAvailableBeds() == 0) {
-            closest = hospital;
-        } else {
-            leavePatient(patient, closest);
-        }
+            @Override
+            public int getYCoordinate() {
+                return points.get(0).getYCoordinate();
+            }
+        };
         List<Point> pointsToVisit = new LinkedList<>();
+
         pointsToVisit.add(hospital);
-        pointsToVisit.add(closest);
+
+        pointsToVisit.add(ppoint);
 
         if (pointsToVisit.size() < 2) {
             throw new UnsupportedOperationException();
@@ -112,6 +121,11 @@ public class AmbulanceService extends Thread {
             Point point = pointsToVisit.get(i);
             transportPatient(ambulance, point);
 
+            if (hospitalToLeave.getNumberOfAvailableBeds() == 0) {
+                findAnotherHospital(patient, hospitalToLeave, ambulance);
+            } else {
+                leavePatient(patient, hospitalToLeave);
+            }
         }
 
     }
