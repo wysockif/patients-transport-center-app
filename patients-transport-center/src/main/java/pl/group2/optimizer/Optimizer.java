@@ -28,9 +28,9 @@ import static pl.group2.optimizer.gui.components.Plan.PADDING;
 import static pl.group2.optimizer.gui.components.Plan.WIDTH;
 
 public class Optimizer {
-    public static final double NANOSECONDS_IN_SECOND = 1_000_000_000.0;
-
-    private final String timeFormat;
+    private double scaleX;
+    private double scaleY;
+    private boolean running;
 
     private Patients patients;
     private Hospitals hospitals;
@@ -41,63 +41,16 @@ public class Optimizer {
     private PatientsManagement patientsManagement;
     private AmbulanceService ambulanceService;
     private Communicator communicator;
-
-    private double scaleX;
-    private double scaleY;
-    private boolean running;
     private Intersections intersections;
 
-
-    public Optimizer() {
-        timeFormat = "[ %.4fs ]\n";
-    }
-
-    public String messageAboutDownloadedPatients() {
-        String time = String.format("[ %.4fs ]", timeOfDownloadingPatients);
-        return "Wczytano " + patients.size() + " pacjentów" + " w " + time;
-    }
-
-    public String messageAboutDownloadedMap() {
-        String time = String.format("[ %.4fs ]", timeOfDownloadingMap);
-        return "Wczytano " + hospitals.size() + " szpitali, " +
-                specialObjects.size() + " specjalnych obiektów, " +
-                paths.size() + " dróg" +
-                " w " + time;
-
-    }
-
-
-    double timeOfDownloadingPatients = 0;
-
-
-    public void loadPatients(String inputFilePath) throws MyException {
-        long before = System.nanoTime();
-
-        TextFileReader textFileReader = new TextFileReader();
-        textFileReader.readData(inputFilePath, patientsManagement);
-
-        patients = textFileReader.getPatients();
-        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-        timeOfDownloadingPatients = time;
-        //System.out.printf(timeFormat, time);
-        communicator.saveMessage(messageAboutDownloadedPatients());
-    }
-
-    double timeOfDownloadingMap = 0;
-
-
-    private int numberOfElements = 0;
-
     public void loadMap(String inputFilePath) throws MyException {
-        long before = System.nanoTime();
-
         TextFileReader textFileReader = new TextFileReader();
         textFileReader.readData(inputFilePath);
         hospitals = textFileReader.getHospitals();
         specialObjects = textFileReader.getSpecialObjects();
         paths = textFileReader.getPaths();
 
-        numberOfElements = hospitals.size() + specialObjects.size();
+        int numberOfElements = hospitals.size() + specialObjects.size();
         specialObjects.setNumberOfMapElements(numberOfElements);
         hospitals.setNumberOfMapElements(numberOfElements);
         paths.setNumberOfMapElements(numberOfElements);
@@ -105,24 +58,16 @@ public class Optimizer {
         intersections = new Intersections();
         intersections.lookForIntersections(paths.getList());
 
-        double time = (double) (System.nanoTime() - before) / NANOSECONDS_IN_SECOND;
-        timeOfDownloadingMap = time;
         communicator.saveMessage(messageAboutDownloadedMap());
-
-        //System.out.printf(timeFormat, time);
-
         scaleMap(numberOfElements);
         area = prepareData();
     }
 
-
-    Window window;
-
-    public void createWindow() {
-        plan = new Plan(this);
-        patientsManagement = new PatientsManagement(this);
+    public void createWindow(Optimizer optimizer) {
+        plan = new Plan(optimizer);
+        patientsManagement = new PatientsManagement(optimizer);
         communicator = new Communicator();
-        new Window(this, plan, patientsManagement, communicator);
+        SwingUtilities.invokeLater(() -> new Window(optimizer, plan, patientsManagement, communicator));
     }
 
     public HandledArea prepareData() {
@@ -152,6 +97,7 @@ public class Optimizer {
         int multiplier = 100;
         scaleX = Math.floor((double) multiplier * (WIDTH - MARGIN * 2 - PADDING) / area.getMaxWidth()) / multiplier;
         scaleY = Math.floor((double) multiplier * (HEIGHT - MARGIN * 2 - PADDING) / area.getMaxHeight()) / multiplier;
+        area.setScales(scaleX, scaleY);
         plan.setProperties(scaleX, scaleY, area.getMinX(), area.getMinY());
         plan.showMap();
         running = true;
@@ -178,6 +124,31 @@ public class Optimizer {
 
     private void scalePatients(int numberOfPatients) {
 
+    }
+
+    public String messageAboutDownloadedPatients() {
+        return "Wczytano " + patients.size() + " pacjentów";
+    }
+
+    public String messageAboutDownloadedMap() {
+        return "Wczytano " + hospitals.size() + " szpitali, " +
+                specialObjects.size() + " specjalnych obiektów, " +
+                paths.size() + " dróg";
+    }
+
+    public void loadPatients(String inputFilePath) throws MyException {
+        TextFileReader textFileReader = new TextFileReader();
+
+        textFileReader.readData(inputFilePath, patientsManagement);
+        patients = textFileReader.getPatients();
+        communicator.saveMessage(messageAboutDownloadedPatients());
+    }
+
+    public void changePeriod(long value) {
+        if (ambulanceService != null) {
+            long interval = 1200000 - 120000 * value;
+            ambulanceService.setInterval(interval);
+        }
     }
 
     public Patients getPatients() {
@@ -234,12 +205,5 @@ public class Optimizer {
 
     public AmbulanceService getAmbulanceService() {
         return ambulanceService;
-    }
-
-    public void changePeriod(long value) {
-        if(ambulanceService != null){
-            long interval = 1500000 - 150000 * value;
-            ambulanceService.setInterval(interval);
-        }
     }
 }

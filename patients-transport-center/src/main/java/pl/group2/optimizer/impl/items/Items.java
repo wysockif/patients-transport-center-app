@@ -1,6 +1,6 @@
 package pl.group2.optimizer.impl.items;
 
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.zip.DataFormatException;
 
 public interface Items {

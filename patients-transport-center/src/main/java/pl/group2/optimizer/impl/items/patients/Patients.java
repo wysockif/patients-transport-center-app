@@ -22,6 +22,8 @@ import static pl.group2.optimizer.gui.components.Plan.PADDING;
 public class Patients implements Items {
     private final QueueFIFO<Patient> patientsQueue;
     private final PatientsManagement patientsManagement;
+    private int numberOfMapElements;
+
 
 
     public Patients(PatientsManagement patientsManagement) {
@@ -113,8 +115,6 @@ public class Patients implements Items {
         return patientsQueue.getCollection();
     }
 
-
-    int numberOfMapElements;
 
     public void setNumberOfMapElements(int numberOfMapElements) {
         this.numberOfMapElements = numberOfMapElements;

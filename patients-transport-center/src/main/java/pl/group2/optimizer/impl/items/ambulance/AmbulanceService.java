@@ -2,12 +2,11 @@ package pl.group2.optimizer.impl.items.ambulance;
 
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
-import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
-import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
+import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.patients.Grave;
 import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
@@ -16,7 +15,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,19 +26,22 @@ public class AmbulanceService extends Thread {
     private final ShortestDistanceChecker shortestDistanceChecker;
     private final HandledArea area;
     private final Communicator communicator;
-    private List<Grave> graveList;
-    private Patients patients;
-    private Hospitals hospitals;
+    private final List<Grave> graveList;
+    private final Patients patients;
+    private final Hospitals hospitals;
     private long interval;
-    private boolean running;
+
 
     private Ambulance ambulance;
-    private boolean visible;
+
+    private boolean running;
+    private boolean isVisible;
     private double rotation;
+
     private AffineTransform af;
     DijkstraAlgorithm dijkstraAlgorithm;
 
-    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area, Communicator communicator, DijkstraAlgorithm dijkstraAlgorithm) {
+    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area, Communicator communicator) {
         this.patients = patients;
         this.hospitals = hospitals;
         this.area = area;
@@ -72,6 +73,7 @@ public class AmbulanceService extends Thread {
             createGrave(patient);
         } else {
             transportPatient(ambulance, hospital);
+            isVisible = false;
             if (hospital.getNumberOfAvailableBeds() > 0) {
                 leavePatient(patient, hospital);
             } else {
@@ -84,7 +86,7 @@ public class AmbulanceService extends Thread {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
 
-        // Bartek tutaj algotytm najkrótszej ścieżki
+        // BBartek tutaj algotytm najkrótszej ścieżki
         // np. List<Points> pointsToVisit = twójAlgorytm.znajdźNajkrótsząŚcieżkę(zTegoSzpitala);
         // ja zakładam w dalszej części, że w tej liście będzie też szpital z którego startujemy
         // i chyba ten algorytm jak już ustali najkrótsze ścieżki do każdego szpitala to powinien
@@ -169,16 +171,8 @@ public class AmbulanceService extends Thread {
         int destX = point.getXCoordinate();
         int destY = point.getYCoordinate();
 
-        rotation = Math.toRadians(90);
-        if(destX - sourceX != 0) {
-            rotation = -Math.atan((destY - sourceY) / (destX - sourceX));
-        }
-
-        if (destX < sourceX) {
-            ambulance.setRightSprite();
-        } else {
-            ambulance.setLeftSprite();
-        }
+        setHorizontalDirection(ambulance, sourceX, destX);
+        rotateAmbulance(ambulance, sourceX, sourceY, destX, destY);
 
         double vx = destX - sourceX;
         double vy = destY - sourceY;
@@ -186,34 +180,65 @@ public class AmbulanceService extends Thread {
         double distance = Math.sqrt((destX - sourceX) * (destX - sourceX) + (destY - sourceY) * (destY - sourceY));
         double step = 1 / (200 * distance);
 
-        visible = true;
-        for (double dist = 0.0; dist <= 1; dist += step) {
+        driveAmbulance(ambulance, sourceX, sourceY, vx, vy, step);
+    }
+
+    private void driveAmbulance(Ambulance ambulance, double sourceX, double sourceY, double vx, double vy, double step) {
+        isVisible = true;
+        for (double dist = 0.05; dist <= 1; dist += step) {
             ambulance.setXCoordinate((sourceX + vx * dist));
             ambulance.setYCoordinate((sourceY + vy * dist));
-
-            long start = System.nanoTime();
-            long end;
-            do {
-                end = System.nanoTime();
-            } while (start + interval >= end);
-
+            if (dist < 0.95) {
+                long start = System.nanoTime();
+                long end;
+                do {
+                    end = System.nanoTime();
+                } while (start + interval >= end);
+            }
         }
-        visible = false;
+    }
+
+    private void setHorizontalDirection(Ambulance ambulance, double sourceX, int destX) {
+        if (destX < sourceX) {
+            ambulance.setLeftSprite();
+        } else {
+            ambulance.setRightSprite();
+        }
+    }
+
+    private void rotateAmbulance(Ambulance ambulance, double sourceX, double sourceY, int destX, int destY) {
+        int xShift = 55;
+        int yShift = 55;
+        double x1 = Math.round(PADDING + sourceX * area.getScaleX() + MARGIN - xShift - area.getMinX() * area.getScaleX());
+        double y1 = Math.round(PADDING + HEIGHT - (sourceY * area.getScaleY()) - MARGIN - yShift + area.getMinY() * area.getScaleY());
+        double x2 = Math.round(PADDING + destX * area.getScaleX() + MARGIN - xShift - area.getMinX() * area.getScaleX());
+        double y2 = Math.round(PADDING + HEIGHT - (destY * area.getScaleY()) - MARGIN - yShift + area.getMinY() * area.getScaleY());
+
+        rotation = Math.toRadians(90);
+        if (x2 - x1 != 0) {
+            rotation = Math.atan((y2 - y1) / (x2 - x1));
+        } else {
+            setVerticalDirection(ambulance, sourceY, destY);
+        }
+    }
+
+    private void setVerticalDirection(Ambulance ambulance, double sourceY, int destY) {
+        if (destY > sourceY) {
+            ambulance.setLeftSprite();
+        } else {
+            ambulance.setRightSprite();
+        }
     }
 
     public void drawAmbulance(Graphics g, double scalaX, double scalaY, int minX, int minY) {
-        if (visible) {
-            int xShift = 37;
-            int yShift = 65;
-
+        if (isVisible) {
+            int xShift = 55;
+            int yShift = 58;
             int x = (int) Math.round(PADDING + ambulance.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (ambulance.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
 
-            double locationX = 37;
-            double locationY = 30;
-            AffineTransform tx = AffineTransform.getRotateInstance(rotation, locationX, locationY);
+            AffineTransform tx = AffineTransform.getRotateInstance(rotation, xShift, yShift);
             AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-
             Graphics2D g2d = (Graphics2D) g;
             g2d.drawImage(op.filter(ambulance.getCurrentImage(), null), x, y, null);
         }
@@ -223,15 +248,17 @@ public class AmbulanceService extends Thread {
         for (Grave grave : graveList) {
             int xShift = 20;
             int yShift = 25;
-
             int x = (int) Math.round(PADDING + grave.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (grave.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
-
             g.drawImage(grave.getImage(), x, y, null);
         }
     }
 
     public void setInterval(long interval) {
         this.interval = interval;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }

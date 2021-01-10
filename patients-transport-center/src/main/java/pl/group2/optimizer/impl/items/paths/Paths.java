@@ -8,8 +8,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -147,8 +145,8 @@ public class Paths implements Items {
 
     public void drawCenteredString(Graphics g, String text, int x1, int y1, int x2, int y2, Font font) {
         FontMetrics metrics = g.getFontMetrics(font);
-        int x = (x1 + x2 - metrics.stringWidth(text)) /2;
-        int y = (y1 + y2 - metrics.getHeight()) /2 + metrics.getAscent();
+        int x = (x1 + x2 - metrics.stringWidth(text)) / 2;
+        int y = (y1 + y2 - metrics.getHeight()) / 2 + metrics.getAscent();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(WHITE);
         g2d.setFont(font);
