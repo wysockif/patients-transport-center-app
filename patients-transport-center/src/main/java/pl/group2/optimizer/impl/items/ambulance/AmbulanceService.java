@@ -16,6 +16,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -93,40 +94,50 @@ public class AmbulanceService extends Thread {
 
         List<Vertex> points = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
         Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
-        Point ppoint = new Point() {
-            @Override
-            public int getXCoordinate() {
-                return points.get(0).getXCoordinate();
-            }
 
-            @Override
-            public int getYCoordinate() {
-                return points.get(0).getYCoordinate();
-            }
-        };
         List<Point> pointsToVisit = new LinkedList<>();
 
-        pointsToVisit.add(hospital);
+        for (Vertex vertex : points) {
+            pointsToVisit.add(new Point() {
+                @Override
+                public int getXCoordinate() {
+                    return vertex.getXCoordinate();
+                }
 
-        pointsToVisit.add(ppoint);
-
-        if (pointsToVisit.size() < 2) {
-            throw new UnsupportedOperationException();
+                @Override
+                public int getYCoordinate() {
+                    return vertex.getYCoordinate();
+                }
+            });
         }
 
-        for (int i = 1; i < pointsToVisit.size(); i++) {
-            ambulance.setXCoordinate(pointsToVisit.get(i - 1).getXCoordinate());
-            ambulance.setYCoordinate(pointsToVisit.get(i - 1).getYCoordinate());
+        System.out.println(Arrays.toString(pointsToVisit.toArray()));
+//
+//        pointsToVisit.add(hospital);
+//
+//        pointsToVisit.add(ppoint);
+
+//        if (pointsToVisit.size() < 2) {
+//            throw new UnsupportedOperationException();
+//        }
+
+        for (int i = 0; i < pointsToVisit.size(); i++) {
+//            System.out.println("Karetka ma jechać do punktu");
+//            System.out.println(pointsToVisit.get(i).getXCoordinate());
+//            System.out.println(pointsToVisit.get(i).getYCoordinate());
+//            ambulance.setXCoordinate(pointsToVisit.get(i).getXCoordinate());
+//            ambulance.setYCoordinate(pointsToVisit.get(i).getYCoordinate());
 
             Point point = pointsToVisit.get(i);
             transportPatient(ambulance, point);
 
-            if (hospitalToLeave.getNumberOfAvailableBeds() == 0) {
-                findAnotherHospital(patient, hospitalToLeave, ambulance);
-            } else {
-                leavePatient(patient, hospitalToLeave);
-            }
+//            if (hospitalToLeave.getNumberOfAvailableBeds() == 0) {
+//                findAnotherHospital(patient, hospitalToLeave, ambulance);
+//            } else {
+//                leavePatient(patient, hospitalToLeave);
+//            }
         }
+        leavePatient(patient, hospitalToLeave);
 
     }
 

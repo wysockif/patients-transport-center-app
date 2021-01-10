@@ -14,7 +14,7 @@ public class DijkstraMain {
 
         Optimizer optimizer = new Optimizer();
         optimizer.createWindow();
-        optimizer.loadMap("exemplaryData/correct/map1.txt");
+        optimizer.loadMap("exemplaryData/correct/map_for_dijkstra");
         optimizer.loadPatients("exemplaryData/correct/patients1.txt");
 
         Hospitals hospitals = optimizer.getHospitals();

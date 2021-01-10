@@ -118,20 +118,54 @@ public class DijkstraAlgorithm {
         }
 
         System.out.println();
-        System.out.println("Najkrótsza droga jest do szpitala o id: " + index);
+        System.out.println("Najkrótsza droga jest do szpitala o id " + index);
+
         System.out.println(Arrays.toString(predecessors));
 
         newHospital = hospitals.getHospitalById(index);
+        List<Vertex> pointsToVisit = new ArrayList<>();
+        List<Vertex> pointsToVisitCopy = new ArrayList<>();
+
+//        pointsToVisit.add(newHospital);
+
+        int predecessorIndex = index;
+
+        while (predecessorIndex != start.getId()) {
+            for (int i = 0; i < predecessors.length; i++) {
+                if (predecessorIndex == i) {
+                    System.out.println("Przez wierzchołek o id = " + predecessors[i]);
+                    //pointsToVisit.add(hospitals.getHospitalById(predecessorIndex));
+                    pointsToVisitCopy.add(hospitals.getHospitalById(predecessorIndex));
+                    predecessorIndex = predecessors[i];
+                    break;
+                }
+            }
+        }
+
+//        for (Vertex vertex : pointsToVisit) {
+//            System.out.println(vertex.getXCoordinate() + " " + vertex.getYCoordinate());
+//        }
+
+        for (int i = pointsToVisitCopy.size() - 1; i >= 0; i--) {
+            pointsToVisit.add(pointsToVisitCopy.get(i));
+        }
+
+        for (Vertex vertex : pointsToVisit) {
+            System.out.println(vertex.getXCoordinate() + " " + vertex.getYCoordinate());
+        }
+
+//        }
+//        for(int i = 0; i < predecessors.length; i++) {
+//            if (i == index) {
+//                System.out.println("Przez wierzchołek o id = " + predecessors[i]);
+//            }
+//        }
+
 
 //        System.out.println("I wiedzie ona przez " + predecessors[index]
 //                + " (jeżeli id = id początku to znaczy, że jest połączenie bezpośrednie)");
         System.out.println();
 
-        List<Vertex> pointsToVisit = new ArrayList<>();
-
-        // ...
-
-        pointsToVisit.add(hospitals.getHospitalById(index));
 
         return pointsToVisit;
     }
