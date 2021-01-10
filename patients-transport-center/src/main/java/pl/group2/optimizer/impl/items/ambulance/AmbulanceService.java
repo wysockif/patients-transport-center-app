@@ -2,11 +2,12 @@ package pl.group2.optimizer.impl.items.ambulance;
 
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
+import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
+import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
-import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.patients.Grave;
 import pl.group2.optimizer.impl.items.patients.Patient;
 import pl.group2.optimizer.impl.items.patients.Patients;
@@ -15,6 +16,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,7 +43,8 @@ public class AmbulanceService extends Thread {
     private AffineTransform af;
     DijkstraAlgorithm dijkstraAlgorithm;
 
-    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area, Communicator communicator) {
+    public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area,
+                            Communicator communicator, DijkstraAlgorithm dijkstraAlgorithm) {
         this.patients = patients;
         this.hospitals = hospitals;
         this.area = area;

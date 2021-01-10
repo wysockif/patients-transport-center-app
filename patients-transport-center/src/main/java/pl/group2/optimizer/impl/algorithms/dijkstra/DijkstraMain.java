@@ -13,7 +13,7 @@ public class DijkstraMain {
     public static void main(String[] args) throws MyException {
 
         Optimizer optimizer = new Optimizer();
-        optimizer.createWindow();
+        optimizer.createWindow(optimizer);
         optimizer.loadMap("exemplaryData/correct/map_for_dijkstra");
         optimizer.loadPatients("exemplaryData/correct/patients1.txt");
 

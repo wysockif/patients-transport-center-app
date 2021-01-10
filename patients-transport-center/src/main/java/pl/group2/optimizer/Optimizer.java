@@ -19,6 +19,7 @@ import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObjects;
 
+import javax.swing.SwingUtilities;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
