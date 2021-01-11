@@ -8,12 +8,12 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SweepingLineStateStructure {
+public class SLStateStructure {
 
     private final List<Path> sweepingLineList;
     private final List<PathPoint> supportPathsPointsList;
 
-    public SweepingLineStateStructure() {
+    public SLStateStructure() {
         sweepingLineList = new LinkedList<>();
         supportPathsPointsList = new LinkedList<>();
     }

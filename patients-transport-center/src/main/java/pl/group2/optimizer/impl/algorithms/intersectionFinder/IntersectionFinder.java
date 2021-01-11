@@ -17,7 +17,7 @@ public class IntersectionFinder {
     private List<PathPoint> pathsPoints;
     private final List<Intersection> intersections;
     private int intersectionId;
-    private SweepingLineStateStructure sweepingLine;
+    private SLStateStructure sweepingLine;
     private Path pathAbove;
     private Path pathBelow;
 
@@ -26,7 +26,7 @@ public class IntersectionFinder {
         this.paths = paths;
         this.pathsToAdd = new LinkedList<>();
         this.pathsToDelete = new LinkedList<>();
-        this.sweepingLine = new SweepingLineStateStructure();
+        this.sweepingLine = new SLStateStructure();
         intersections = new LinkedList<>();
         intersectionId = 0;
         newPathId = -1;
@@ -35,6 +35,7 @@ public class IntersectionFinder {
     public void findIntersections() {
         getPathsPoints();
         sortPathsPoints();
+        showPathsPoints();
 
         for(PathPoint point: pathsPoints) {
             if(point.isLeft()==0) {
@@ -116,6 +117,12 @@ public class IntersectionFinder {
         }
         for(Path addedPath: pathsToAdd) {
             paths.add(addedPath);
+        }
+    }
+
+    private void showPathsPoints() {
+        for(PathPoint pointe: pathsPoints) {
+            System.out.println(pointe.toString());
         }
     }
 
