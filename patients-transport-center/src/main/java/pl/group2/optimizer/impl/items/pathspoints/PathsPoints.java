@@ -11,6 +11,7 @@ import java.util.List;
 public class PathsPoints {
     private final List<PathPoint> pathsPoints;
     private final List<Path> pathsList;
+    private int id;
     private int leftX;
     private int leftY;
     private int rightX;
@@ -21,34 +22,38 @@ public class PathsPoints {
     public PathsPoints(List<Path> pathsList) {
         pathsPoints = new LinkedList<>();
         this.pathsList = pathsList;
+        this.id = 0;
     }
 
     public void createPathsPoints() {
         // do refaktoryzacji
         for(Path selectedPath: pathsList) {
+            int isVerticalPathPointLeft = 1;
+            int isVerticalPathPointRight = 1;
+
             checkIfArgumentIsNull(selectedPath);
             startingPoint = (Hospital) selectedPath.getFrom();
             destinationPoint = (Hospital) selectedPath.getTo();
 
             if(startingPoint.getXCoordinate() < destinationPoint.getXCoordinate()) {
                 leftX = startingPoint.getXCoordinate();
-                leftY = startingPoint.getXCoordinate();
+                leftY = startingPoint.getYCoordinate();
                 rightX = destinationPoint.getXCoordinate();
                 rightY = destinationPoint.getYCoordinate();
             } else if(startingPoint.getXCoordinate() > destinationPoint.getXCoordinate()) {
                 leftX = destinationPoint.getXCoordinate();
-                leftY = destinationPoint.getXCoordinate();
+                leftY = destinationPoint.getYCoordinate();
                 rightX = startingPoint.getXCoordinate();
                 rightY = startingPoint.getYCoordinate();
             } else {
                 if(startingPoint.getYCoordinate() < destinationPoint.getYCoordinate()) {
                     leftX = startingPoint.getXCoordinate();
-                    leftY = startingPoint.getXCoordinate();
+                    leftY = startingPoint.getYCoordinate();
                     rightX = destinationPoint.getXCoordinate();
                     rightY = destinationPoint.getYCoordinate();
                 } else if(startingPoint.getYCoordinate() > destinationPoint.getYCoordinate()) {
                     leftX = destinationPoint.getXCoordinate();
-                    leftY = destinationPoint.getXCoordinate();
+                    leftY = destinationPoint.getYCoordinate();
                     rightX = startingPoint.getXCoordinate();
                     rightY = startingPoint.getYCoordinate();
                 } else {
@@ -56,8 +61,13 @@ public class PathsPoints {
                 }
             }
 
-            pathsPoints.add(new PathPoint(selectedPath.getId(), leftX, leftY, 0));
-            pathsPoints.add(new PathPoint(selectedPath.getId(), rightX, rightY, 1));
+            if(leftX == rightX) {
+                isVerticalPathPointLeft = 0;
+                isVerticalPathPointRight = 2;
+            }
+
+            pathsPoints.add(new PathPoint(id++, leftX, leftY, 0, selectedPath,isVerticalPathPointLeft));
+            pathsPoints.add(new PathPoint(id++, rightX, rightY, 1, selectedPath,isVerticalPathPointRight));
         }
 
     }

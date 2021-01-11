@@ -13,6 +13,7 @@ import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.intersections.Intersections;
+import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
 import pl.group2.optimizer.impl.items.patients.Patients;
 import pl.group2.optimizer.impl.items.specialobjects.SpecialObject;

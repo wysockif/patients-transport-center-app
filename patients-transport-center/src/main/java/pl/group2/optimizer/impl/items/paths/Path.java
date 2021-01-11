@@ -28,4 +28,14 @@ public class Path {
     public Vertex getTo() {
         return to;
     }
+
+    @Override
+    public String toString() {
+        return "Path{" +
+                "id=" + id +
+                ", from=" + from.toString() +
+                ", to=" + to.toString() +
+                ", distance=" + distance +
+                '}';
+    }
 }
