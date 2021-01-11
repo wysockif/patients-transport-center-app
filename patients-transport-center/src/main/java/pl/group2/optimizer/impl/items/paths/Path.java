@@ -17,7 +17,7 @@ public class Path {
 
     public int getId() {return id; }
 
-    public double getDistance() {
+    public int getDistance() {
         return distance;
     }
 

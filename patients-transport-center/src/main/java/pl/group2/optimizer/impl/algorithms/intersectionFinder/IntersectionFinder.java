@@ -95,9 +95,9 @@ public class IntersectionFinder {
                                                                             secondPathRealDistance);
 
         pathsToAdd.add(new Path(newPathId--,firstPath.getFrom(),intersection,firstPathFromToIntersectionPathDistance));
-        pathsToAdd.add(new Path(newPathId--,firstPath.getTo(),intersection,firstPath.getDistance() - firstPathFromToIntersectionPathDistance));
+        pathsToAdd.add(new Path(newPathId--,intersection, firstPath.getTo(),firstPath.getDistance() - firstPathFromToIntersectionPathDistance));
         pathsToAdd.add(new Path(newPathId--,secondPath.getFrom(),intersection,secondPathFromToIntersectionPathDistance));
-        pathsToAdd.add(new Path(newPathId--,secondPath.getTo(),intersection,secondPath.getDistance()-secondPathFromToIntersectionPathDistance));
+        pathsToAdd.add(new Path(newPathId--,intersection,secondPath.getTo(),secondPath.getDistance()-secondPathFromToIntersectionPathDistance));
 
         if(!pathsToDelete.contains(firstPath)) {
             pathsToDelete.add(firstPath);
