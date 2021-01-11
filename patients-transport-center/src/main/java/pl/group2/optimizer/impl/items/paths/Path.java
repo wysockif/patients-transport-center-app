@@ -14,7 +14,13 @@ public class Path {
         this.to = to;
         this.distance = distance;
     }
-    
+
+    public int getId() {return id; }
+
+    public double getDistance() {
+        return distance;
+    }
+
     public Vertex getFrom() {
         return from;
     }
@@ -23,7 +29,13 @@ public class Path {
         return to;
     }
 
-    public int getDistance() {
-        return distance;
+    @Override
+    public String toString() {
+        return "Path{" +
+                "id=" + id +
+                ", from=" + from.toString() +
+                ", to=" + to.toString() +
+                ", distance=" + distance +
+                '}';
     }
 }

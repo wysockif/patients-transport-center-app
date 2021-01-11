@@ -8,4 +8,9 @@ public class Intersection extends Vertex implements Point {
     public Intersection(int id, int xCoordinate, int yCoordinate) {
         super(id, xCoordinate, yCoordinate);
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

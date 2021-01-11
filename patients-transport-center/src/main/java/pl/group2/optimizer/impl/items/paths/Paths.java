@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
@@ -29,12 +30,12 @@ public class Paths implements Items {
     }
 
     public void addNewPath(Path path) {
-        checkIfArgumentIsNull(path);
+        checkIfArgumentIsNotNull(path);
         paths.add(path);
     }
 
     public boolean contains(Path path) {
-        checkIfArgumentIsNull(path);
+        checkIfArgumentIsNotNull(path);
         return paths.contains(path);
     }
 
@@ -44,12 +45,6 @@ public class Paths implements Items {
 
     public Path get(int index) {
         return paths.get(index);
-    }
-
-    private void checkIfArgumentIsNull(Object argument) {
-        if (argument == null) {
-            throw new IllegalArgumentException("Niezainicjowany argument");
-        }
     }
 
     @Override
