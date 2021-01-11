@@ -45,7 +45,7 @@ public class DijkstraAlgorithm {
     private Graph makeGraph() {
         Graph graph = new Graph(hospitals.getMaxId() + 1);
         for (Path path : paths.getList()) {
-            graph.addEdge(path.getFrom().getId(), path.getTo().getId(), (int) path.getDistance());
+            graph.addEdge(path.getFrom().getId(), path.getTo().getId(), path.getDistance());
         }
         return graph;
     }
