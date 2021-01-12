@@ -1,6 +1,7 @@
 package pl.group2.optimizer.impl.algorithms.intersectionFinder;
 
 import pl.group2.optimizer.impl.items.Vertex;
+import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.intersections.Intersection;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.pathspoints.PathPoint;
@@ -20,6 +21,8 @@ public class IntersectionFinder {
     private SweepingLineStateStructure sweepingLine;
     private Path pathAbove;
     private Path pathBelow;
+    private int pathsPointsCurrentIndex;
+    private int newPathPointIndex;
 
 
     public IntersectionFinder(List<Path> paths) {
@@ -30,6 +33,8 @@ public class IntersectionFinder {
         intersections = new LinkedList<>();
         intersectionId = 0;
         newPathId = -1;
+        newPathPointIndex = -1;
+        pathsPointsCurrentIndex = -1;
     }
 
     public void findIntersections() {
@@ -37,6 +42,7 @@ public class IntersectionFinder {
         sortPathsPoints();
 
         for(PathPoint point: pathsPoints) {
+            pathsPointsCurrentIndex++;
             if(point.isLeft()==0) {
                 sweepingLine.insertPath(point.getPath());
                 sweepingLine.sortInDescendingOrder(point);
@@ -94,10 +100,22 @@ public class IntersectionFinder {
                                                                             secondPath.getDistance()) /
                                                                             secondPathRealDistance);
 
-        pathsToAdd.add(new Path(newPathId--,firstPath.getFrom(),intersection,firstPathFromToIntersectionPathDistance));
-        pathsToAdd.add(new Path(newPathId--,intersection, firstPath.getTo(),firstPath.getDistance() - firstPathFromToIntersectionPathDistance));
-        pathsToAdd.add(new Path(newPathId--,secondPath.getFrom(),intersection,secondPathFromToIntersectionPathDistance));
-        pathsToAdd.add(new Path(newPathId--,intersection,secondPath.getTo(),secondPath.getDistance()-secondPathFromToIntersectionPathDistance));
+        Path firstPathFromPointToIntersection = new Path(newPathId--,firstPath.getFrom(),intersection,firstPathFromToIntersectionPathDistance);
+        Path firstPathToPointToIntersection = new Path(newPathId--,firstPath.getTo(), intersection,firstPath.getDistance() - firstPathFromToIntersectionPathDistance);
+        Path secondPathFromPointToIntersection = new Path(newPathId--,secondPath.getFrom(),intersection,secondPathFromToIntersectionPathDistance);
+        Path secondPathToPointToIntersection = new Path(newPathId--,secondPath.getTo(),intersection,secondPath.getDistance()-secondPathFromToIntersectionPathDistance);
+
+        pathsToAdd.add(firstPathFromPointToIntersection);
+        pathsToAdd.add(firstPathToPointToIntersection);
+        pathsToAdd.add(secondPathFromPointToIntersection);
+        pathsToAdd.add(secondPathToPointToIntersection);
+
+        Path firstPathRightSubPath = decideWhichIsRightPath(firstPathFromPointToIntersection,firstPathToPointToIntersection);
+        Path secondPathRightSubPath = decideWhichIsRightPath(secondPathFromPointToIntersection,secondPathToPointToIntersection);
+
+        pathsPoints.add(pathsPointsCurrentIndex+1,new PathPoint(newPathPointIndex--,intersection.getXCoordinate(),intersection.getYCoordinate(),0,firstPathRightSubPath,-1));
+        pathsPoints.add(pathsPointsCurrentIndex+2,new PathPoint(newPathPointIndex--,intersection.getXCoordinate(),intersection.getYCoordinate(),0,secondPathRightSubPath,-1));
+
 
         if(!pathsToDelete.contains(firstPath)) {
             pathsToDelete.add(firstPath);
@@ -105,6 +123,27 @@ public class IntersectionFinder {
 
         if(!pathsToDelete.contains(secondPath)) {
             pathsToDelete.add(secondPath);
+        }
+    }
+
+   private Path decideWhichIsRightPath(Path fromToIntersectionPath, Path toToIntersectionPath) {
+        int fromX = fromToIntersectionPath.getFrom().getXCoordinate();
+        int fromY = fromToIntersectionPath.getFrom().getYCoordinate();
+        int toX = toToIntersectionPath.getFrom().getXCoordinate();
+        int toY = toToIntersectionPath.getFrom().getYCoordinate();
+
+        if(fromX < toX) {
+            return toToIntersectionPath;
+        } else if(fromX > toX) {
+            return fromToIntersectionPath;
+        } else {
+            if(fromY < toY) {
+                return toToIntersectionPath;
+            } else if(fromY > toY) {
+                return fromToIntersectionPath;
+            } else {
+                throw new IllegalArgumentException("Nie ma takiej drogi. Jest to punkt, w którym leży szpital");
+            }
         }
     }
 
