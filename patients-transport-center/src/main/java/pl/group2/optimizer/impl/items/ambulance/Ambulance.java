@@ -14,7 +14,7 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class Ambulance {
     private double x;
     private double y;
-    private int patientId;
+    private final int patientId;
 
     private BufferedImage currentImage;
 

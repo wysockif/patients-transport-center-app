@@ -23,7 +23,7 @@ import static pl.group2.optimizer.gui.components.Plan.PADDING;
 public class Hospitals implements Items {
     private final Map<Integer, Hospital> hospitalsByIndex;
     private final Map<Integer, Integer> indexById;
-    private List<Integer> indexes;
+    private final List<Integer> indexes;
     private int counter;
 
     public Hospitals() {

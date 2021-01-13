@@ -24,8 +24,6 @@ public class Patients implements Items {
     private final PatientsManagement patientsManagement;
     private int numberOfMapElements;
 
-
-
     public Patients(PatientsManagement patientsManagement) {
         this.patientsManagement = patientsManagement;
         patientsQueue = new QueueFIFO<>();

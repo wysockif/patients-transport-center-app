@@ -7,9 +7,6 @@ import pl.group2.optimizer.impl.items.patients.Patient;
 public class ShortestDistanceChecker {
 
     private int minIndex(double[] distances) {
-//        if (distances.length == 0) {
-//            throw new MyException("No hospitals found");
-//        }
         double min = distances[0];
         int minIndex = 0;
 

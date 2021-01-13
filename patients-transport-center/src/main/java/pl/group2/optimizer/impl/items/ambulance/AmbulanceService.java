@@ -3,7 +3,6 @@ package pl.group2.optimizer.impl.items.ambulance;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
-import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
@@ -16,7 +15,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,23 +23,22 @@ import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class AmbulanceService extends Thread {
+
     private final ShortestDistanceChecker shortestDistanceChecker;
+    private final DijkstraAlgorithm dijkstraAlgorithm;
     private final HandledArea area;
     private final Communicator communicator;
     private final List<Grave> graveList;
     private final Patients patients;
     private final Hospitals hospitals;
-    private long interval;
-
 
     private Ambulance ambulance;
 
+    private long interval;
     private boolean running;
     private boolean isVisible;
     private double rotation;
 
-    private AffineTransform af;
-    DijkstraAlgorithm dijkstraAlgorithm;
 
     public AmbulanceService(Patients patients, Hospitals hospitals, HandledArea area,
                             Communicator communicator, DijkstraAlgorithm dijkstraAlgorithm) {
@@ -49,12 +46,11 @@ public class AmbulanceService extends Thread {
         this.hospitals = hospitals;
         this.area = area;
         this.communicator = communicator;
+        this.dijkstraAlgorithm = dijkstraAlgorithm;
         running = true;
         shortestDistanceChecker = new ShortestDistanceChecker();
         graveList = new LinkedList<>();
         interval = 1200000;
-
-        this.dijkstraAlgorithm = dijkstraAlgorithm;
     }
 
     @Override
@@ -76,74 +72,25 @@ public class AmbulanceService extends Thread {
             createGrave(patient);
         } else {
             transportPatient(ambulance, hospital);
-            isVisible = false;
             if (hospital.getNumberOfAvailableBeds() > 0) {
                 leavePatient(patient, hospital);
             } else {
                 findAnotherHospital(patient, hospital, ambulance);
             }
+            isVisible = false;
         }
     }
 
     private void findAnotherHospital(Patient patient, Hospital hospital, Ambulance ambulance) {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
-
-        // BBartek tutaj algotytm najkrótszej ścieżki
-        // np. List<Points> pointsToVisit = twójAlgorytm.znajdźNajkrótsząŚcieżkę(zTegoSzpitala);
-        // ja zakładam w dalszej części, że w tej liście będzie też szpital z którego startujemy
-        // i chyba ten algorytm jak już ustali najkrótsze ścieżki do każdego szpitala to powinien
-        // zwrócić najkrótszą, ale do tego w którym jeszcze są wolne łóżka, bo bez sensu jakby tam
-        // go znowu nie przyjeli, bo z tamtego szpitala najkrótsza ścieżka może być spowrotem do tego
-        // 1 szpitala i tak by krążył w kółko
-
-        List<Vertex> points = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        List<Point> pointsToVisit = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
         Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
 
-        List<Point> pointsToVisit = new LinkedList<>();
-
-        for (Vertex vertex : points) {
-            pointsToVisit.add(new Point() {
-                @Override
-                public int getXCoordinate() {
-                    return vertex.getXCoordinate();
-                }
-
-                @Override
-                public int getYCoordinate() {
-                    return vertex.getYCoordinate();
-                }
-            });
-        }
-
-        System.out.println(Arrays.toString(pointsToVisit.toArray()));
-//
-//        pointsToVisit.add(hospital);
-//
-//        pointsToVisit.add(ppoint);
-
-//        if (pointsToVisit.size() < 2) {
-//            throw new UnsupportedOperationException();
-//        }
-
-        for (int i = 0; i < pointsToVisit.size(); i++) {
-//            System.out.println("Karetka ma jechać do punktu");
-//            System.out.println(pointsToVisit.get(i).getXCoordinate());
-//            System.out.println(pointsToVisit.get(i).getYCoordinate());
-//            ambulance.setXCoordinate(pointsToVisit.get(i).getXCoordinate());
-//            ambulance.setYCoordinate(pointsToVisit.get(i).getYCoordinate());
-
-            Point point = pointsToVisit.get(i);
+        for (Point point : pointsToVisit) {
             transportPatient(ambulance, point);
-
-//            if (hospitalToLeave.getNumberOfAvailableBeds() == 0) {
-//                findAnotherHospital(patient, hospitalToLeave, ambulance);
-//            } else {
-//                leavePatient(patient, hospitalToLeave);
-//            }
         }
         leavePatient(patient, hospitalToLeave);
-
     }
 
     private void leavePatient(Patient patient, Hospital hospital) {

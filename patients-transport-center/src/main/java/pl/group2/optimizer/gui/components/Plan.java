@@ -44,7 +44,7 @@ public class Plan extends JPanel {
             if (optimizer.getPatients() != null) {
                 optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
             }
-            if( optimizer.getAmbulanceService() != null){
+            if (optimizer.getAmbulanceService() != null) {
                 optimizer.getAmbulanceService().drawAmbulance(g, scalaX, scalaY, minX, minY);
                 optimizer.getAmbulanceService().drawDeadPatients(g, scalaX, scalaY, minX, minY);
             }

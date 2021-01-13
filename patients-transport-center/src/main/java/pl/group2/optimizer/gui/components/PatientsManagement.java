@@ -13,7 +13,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.zip.DataFormatException;
 
 import static java.awt.Color.DARK_GRAY;

@@ -1,6 +1,7 @@
 package pl.group2.optimizer.impl.algorithms.dijkstra;
 
 import pl.group2.optimizer.impl.items.Vertex;
+import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Path;
@@ -54,7 +55,7 @@ public class DijkstraAlgorithm {
     int distances[];
     MyPQ q;
 
-    public List<Vertex> shortestPathFromSelectedVertexToHospital(Vertex start) {
+    public List<Point> shortestPathFromSelectedVertexToHospital(Vertex start) {
 
 //        System.out.println("Sąsiedzi poszukwianego wierzchołka to " + neighbours(start.getId()));
 
@@ -117,14 +118,14 @@ public class DijkstraAlgorithm {
             }
         }
 
-        System.out.println();
-        System.out.println("Najkrótsza droga jest do szpitala o id " + index);
-
-        System.out.println(Arrays.toString(predecessors));
+//        System.out.println();
+//        System.out.println("Najkrótsza droga jest do szpitala o id " + index);
+//
+//        System.out.println(Arrays.toString(predecessors));
 
         newHospital = hospitals.getHospitalById(index);
-        List<Vertex> pointsToVisit = new ArrayList<>();
-        List<Vertex> pointsToVisitCopy = new ArrayList<>();
+        List<Point> pointsToVisit = new ArrayList<>();
+        List<Point> pointsToVisitCopy = new ArrayList<>();
 
 //        pointsToVisit.add(newHospital);
 
@@ -133,7 +134,7 @@ public class DijkstraAlgorithm {
         while (predecessorIndex != start.getId()) {
             for (int i = 0; i < predecessors.length; i++) {
                 if (predecessorIndex == i) {
-                    System.out.println("Przez wierzchołek o id = " + predecessors[i]);
+//                    System.out.println("Przez wierzchołek o id = " + predecessors[i]);
                     //pointsToVisit.add(hospitals.getHospitalById(predecessorIndex));
                     pointsToVisitCopy.add(hospitals.getHospitalById(predecessorIndex));
                     predecessorIndex = predecessors[i];
@@ -150,9 +151,9 @@ public class DijkstraAlgorithm {
             pointsToVisit.add(pointsToVisitCopy.get(i));
         }
 
-        for (Vertex vertex : pointsToVisit) {
-            System.out.println(vertex.getXCoordinate() + " " + vertex.getYCoordinate());
-        }
+//        for (Point point : pointsToVisit) {
+//            System.out.println(point.getXCoordinate() + " " + point.getYCoordinate());
+//        }
 
 //        }
 //        for(int i = 0; i < predecessors.length; i++) {

@@ -22,15 +22,16 @@ import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static javax.swing.SwingConstants.CENTER;
 
 public class Management extends JPanel {
+    private final Optimizer optimizer;
+    private final JButton runButton;
+
     private boolean arePatientsAttached;
     private boolean isMapAttached;
-    private final Optimizer optimizer;
+
     private JButton attachMapButton;
     private JButton attachPatientsButton;
-
-    private final JButton runButton;
-    private JSlider paceSlider;
     private JButton defaultDataButton;
+    private JSlider paceSlider;
 
     public Management(Optimizer optimizer) {
         this.optimizer = optimizer;
@@ -151,10 +152,6 @@ public class Management extends JPanel {
     private void attachPatients() {
         try {
             optimizer.loadPatients(getPathFromFileChooser());
-
-//            JOptionPane.showMessageDialog(null, optimizer.messageAboutDownloadedPatients(),
-//                    "Patients Transport Center", JOptionPane.INFORMATION_MESSAGE);
-
             attachPatientsButton.setForeground(GREEN.darker());
             attachPatientsButton.setText("Załączono");
             attachPatientsButton.setEnabled(false);
