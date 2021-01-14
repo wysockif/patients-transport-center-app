@@ -34,7 +34,6 @@ public class IntersectionFinder {
         intersectionId = 0;
         newPathId = -1;
         newPathPointIndex = -1;
-        pathsPointsCurrentIndex = -1;
     }
 
     public void findIntersections() {
@@ -42,7 +41,6 @@ public class IntersectionFinder {
         sortPathsPoints();
 
         for(PathPoint point: pathsPoints) {
-            pathsPointsCurrentIndex++;
             if(point.isLeft()==0) {
                 sweepingLine.insertPath(point.getPath());
                 sweepingLine.sortInDescendingOrder(point);
@@ -109,13 +107,16 @@ public class IntersectionFinder {
         pathsToAdd.add(firstPathToPointToIntersection);
         pathsToAdd.add(secondPathFromPointToIntersection);
         pathsToAdd.add(secondPathToPointToIntersection);
-
+/*
         Path firstPathRightSubPath = decideWhichIsRightPath(firstPathFromPointToIntersection,firstPathToPointToIntersection);
         Path secondPathRightSubPath = decideWhichIsRightPath(secondPathFromPointToIntersection,secondPathToPointToIntersection);
 
-        pathsPoints.add(pathsPointsCurrentIndex+1,new PathPoint(newPathPointIndex--,intersection.getXCoordinate(),intersection.getYCoordinate(),0,firstPathRightSubPath,-1));
-        pathsPoints.add(pathsPointsCurrentIndex+2,new PathPoint(newPathPointIndex--,intersection.getXCoordinate(),intersection.getYCoordinate(),0,secondPathRightSubPath,-1));
+        PathPoint[] newPathPoints = new PathPoint[4];
 
+        newPathPoints[0] = new PathPoint(newPathPointIndex--,intersection.getXCoordinate(),intersection.getYCoordinate(),0,firstPathRightSubPath,-1);
+        newPathPoints[1] = new PathPoint(newPathPointIndex--,firstPathRightSubPath.getFrom().getXCoordinate(),firstPathRightSubPath.getFrom().getYCoordinate(),1,firstPathRightSubPath,-1);
+        newPathPoints[2] = new
+*/
 
         if(!pathsToDelete.contains(firstPath)) {
             pathsToDelete.add(firstPath);
