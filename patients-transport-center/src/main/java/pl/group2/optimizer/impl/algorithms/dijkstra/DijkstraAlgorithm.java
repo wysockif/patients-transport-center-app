@@ -1,5 +1,7 @@
 package pl.group2.optimizer.impl.algorithms.dijkstra;
 
+import pl.group2.optimizer.impl.io.ErrorHandler;
+import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
@@ -74,14 +76,20 @@ public class DijkstraAlgorithm {
         }
     }
 
-    private int findMinimumDistance() {
+    private int findMinimumDistance() throws MyException {
+        int amountOfNotFreeBeds = 0;
         int min = INFINITY;
         int index = 0;
         for (int i = 0; i < distances.length; i++) {
             if (distances[i] < min && distances[i] != 0 && hospitals.getHospitalById(i).getNumberOfAvailableBeds() != 0) {
                 min = distances[i];
                 index = i;
+            } else {
+                amountOfNotFreeBeds++;
             }
+        }
+        if (amountOfNotFreeBeds == distances.length) {
+            ErrorHandler.handleError(ErrorHandler.NO_HOSPITALS_AVAILABLE, "Brak wolnych szpitali");
         }
         return index;
     }
@@ -122,7 +130,7 @@ public class DijkstraAlgorithm {
         q.setNewPriority(id, distance);
     }
 
-    public List<Vertex> shortestPathFromSelectedVertexToHospital(Vertex start) {
+    public List<Vertex> shortestPathFromSelectedVertexToHospital(Vertex start) throws MyException {
         initiatePredecessorsDistancesAndPriorityQueue(start);
 
         Set<Integer> w = new HashSet<>();
@@ -146,7 +154,7 @@ public class DijkstraAlgorithm {
 
         return findSeriesOfVerticesToVisit(index, start);
     }
-    
+
     public void relax(int u, int v) {
         int alt = distances[u] + graph.getWeightOfEdge(u, v);
         if (alt < distances[v]) {
