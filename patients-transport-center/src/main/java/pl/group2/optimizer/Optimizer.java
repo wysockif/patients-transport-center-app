@@ -58,7 +58,7 @@ public class Optimizer {
 
         intersections = new Intersections();
         // ODKOMENTOWAĆ jak będzie z tym działał Dijkstra
-//        intersections.lookForIntersections(paths.getList());
+        intersections.lookForIntersections(paths.getList(), hospitals.getMaxId());
 
         communicator.saveMessage(messageAboutDownloadedMap());
         scaleMap(numberOfElements);
@@ -89,7 +89,7 @@ public class Optimizer {
         // i wstrzyknąć go w poniższym konstruktorze do Ambulance Service
         // żeby nie wciągać tam oddzielnie skrzyżowań, ścieżek, a juz sam algorytm
 
-        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(hospitals, patients, paths);
+        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(hospitals, paths, intersections);
         ambulanceService = new AmbulanceService(patients, hospitals, area, communicator, dijkstraAlgorithm);
         ambulanceService.start();
     }

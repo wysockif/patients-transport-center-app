@@ -5,9 +5,9 @@ import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
+import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
-import pl.group2.optimizer.impl.items.patients.Patients;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,8 +21,8 @@ public class DijkstraAlgorithm {
     public static final int UNDEFINED = -1;
 
     private Hospitals hospitals;
-    private Patients patients;
     private Paths paths;
+    private Intersections intersections;
     private Graph graph;
 
     private Hospital newHospital;
@@ -31,10 +31,10 @@ public class DijkstraAlgorithm {
     private int distances[];
     private MyPQ q;
 
-    public DijkstraAlgorithm(Hospitals hospitals, Patients patients, Paths paths) {
+    public DijkstraAlgorithm(Hospitals hospitals, Paths paths, Intersections intersections) {
         this.hospitals = hospitals;
-        this.patients = patients;
         this.paths = paths;
+        this.intersections = intersections;
         graph = makeGraph();
     }
 
@@ -51,9 +51,10 @@ public class DijkstraAlgorithm {
     }
 
     private Graph makeGraph() {
-        Graph graph = new Graph(hospitals.getMaxId() + 1);
+        Graph graph = new Graph(hospitals.getMaxId() + 1 + intersections.getList().size());
         for (Path path : paths.getList()) {
             graph.addEdge(path.getFrom().getId(), path.getTo().getId(), path.getDistance());
+            System.out.println(path.getDistance());
         }
         return graph;
     }
@@ -80,7 +81,7 @@ public class DijkstraAlgorithm {
         int amountOfNotFreeBeds = 0;
         int min = INFINITY;
         int index = 0;
-        for (int i = 0; i < distances.length; i++) {
+        for (int i = 0; i <= hospitals.getMaxId(); i++) {
             if (distances[i] < min && distances[i] != 0 && hospitals.getHospitalById(i).getNumberOfAvailableBeds() != 0) {
                 min = distances[i];
                 index = i;
@@ -88,7 +89,7 @@ public class DijkstraAlgorithm {
                 amountOfNotFreeBeds++;
             }
         }
-        if (amountOfNotFreeBeds == distances.length) {
+        if (amountOfNotFreeBeds == hospitals.getMaxId()) {
             ErrorHandler.handleError(ErrorHandler.NO_HOSPITALS_AVAILABLE, "Brak wolnych szpitali");
         }
         return index;
@@ -104,7 +105,12 @@ public class DijkstraAlgorithm {
             for (int i = 0; i < predecessors.length; i++) {
                 if (predecessorIndex == i) {
                     System.out.println("Przez wierzchołek o id = " + predecessors[i]);
-                    pointsToVisitCopy.add(hospitals.getHospitalById(predecessorIndex));
+                    if (i >= hospitals.getMaxId() + 1) {
+                        pointsToVisitCopy.add(intersections.getList().get(predecessorIndex - hospitals.getMaxId() - 1));
+                    } else {
+                        pointsToVisitCopy.add(hospitals.getHospitalById(predecessorIndex));
+                    }
+
                     predecessorIndex = predecessors[i];
                     break;
                 }

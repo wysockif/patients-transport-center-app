@@ -10,9 +10,9 @@
 3 | Pomnik Anonimowego Przechodnia | 40 | 70
 # Drogi (id | id_szpitala | id_szpitala | odległość)
 1 | 1 | 2 | 700
-2 | 1 | 4 | 550
+2 | 1 | 4 | 700
 3 | 1 | 5 | 800
 4 | 2 | 3 | 300
 5 | 2 | 4 | 550
 6 | 3 | 5 | 600
-7 | 4 | 5 | 750
+7 | 4 | 5 | 400
