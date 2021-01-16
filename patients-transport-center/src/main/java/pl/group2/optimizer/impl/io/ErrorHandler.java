@@ -17,7 +17,10 @@ public class ErrorHandler {
 
         JOptionPane.showMessageDialog(null, informationAboutError, "Patients Transport Center", JOptionPane.ERROR_MESSAGE);
 
+        if (codeError == NO_HOSPITALS_AVAILABLE) {
+            System.exit(0);
+        }
+        
         throw new MyException(informationAboutError);
-
     }
 }

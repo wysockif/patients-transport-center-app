@@ -10,7 +10,6 @@ import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +53,6 @@ public class DijkstraAlgorithm {
         Graph graph = new Graph(hospitals.getMaxId() + 1 + intersections.getList().size());
         for (Path path : paths.getList()) {
             graph.addEdge(path.getFrom().getId(), path.getTo().getId(), path.getDistance());
-            System.out.println(path.getDistance());
         }
         return graph;
     }
@@ -89,7 +87,7 @@ public class DijkstraAlgorithm {
                 amountOfNotFreeBeds++;
             }
         }
-        if (amountOfNotFreeBeds == hospitals.getMaxId()) {
+        if (amountOfNotFreeBeds >= hospitals.getMaxId()) {
             ErrorHandler.handleError(ErrorHandler.NO_HOSPITALS_AVAILABLE, "Brak wolnych szpitali");
         }
         return index;
@@ -104,13 +102,11 @@ public class DijkstraAlgorithm {
         while (predecessorIndex != start.getId()) {
             for (int i = 0; i < predecessors.length; i++) {
                 if (predecessorIndex == i) {
-                    System.out.println("Przez wierzchołek o id = " + predecessors[i]);
                     if (i >= hospitals.getMaxId() + 1) {
                         pointsToVisitCopy.add(intersections.getList().get(predecessorIndex - hospitals.getMaxId() - 1));
                     } else {
                         pointsToVisitCopy.add(hospitals.getHospitalById(predecessorIndex));
                     }
-
                     predecessorIndex = predecessors[i];
                     break;
                 }
@@ -119,10 +115,6 @@ public class DijkstraAlgorithm {
 
         for (int i = pointsToVisitCopy.size() - 1; i >= 0; i--) {
             pointsToVisit.add(pointsToVisitCopy.get(i));
-        }
-
-        for (Vertex vertex : pointsToVisit) {
-            System.out.println(vertex.getXCoordinate() + " " + vertex.getYCoordinate());
         }
 
         return pointsToVisit;
@@ -151,10 +143,6 @@ public class DijkstraAlgorithm {
         }
 
         int index = findMinimumDistance();
-
-        System.out.println("Najkrótsza droga jest do szpitala o id " + index);
-        System.out.println(Arrays.toString(predecessors));
-        System.out.println(Arrays.toString(distances));
 
         newHospital = hospitals.getHospitalById(index);
 
