@@ -58,7 +58,7 @@ public class Optimizer {
 
         intersections = new Intersections();
         // ODKOMENTOWAĆ jak będzie z tym działał Dijkstra
-//        intersections.lookForIntersections(paths.getList());
+        //intersections.lookForIntersections(paths.getList());
 
         communicator.saveMessage(messageAboutDownloadedMap());
         scaleMap(numberOfElements);

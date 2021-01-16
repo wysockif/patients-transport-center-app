@@ -107,4 +107,11 @@ public class SLStateStructure {
 
         return new PathPoint(-1,intersectionPointX,intersectionPointY,-1,path,-1);
     }
+
+    public void swap(Path pathAbove, Path pathBelow) {
+        int pathAboveIndex = sweepingLineList.indexOf(pathAbove);
+        int pathBelowIndex = sweepingLineList.indexOf(pathBelow);
+
+        Collections.swap(sweepingLineList, pathAboveIndex, pathBelowIndex);
+    }
 }

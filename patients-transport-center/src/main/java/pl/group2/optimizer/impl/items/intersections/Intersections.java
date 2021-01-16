@@ -27,7 +27,7 @@ public class Intersections {
 
     public void lookForIntersections(List<Path> paths) {
         intersectionFinder = new IntersectionFinder(paths);
-        intersectionFinder.findIntersections();
+        intersectionFinder.findIntersectionsNaive(); //od razu tworzy nowa liste dróg
         intersections = intersectionFinder.getIntersectionsList();
     }
 

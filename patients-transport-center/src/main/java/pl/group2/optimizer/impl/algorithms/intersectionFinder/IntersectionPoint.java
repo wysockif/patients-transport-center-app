@@ -1,24 +1,32 @@
 package pl.group2.optimizer.impl.algorithms.intersectionFinder;
 
-import pl.group2.optimizer.impl.items.area.Point;
+import pl.group2.optimizer.impl.items.paths.Path;
+import pl.group2.optimizer.impl.items.pathspoints.PathPoint;
 
-public class IntersectionPoint implements Point {
+public class IntersectionPoint extends PathPoint {
 
-    private final int x;
-    private final int y;
+    private final Path pathAboveIntersection;
+    private final Path pathBelowIntersection;
 
-    public IntersectionPoint(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public IntersectionPoint(int id, int xCoordinate, int yCoordinate, int leftOrRight, Path path, int isVerticalPath, Path pathAboveIntersection, Path pathBelowIntersection) {
+        super(id, xCoordinate, yCoordinate, leftOrRight, path, isVerticalPath);
+        this.pathAboveIntersection = pathAboveIntersection;
+        this.pathBelowIntersection = pathBelowIntersection;
     }
 
     @Override
-    public int getXCoordinate() {
-        return x;
+    public String toString() {
+        return "IntersectionPoint{" +
+                "pathAboveIntersection=" + pathAboveIntersection +
+                ", pathBelowIntersection=" + pathBelowIntersection +
+                '}';
     }
 
-    @Override
-    public int getYCoordinate() {
-        return y;
+    public Path getPathAboveIntersection() {
+        return pathAboveIntersection;
+    }
+
+    public Path getPathBelowIntersection() {
+        return pathBelowIntersection;
     }
 }
