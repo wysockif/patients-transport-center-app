@@ -4,7 +4,7 @@ import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.paths.Path;
 
-public class PathPoint extends Vertex implements Point {
+public class PathPoint extends Vertex {
 
     private final int leftOrRight;
     private final Path path;

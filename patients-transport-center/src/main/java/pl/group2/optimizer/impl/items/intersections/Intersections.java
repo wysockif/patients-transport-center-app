@@ -1,10 +1,7 @@
 package pl.group2.optimizer.impl.items.intersections;
 
 import pl.group2.optimizer.impl.algorithms.intersectionFinder.IntersectionFinder;
-import pl.group2.optimizer.impl.io.TextFileReader;
 import pl.group2.optimizer.impl.items.paths.Path;
-import pl.group2.optimizer.impl.items.pathspoints.PathPoint;
-import pl.group2.optimizer.impl.items.pathspoints.PathsPoints;
 
 import java.awt.Graphics;
 import java.util.Collection;
@@ -30,7 +27,7 @@ public class Intersections {
 
     public void lookForIntersections(List<Path> paths) {
         intersectionFinder = new IntersectionFinder(paths);
-        intersectionFinder.findIntersections();
+        intersectionFinder.findIntersectionsNaive();
         intersections = intersectionFinder.getIntersectionsList();
     }
 

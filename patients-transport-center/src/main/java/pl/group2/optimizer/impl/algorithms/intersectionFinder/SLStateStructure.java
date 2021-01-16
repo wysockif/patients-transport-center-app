@@ -8,12 +8,12 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SweepingLineStateStructure {
+public class SLStateStructure {
 
     private final List<Path> sweepingLineList;
     private final List<PathPoint> supportPathsPointsList;
 
-    public SweepingLineStateStructure() {
+    public SLStateStructure() {
         sweepingLineList = new LinkedList<>();
         supportPathsPointsList = new LinkedList<>();
     }
@@ -106,5 +106,12 @@ public class SweepingLineStateStructure {
         int intersectionPointY = (int) Math.round((a * intersectionPointX) + b);
 
         return new PathPoint(-1,intersectionPointX,intersectionPointY,-1,path,-1);
+    }
+
+    public void swap(Path pathAbove, Path pathBelow) {
+        int pathAboveIndex = sweepingLineList.indexOf(pathAbove);
+        int pathBelowIndex = sweepingLineList.indexOf(pathBelow);
+
+        Collections.swap(sweepingLineList, pathAboveIndex, pathBelowIndex);
     }
 }

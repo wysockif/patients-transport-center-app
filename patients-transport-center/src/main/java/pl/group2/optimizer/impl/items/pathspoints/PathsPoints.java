@@ -1,10 +1,8 @@
 package pl.group2.optimizer.impl.items.pathspoints;
 
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
-import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.paths.Path;
 
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
