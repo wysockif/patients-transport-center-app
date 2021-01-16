@@ -14,12 +14,10 @@ public class IntersectionFinder {
 
     private final List<Path> paths;
     private List<PathPoint> pathsPoints;
-    private List<Path> newPaths;
     private List<Path> pathsToDelete;
     private int newPathId;
     private final List<Intersection> intersections;
     private int intersectionId;
-    private int intersectionPointId;
     private SLStateStructure sweepingLine;
     private PreferencePointsQueue pointsQueue;
     private Path pathAbove;
@@ -28,69 +26,15 @@ public class IntersectionFinder {
 
     public IntersectionFinder(List<Path> paths) {
         this.paths = paths;
-        //newPaths = new LinkedList<>();
-
         this.pathsToDelete = new LinkedList<>();
         this.sweepingLine = new SLStateStructure();
         this.pointsQueue = new PreferencePointsQueue();
         intersections = new LinkedList<>();
         intersectionId = 0;
-        intersectionPointId = 0;
         newPathId = -1;
     }
 
-   /* public void findIntersections() {
-        getPathsPoints();
-        showPathsPoints();
-
-        for(PathPoint point: pathsPoints) {
-            if (point.isLeft() == 0) {
-                sweepingLine.insertPath(point.getPath());
-                sweepingLine.sortInDescendingOrder(point);
-
-                pathAbove = sweepingLine.getAbove(point.getPath());
-                pathBelow = sweepingLine.getBelow(point.getPath());
-
-                if (pathAbove != null && doIntersect(pathAbove, point.getPath())) {
-                    IntersectionPoint insectPoint = getIntersectionPointCoordinates(pathAbove, point.getPath());
-                    if (insectPoint != null) {
-                        Intersection intersection = new Intersection(intersectionId++, insectPoint.getXCoordinate(), insectPoint.getYCoordinate());
-                        intersections.add(intersection);
-                        getPathsToBeAddedAndDeleted(intersection, pathAbove, point.getPath());
-                    }
-                }
-                if (pathBelow != null && doIntersect(pathBelow, point.getPath())) {
-                    IntersectionPoint insectPoint = getIntersectionPointCoordinates(pathBelow, point.getPath());
-                    if (insectPoint != null) {
-                        Intersection intersection = new Intersection(intersectionId++, insectPoint.getXCoordinate(), insectPoint.getYCoordinate());
-                        intersections.add(intersection);
-                        getPathsToBeAddedAndDeleted(intersection, pathBelow, point.getPath());
-                    }
-                }
-            }
-            if (point.isLeft() == 1) {
-                pathAbove = sweepingLine.getAbove(point.getPath());
-                pathBelow = sweepingLine.getBelow(point.getPath());
-
-                sweepingLine.deletePath(point.getPath());
-                sweepingLine.sortInDescendingOrder(point);
-
-                if ((pathAbove != null && pathBelow != null) && doIntersect(pathAbove, pathBelow)) {
-                    IntersectionPoint insectPoint = getIntersectionPointCoordinates(pathAbove, pathBelow);
-                    if (insectPoint != null) {
-                        Intersection intersection = new Intersection(intersectionId++, insectPoint.getXCoordinate(), insectPoint.getYCoordinate());
-                        intersections.add(intersection);
-                        getPathsToBeAddedAndDeleted(intersection, pathBelow, pathAbove);
-                    }
-                }
-            }
-        }
-        updatePathsList();
-    }
-
-    */
-    /*
-
+    //przerobiony algorytm Bentleya-Ottmana, nie dziala jeszcze jednak w 100 procentach
     public void findIntersections() {
         getPathsPoints();
         showPathsPoints();
@@ -155,7 +99,6 @@ public class IntersectionFinder {
                 pathAbove = sweepingLine.getAbove(intersectionPathBelow);
                 pathBelow = sweepingLine.getBelow(intersectionPathAbove);
 
-
                 if (pathAbove != null  && doIntersect(pathAbove, intersectionPathAbove)) {
                     IntersectionPoint insectPoint = getIntersectionPointCoordinates(pathAbove, intersectionPathAbove);
                     if (insectPoint != null) {
@@ -200,14 +143,11 @@ public class IntersectionFinder {
                 }
             }
         }
-        System.out.println("-------------");
-        showIntersectionsFound();
-        //updatePathsList();
+        updatePathsList();
     }
 
-     */
 
-
+    //naiwna wersja algorytmu, działa jak trzeba ale jest wolniejsza
     public void findIntersectionsNaive() {
         Path firstPath;
         Path secondPath;
@@ -239,13 +179,6 @@ public class IntersectionFinder {
                     }
                 }
             }
-        }
-        showIntersectionsFound();
-    }
-
-    private void showIntersectionsFound() {
-        for (Intersection intersecte : intersections) {
-            System.out.println(intersecte.toString());
         }
     }
 
@@ -357,9 +290,5 @@ public class IntersectionFinder {
 
     public List<Intersection> getIntersectionsList() {
         return intersections;
-    }
-
-    public List<Path> getNewPaths() {
-        return paths;
     }
 }
