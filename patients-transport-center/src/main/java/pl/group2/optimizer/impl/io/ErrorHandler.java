@@ -2,13 +2,12 @@ package pl.group2.optimizer.impl.io;
 
 import javax.swing.JOptionPane;
 
-import static java.lang.System.exit;
-
 public class ErrorHandler {
 
     public static final int INPUT_FILE_NOT_FOUND = -100;
     public static final int INPUT_FILE_INCORRECT_HEADLINE = -101;
     public static final int INPUT_FILE_INCORRECT_FORMAT = -102;
+    public static final int NO_HOSPITALS_AVAILABLE = -103;
 
     private ErrorHandler() {
     }
@@ -18,7 +17,10 @@ public class ErrorHandler {
 
         JOptionPane.showMessageDialog(null, informationAboutError, "Patients Transport Center", JOptionPane.ERROR_MESSAGE);
 
+        if (codeError == NO_HOSPITALS_AVAILABLE) {
+            System.exit(0);
+        }
+        
         throw new MyException(informationAboutError);
-
     }
 }

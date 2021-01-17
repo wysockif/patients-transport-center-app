@@ -1,15 +1,15 @@
 package pl.group2.optimizer.impl.algorithms.dijkstra;
 
+import pl.group2.optimizer.impl.io.ErrorHandler;
+import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.items.Vertex;
-import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
 import pl.group2.optimizer.impl.items.hospitals.Hospitals;
+import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
-import pl.group2.optimizer.impl.items.patients.Patients;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,15 +19,21 @@ public class DijkstraAlgorithm {
     public static final int INFINITY = 1_000_000_000;
     public static final int UNDEFINED = -1;
 
-    Hospitals hospitals;
-    Patients patients;
-    Paths paths;
-    Graph graph;
+    private Hospitals hospitals;
+    private Paths paths;
+    private Intersections intersections;
+    private Graph graph;
 
-    public DijkstraAlgorithm(Hospitals hospitals, Patients patients, Paths paths) {
+    private Hospital newHospital;
+
+    private int predecessors[];
+    private int distances[];
+    private MyPQ q;
+
+    public DijkstraAlgorithm(Hospitals hospitals, Paths paths, Intersections intersections) {
         this.hospitals = hospitals;
-        this.patients = patients;
         this.paths = paths;
+        this.intersections = intersections;
         graph = makeGraph();
     }
 
@@ -44,24 +50,16 @@ public class DijkstraAlgorithm {
     }
 
     private Graph makeGraph() {
-        Graph graph = new Graph(hospitals.getMaxId() + 1);
+        Graph graph = new Graph(hospitals.getMaxId() + 1 + intersections.getList().size());
         for (Path path : paths.getList()) {
             graph.addEdge(path.getFrom().getId(), path.getTo().getId(), path.getDistance());
         }
         return graph;
     }
 
-    int predecessors[];
-    int distances[];
-    MyPQ q;
-
-    public List<Point> shortestPathFromSelectedVertexToHospital(Vertex start) {
-
-//        System.out.println("Sąsiedzi poszukwianego wierzchołka to " + neighbours(start.getId()));
-
+    private void initiatePredecessorsDistancesAndPriorityQueue(Vertex start) {
         predecessors = new int[graph.getNumberOfVertices()];
         distances = new int[graph.getNumberOfVertices()];
-
         q = new MyPQ();
 
         for (int i = 0; i < graph.getNumberOfVertices(); i++) {
@@ -74,104 +72,53 @@ public class DijkstraAlgorithm {
             }
 
             q.add(new Predecessor(predecessors[i], distances[i]));
-//            System.out.println("Dodaje do kolejki id równe " + predecessors[i]);
-//            System.out.println("Dodaje do kolejki odległość równą " + distances[i]);
         }
+    }
 
-        Set<Integer> w = new HashSet<>();
-
-        System.out.println();
-
-        while (!q.isEmpty()) {
-//            q.printQuery();
-            Predecessor u = q.remove();
-
-//            System.out.println("Wyjmuje z kolejki odległość równą " + u.getDistance());
-//            System.out.println("Wyjmuje z kolejki id równe " + u.getId());
-
-            w.add(u.getId());
-//            System.out.println("Odwiedzony wierzchołek to: " + u.getId());
-            for (Vertex v : neighbours(u.getId())) {
-                if (!w.contains(v.getId())) {
-//                    System.out.println("Sąsiad to " + v.getId());
-                    relax(u.getId(), v.getId());
-                }
-
-            }
-        }
-//
-//        System.out.println();
-//        System.out.println("--------------------------------");
-//        System.out.println("Od szpitala " + start + " najkrótsza  odległość biegnie przez: ");
-//        System.out.println(Arrays.toString(predecessors));
-//        System.out.println(Arrays.toString(distances));
-//        System.out.println(Arrays.toString(w.toArray()));
-//        System.out.println("-------------------------------");
-//        System.out.println();
-
+    private int findMinimumDistance() throws MyException {
+        int amountOfNotFreeBeds = 0;
         int min = INFINITY;
         int index = 0;
-        for (int i = 0; i < distances.length; i++) {
+        for (int i = 0; i <= hospitals.getMaxId(); i++) {
             if (distances[i] < min && distances[i] != 0 && hospitals.getHospitalById(i).getNumberOfAvailableBeds() != 0) {
                 min = distances[i];
                 index = i;
+            } else {
+                amountOfNotFreeBeds++;
             }
         }
+        if (amountOfNotFreeBeds >= hospitals.getMaxId()) {
+            ErrorHandler.handleError(ErrorHandler.NO_HOSPITALS_AVAILABLE, "Brak wolnych szpitali");
+        }
+        return index;
+    }
 
-//        System.out.println();
-//        System.out.println("Najkrótsza droga jest do szpitala o id " + index);
-//
-//        System.out.println(Arrays.toString(predecessors));
-
-        newHospital = hospitals.getHospitalById(index);
-        List<Point> pointsToVisit = new ArrayList<>();
-        List<Point> pointsToVisitCopy = new ArrayList<>();
-
-//        pointsToVisit.add(newHospital);
+    private List<Vertex> findSeriesOfVerticesToVisit(int index, Vertex start) {
+        List<Vertex> pointsToVisit = new ArrayList<>();
+        List<Vertex> pointsToVisitCopy = new ArrayList<>();
 
         int predecessorIndex = index;
 
         while (predecessorIndex != start.getId()) {
             for (int i = 0; i < predecessors.length; i++) {
                 if (predecessorIndex == i) {
-//                    System.out.println("Przez wierzchołek o id = " + predecessors[i]);
-                    //pointsToVisit.add(hospitals.getHospitalById(predecessorIndex));
-                    pointsToVisitCopy.add(hospitals.getHospitalById(predecessorIndex));
+                    if (i >= hospitals.getMaxId() + 1) {
+                        pointsToVisitCopy.add(intersections.getList().get(predecessorIndex - hospitals.getMaxId() - 1));
+                    } else {
+                        pointsToVisitCopy.add(hospitals.getHospitalById(predecessorIndex));
+                    }
                     predecessorIndex = predecessors[i];
                     break;
                 }
             }
         }
 
-//        for (Vertex vertex : pointsToVisit) {
-//            System.out.println(vertex.getXCoordinate() + " " + vertex.getYCoordinate());
-//        }
-
         for (int i = pointsToVisitCopy.size() - 1; i >= 0; i--) {
             pointsToVisit.add(pointsToVisitCopy.get(i));
         }
 
-//        for (Point point : pointsToVisit) {
-//            System.out.println(point.getXCoordinate() + " " + point.getYCoordinate());
-//        }
-
-//        }
-//        for(int i = 0; i < predecessors.length; i++) {
-//            if (i == index) {
-//                System.out.println("Przez wierzchołek o id = " + predecessors[i]);
-//            }
-//        }
-
-
-//        System.out.println("I wiedzie ona przez " + predecessors[index]
-//                + " (jeżeli id = id początku to znaczy, że jest połączenie bezpośrednie)");
-        System.out.println();
-
-
         return pointsToVisit;
     }
-
-    Hospital newHospital;
 
     public Hospital getNewHospital() {
         return newHospital;
@@ -181,33 +128,33 @@ public class DijkstraAlgorithm {
         q.setNewPriority(id, distance);
     }
 
+    public List<Vertex> shortestPathFromSelectedVertexToHospital(Vertex start) throws MyException {
+        initiatePredecessorsDistancesAndPriorityQueue(start);
+
+        Set<Integer> w = new HashSet<>();
+        while (!q.isEmpty()) {
+            Predecessor u = q.remove();
+            w.add(u.getId());
+            for (Vertex v : neighbours(u.getId())) {
+                if (!w.contains(v.getId())) {
+                    relax(u.getId(), v.getId());
+                }
+            }
+        }
+
+        int index = findMinimumDistance();
+
+        newHospital = hospitals.getHospitalById(index);
+
+        return findSeriesOfVerticesToVisit(index, start);
+    }
+
     public void relax(int u, int v) {
-//        System.out.print("Dla sąsiada o id = " + v);
-//        System.out.print(" Odległość v wynosi " + distances[v]);
-
         int alt = distances[u] + graph.getWeightOfEdge(u, v);
-
-//        System.out.println(" Odległość alternatywna " + alt);
         if (alt < distances[v]) {
-//            System.out.println("Odległość alternatywna jest mniejsza");
             distances[v] = alt;
             predecessors[v] = u;
             decreasePriority(v, alt);
         }
     }
-
-//    public void relax(int u, int v) {
-//        System.out.print("Dla sąsiada o id = " + v);
-//        System.out.print(" Odległość v wynosi " + distances[v]);
-//
-//        int alt = distances[v] + graph.getWeightOfEdge(u, v);
-//
-//        System.out.println(" Odległość alternatywna " + alt);
-//        if (distances[u] > alt) {
-//            System.out.println("Odległość alternatywna jest mniejsza");
-//            distances[u] = alt;
-//            predecessors[u] = v;
-//            decreasePriority(u, alt);
-//        }
-//    }
 }
