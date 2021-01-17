@@ -3,6 +3,8 @@ package pl.group2.optimizer.impl.items.ambulance;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
+import pl.group2.optimizer.impl.io.MyException;
+import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.area.HandledArea;
 import pl.group2.optimizer.impl.items.area.Point;
 import pl.group2.optimizer.impl.items.hospitals.Hospital;
@@ -15,6 +17,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,12 +61,16 @@ public class AmbulanceService extends Thread {
         while (running) {
             System.out.print("");
             if (patients.size() > 0) {
-                attendToPatients();
+                try {
+                    attendToPatients();
+                } catch (MyException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    public void attendToPatients() {
+    public void attendToPatients() throws MyException {
         Patient patient = patients.popFirst();
         ambulance = new Ambulance(patient.getId(), patient.getXCoordinate(), patient.getYCoordinate());
         ambulance.flash();
@@ -81,10 +88,25 @@ public class AmbulanceService extends Thread {
         }
     }
 
-    private void findAnotherHospital(Patient patient, Hospital hospital, Ambulance ambulance) {
+    private void findAnotherHospital(Patient patient, Hospital hospital, Ambulance ambulance) throws MyException {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
-        List<Point> pointsToVisit = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        List<Vertex> verticesToVisit = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        List<Point> pointsToVisit = new ArrayList<>();
+        for (Vertex v : verticesToVisit) {
+            pointsToVisit.add(new Point() {
+                @Override
+                public int getXCoordinate() {
+                    return v.getXCoordinate();
+                }
+
+                @Override
+                public int getYCoordinate() {
+                    return v.getYCoordinate();
+                }
+            });
+        }
+
         Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
 
         for (Point point : pointsToVisit) {

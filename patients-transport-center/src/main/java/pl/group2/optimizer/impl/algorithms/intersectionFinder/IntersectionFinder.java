@@ -5,6 +5,7 @@ import pl.group2.optimizer.impl.items.intersections.Intersection;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.pathspoints.PathPoint;
 import pl.group2.optimizer.impl.items.pathspoints.PathsPoints;
+import pl.group2.optimizer.impl.structures.queues.PreferencePointsQueue;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,7 +26,6 @@ public class IntersectionFinder {
 
     public IntersectionFinder(List<Path> paths, int maxHospitalIdForDijkstra) {
         this.paths = paths;
-        this.pathsToAdd = new LinkedList<>();
         this.pathsToDelete = new LinkedList<>();
         this.sweepingLine = new SLStateStructure();
         this.pointsQueue = new PreferencePointsQueue();
