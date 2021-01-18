@@ -136,25 +136,6 @@ public class Management extends JPanel {
         }
     }
 
-    private void appendPatients() {
-        String path = getPathFromFileChooser();
-        try {
-            if (!path.equals("")) {
-                optimizer.loadPatients(path);
-                attachPatientsButton.setForeground(GREEN.darker());
-                attachPatientsButton.setText("Załączono");
-                optimizer.getPatientsManagement().enablePanel();
-                attachPatientsButton.setEnabled(false);
-                arePatientsAttached = true;
-                checkIfBothFilesAreAttached();
-            }
-        } catch (MyException myException) {
-            optimizer.getPatientsManagement().reset();
-            optimizer.resetPatients();
-            optimizer.getCommunicator().saveMessage("Wystąpił błąd podczas załączania pacjentów");
-        }
-    }
-
     private void attachMap() {
         String path = getPathFromFileChooser();
         try {

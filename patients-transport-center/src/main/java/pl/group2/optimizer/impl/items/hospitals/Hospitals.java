@@ -63,10 +63,6 @@ public class Hospitals implements Items {
         return indexById.containsKey(id);
     }
 
-    public int getHospitalIndexById(int id) {
-        return indexById.get(id);
-    }
-
     public Hospital getHospitalById(int id) {
         int index = indexById.get(id);
         return hospitalsByIndex.get(index);
@@ -125,10 +121,8 @@ public class Hospitals implements Items {
 
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
-
         for (Hospital hospital : getCollection()) {
             BufferedImage image = hospital.getImage();
-
             int xShift = hospital.getImageWidth() / 2;
             int yShift = hospital.getImageHeight() / 2;
 

@@ -88,8 +88,8 @@ public class DijkstraAlgorithm {
             }
         }
         if (amountOfNotFreeBeds > hospitals.getMaxId()) {
-            ErrorHandler.handleError(ErrorHandler.NO_HOSPITALS_AVAILABLE, "Brak wolnych szpitali");
-            System.exit(ErrorHandler.NO_HOSPITALS_AVAILABLE);
+            ErrorHandler.handleError(ErrorHandler.NO_HOSPITALS_AVAILABLE, "System został przepełniony. " +
+                    "Brak wolnych łóżek w szpitalach");
         }
         return index;
     }
@@ -142,7 +142,7 @@ public class DijkstraAlgorithm {
                 }
             }
         }
-        
+
         int index = findMinimumDistance();
 
 
