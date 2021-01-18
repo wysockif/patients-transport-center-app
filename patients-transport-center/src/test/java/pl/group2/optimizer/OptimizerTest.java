@@ -76,10 +76,10 @@ class OptimizerTest {
 
     }
 
-    // NullPointerException
     @Test
     void should_throwMyException_when_idIsNegative_patients() {
         // given
+        optimizer.createWindow(optimizer);
 
         // when
         Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
@@ -87,8 +87,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: patients_negative_id.txt, nr linii: 3]. " +
-                        "Niepoprawny format danych. Ujemna wartość reprezentująca id pacjenta!",
+                "[Plik wejściowy: patients_negative_id.txt, nr linii: 3]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id pacjenta",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -141,11 +141,11 @@ class OptimizerTest {
         );
     }
 
-    // NullPointerException
     @Test
     void should_throwMyException_when_idAlreadyExists_patients() {
         // given
         String fileName = "patients_id_already_exists";
+        optimizer.createWindow(optimizer);
 
         // when
         Executable executable = () -> optimizer.loadPatients("exemplaryData/incorrect/patients/" +
@@ -153,8 +153,7 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: " + fileName + ".txt, nr linii: 4]. " +
-                        "Nie można dodawać pacjentów o tym samym id!",
+                "[Plik wejściowy: patients_id_already_exists.txt, nr linii: 4]. Nie można dodawać pacjentów o tym samym id",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
