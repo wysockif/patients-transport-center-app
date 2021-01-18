@@ -26,7 +26,7 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -100 | [Plik wejściowy: null]. Plik nie został znaleziony!",
+                "[Plik wejściowy: null]. Plik nie został znaleziony",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -40,7 +40,7 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -100 | [Plik wejściowy: null]. Plik nie został znaleziony!",
+                "[Plik wejściowy: null]. Plik nie został znaleziony",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -55,7 +55,7 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -101 | nullNiepoprawny nagłówek!",
+                "nullNiepoprawny nagłówek",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -70,24 +70,13 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_no_second_headline.txt, nr linii: 7]. Niepoprawny format danych!",
+                "[Plik wejściowy: map_no_second_headline.txt, nr linii: 7]. Niepoprawny format danych",
                 assertThrows(MyException.class, executable).getMessage()
         );
 
-        /*
-        Zamiast wiadomości:
-        | Błąd -101 | nullNiepoprawny nagłówek!
-
-        wyświetla się wiadomość:
-        | Błąd -102 | [Plik wejściowy: map_no_second_headline.txt, nr linii: 7]. Niepoprawny format danych!
-
-        przy braku drugiego nagłówka.
-
-        Nie wiem jak to inaczej rozwiązać, chyba jest okej.
-         */
-
     }
 
+    // NullPointerException
     @Test
     void should_throwMyException_when_idIsNegative_patients() {
         // given
@@ -114,8 +103,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_hospital.txt, nr linii: 4]. " +
-                        "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala!",
+                "[Plik wejściowy: map_negative_id_hospital.txt, nr linii: 4]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -130,8 +119,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_special_object.txt, nr linii: 9]. " +
-                        "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu!",
+                "[Plik wejściowy: map_negative_id_special_object.txt, nr linii: 9]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id specjalnego obiektu",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -146,12 +135,13 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_negative_id_path.txt, nr linii: 15]. " +
-                        "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi!",
+                "[Plik wejściowy: map_negative_id_path.txt, nr linii: 15]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
 
+    // NullPointerException
     @Test
     void should_throwMyException_when_idAlreadyExists_patients() {
         // given
@@ -179,8 +169,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist_hospital.txt, nr linii: 5]. " +
-                        "Nie można dodawać szpitali o tym samym id.!",
+                "[Plik wejściowy: map_id_already_exist_hospital.txt, nr linii: 5]. " +
+                        "Nie można dodawać szpitali o tym samym id.",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -195,27 +185,11 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist_special_object.txt, nr linii: 10]. " +
-                        "Nie można dodawać specjalnych obiektów o tym samym id.!",
+                "[Plik wejściowy: map_id_already_exist_special_object.txt, nr linii: 10]. " +
+                        "Nie można dodawać specjalnych obiektów o tym samym id.",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
-
-//    @Test
-//    void should_throwMyException_when_idAlreadyExists_paths_map() {
-//        // given
-//
-//        // when
-//        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
-//                "map_id_already_exist_path.txt");
-//
-//        // then
-//        assertEquals(
-//                "\n| Błąd -102 | [Plik wejściowy: map_id_already_exist.txt, nr linii: 5]. " +
-//                        "Nie można dodawać szpitali o tym samym id.!",
-//                assertThrows(MyException.class, executable).getMessage()
-//        );
-//    }
 
     @Test
     void should_throwMyException_when_distanceIsNegative_map() {
@@ -227,8 +201,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_negative_distance.txt, nr linii: 15]. " +
-                        "Niepoprawny format danych. Ujemna wartość reprezentująca odległość drogi!",
+                "[Plik wejściowy: map_negative_distance.txt, nr linii: 15]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca odległość drogi",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -243,8 +217,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_zero_distance.txt, nr linii: 16]. Niepoprawny format danych. " +
-                        "Zerowa wartość reprezentująca odległość drogi!",
+                "[Plik wejściowy: map_zero_distance.txt, nr linii: 16]. " +
+                        "Niepoprawny format danych. Zerowa wartość reprezentująca odległość drogi",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -259,8 +233,7 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: max_int_value.txt, nr linii: 13]. " +
-                        "Nieudana konwersja danej: \"2147483648\"!",
+                "[Plik wejściowy: max_int_value.txt, nr linii: 13]. Nieudana konwersja danej: \"2147483648\"",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -275,8 +248,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_beds_are_negative.txt, nr linii: 4]. " +
-                        "Niepoprawny format danych. Ujemna wartość reprezentująca liczbę łóżek szpitala.!",
+                "[Plik wejściowy: map_beds_are_negative.txt, nr linii: 4]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca liczbę łóżek szpitala.",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
@@ -291,8 +264,8 @@ class OptimizerTest {
 
         // then
         assertEquals(
-                "\n| Błąd -102 | [Plik wejściowy: map_beds_are_negative2.txt, nr linii: 2]. Niepoprawny format danych. " +
-                        "Ujemna wartość reprezentująca liczbę łóżek szpitala.!",
+                "[Plik wejściowy: map_beds_are_negative2.txt, nr linii: 2]. " +
+                        "Niepoprawny format danych. Ujemna wartość reprezentująca liczbę łóżek szpitala.",
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
