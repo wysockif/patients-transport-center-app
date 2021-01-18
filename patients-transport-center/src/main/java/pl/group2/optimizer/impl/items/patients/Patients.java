@@ -111,9 +111,6 @@ public class Patients implements Items {
     }
 
 
-    public void setNumberOfMapElements(int numberOfMapElements) {
-    }
-
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         try {
