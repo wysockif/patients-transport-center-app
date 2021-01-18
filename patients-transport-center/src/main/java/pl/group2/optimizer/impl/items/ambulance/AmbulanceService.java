@@ -53,7 +53,7 @@ public class AmbulanceService extends Thread {
         running = true;
         shortestDistanceChecker = new ShortestDistanceChecker();
         graveList = new LinkedList<>();
-        interval = 1200000;
+        interval = 350000;
     }
 
     @Override

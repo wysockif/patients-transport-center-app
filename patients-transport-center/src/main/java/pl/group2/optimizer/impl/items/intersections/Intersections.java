@@ -8,14 +8,13 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.awt.Color.RED;
+import static java.awt.Color.DARK_GRAY;
 import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class Intersections {
     private List<Intersection> intersections;
-    private IntersectionFinder intersectionFinder;
 
     public Intersections() {
         intersections = new LinkedList<>();
@@ -26,17 +25,16 @@ public class Intersections {
     }
 
     public void lookForIntersections(List<Path> paths, int maxHospitalIdForDijkstra) {
-        intersectionFinder = new IntersectionFinder(paths, maxHospitalIdForDijkstra);
+        IntersectionFinder intersectionFinder = new IntersectionFinder(paths, maxHospitalIdForDijkstra);
         intersectionFinder.findIntersectionsNaive(); //od razu tworzy nowa liste dróg
         intersections = intersectionFinder.getIntersectionsList();
     }
 
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
-        g.setColor(RED);
+        g.setColor(DARK_GRAY);
         for (Intersection intersection : intersections) {
-            int xShift = 10;
-            int yShift = 10;
-
+            int xShift = 8;
+            int yShift = 8;
             int x = (int) Math.round(PADDING + intersection.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
             int y = (int) Math.round(PADDING + HEIGHT - (intersection.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
             g.fillOval(x, y, xShift * 2, yShift * 2);

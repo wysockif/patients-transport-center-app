@@ -148,7 +148,7 @@ public class Optimizer {
 
     public void changePeriod(long value) {
         if (ambulanceService != null) {
-            long interval = 1200000 - 120000 * value;
+            long interval = 750000 - (100000 * value);
             ambulanceService.setInterval(interval);
         }
     }
