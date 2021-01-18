@@ -30,7 +30,6 @@ public class Management extends JPanel {
 
     private JButton attachMapButton;
     private JButton attachPatientsButton;
-    private JButton defaultDataButton;
     private JSlider paceSlider;
 
     public Management(Optimizer optimizer) {
@@ -40,53 +39,21 @@ public class Management extends JPanel {
         createPatientsElements();
         createSliderElements();
         runButton = createRunButton();
-        defaultDataButton = createRunWithDefaultButton();
-
         setSize(250, 420);
         setLocation(950, 0);
         setLayout(null);
     }
 
-    private JButton createRunWithDefaultButton() {
-        JLabel attachPatientsLabel = new JLabel("Załącz dane przykładowe:", CENTER);
-        attachPatientsLabel.setFont(new Font("TitleFont", BOLD, 14));
-        attachPatientsLabel.setBounds(0, 195, 235, 20);
-        add(attachPatientsLabel);
 
-        defaultDataButton = new JButton("Załącz");
-        defaultDataButton.setBounds(40, 215, 155, 35);
-        defaultDataButton.setBackground(DARK_GRAY);
-        defaultDataButton.setForeground(WHITE);
-        defaultDataButton.addActionListener(e -> {
-            defaultDataButton.setEnabled(false);
-            defaultDataButton.setText("Załączono");
-            try {
-                optimizer.loadMap("exemplaryData/correct/map1.txt");
-                optimizer.loadPatients("exemplaryData/correct/patients1.txt");
-            } catch (MyException myException) {
-                myException.printStackTrace();
-            }
-            optimizer.showMap();
-            isMapAttached = true;
-            attachMapButton.setEnabled(false);
-            arePatientsAttached = true;
-            attachPatientsButton.setEnabled(false);
-            optimizer.getPatientsManagement().enablePanel();
-            runButton.setEnabled(true);
-        });
-        defaultDataButton.setFocusable(false);
-        add(defaultDataButton);
-        return defaultDataButton;
-    }
 
     private JButton createRunButton() {
         JLabel attachPatientsLabel = new JLabel("Uruchom symulację:", CENTER);
         attachPatientsLabel.setFont(new Font("TitleFont", BOLD, 14));
-        attachPatientsLabel.setBounds(0, 260, 235, 20);
+        attachPatientsLabel.setBounds(0, 220, 235, 20);
         add(attachPatientsLabel);
 
         JButton button = new JButton("Uruchom");
-        button.setBounds(40, 280, 155, 35);
+        button.setBounds(40, 240, 155, 35);
         button.setBackground(DARK_GRAY);
         button.setForeground(GREEN.darker());
         button.addActionListener(e -> {
@@ -122,11 +89,11 @@ public class Management extends JPanel {
     private void createPatientsElements() {
         JLabel attachPatientsLabel = new JLabel("Załącz plik z pacjentami:", CENTER);
         attachPatientsLabel.setFont(new Font("TitleFont", BOLD, 14));
-        attachPatientsLabel.setBounds(0, 125, 235, 20);
+        attachPatientsLabel.setBounds(0, 150, 235, 20);
         add(attachPatientsLabel);
 
         attachPatientsButton = new JButton("Załącz");
-        attachPatientsButton.setBounds(40, 145, 155, 35);
+        attachPatientsButton.setBounds(40, 170, 155, 35);
         attachPatientsButton.addActionListener(e -> attachPatients());
         attachPatientsButton.setFocusable(false);
         attachPatientsButton.setBackground(DARK_GRAY);
@@ -137,11 +104,11 @@ public class Management extends JPanel {
     private void createMapElements() {
         JLabel attachMapLabel = new JLabel("Załącz plik z mapą:", CENTER);
         attachMapLabel.setFont(new Font("TitleFont", BOLD, 14));
-        attachMapLabel.setBounds(0, 55, 235, 20);
+        attachMapLabel.setBounds(0, 80, 235, 20);
         add(attachMapLabel);
 
         attachMapButton = new JButton("Załącz");
-        attachMapButton.setBounds(40, 75, 155, 35);
+        attachMapButton.setBounds(40, 100, 155, 35);
         attachMapButton.addActionListener(e -> attachMap());
         attachMapButton.setFocusable(false);
         attachMapButton.setBackground(DARK_GRAY);
@@ -155,7 +122,6 @@ public class Management extends JPanel {
             attachPatientsButton.setForeground(GREEN.darker());
             attachPatientsButton.setText("Załączono");
             attachPatientsButton.setEnabled(false);
-            defaultDataButton.setEnabled(false);
             arePatientsAttached = true;
             optimizer.getPatientsManagement().enablePanel();
             checkIfBothFilesAreAttached();
@@ -170,7 +136,6 @@ public class Management extends JPanel {
             attachMapButton.setForeground(GREEN.darker());
             attachMapButton.setText("Załączono");
             attachMapButton.setEnabled(false);
-            defaultDataButton.setEnabled(false);
             isMapAttached = true;
             checkIfBothFilesAreAttached();
             optimizer.showMap();

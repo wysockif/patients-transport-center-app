@@ -53,8 +53,6 @@ public class Plan extends JPanel {
             g.setFont(g.getFont().deriveFont(20.0f));
             g.drawString("ZAŁADUJ DANE", 400, 300);
         }
-
-
     }
 
     public void setProperties(double scalaX, double scalaY, int minX, int minY) {
