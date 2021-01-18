@@ -3,6 +3,7 @@ package pl.group2.optimizer.impl.items.ambulance;
 import pl.group2.optimizer.gui.components.Communicator;
 import pl.group2.optimizer.impl.algorithms.closest.ShortestDistanceChecker;
 import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
+import pl.group2.optimizer.impl.io.ErrorHandler;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.items.Vertex;
 import pl.group2.optimizer.impl.items.area.HandledArea;
@@ -91,28 +92,26 @@ public class AmbulanceService extends Thread {
     private void findAnotherHospital(Patient patient, Hospital hospital, Ambulance ambulance) throws MyException {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
-        List<Vertex> verticesToVisit = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        List<Vertex> verticesToVisit = null;
+        try {
+            verticesToVisit = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        } catch (MyException e) {
+            communicator.saveMessage("System został przepełniony. Brak wolnych łóżek w szpitalach!");
+            System.exit(ErrorHandler.NO_HOSPITALS_AVAILABLE);
+        }
         List<Point> pointsToVisit = new ArrayList<>();
-        for (Vertex v : verticesToVisit) {
-            pointsToVisit.add(new Point() {
-                @Override
-                public int getXCoordinate() {
-                    return v.getXCoordinate();
-                }
+        if (verticesToVisit != null) {
+            for (Vertex v : verticesToVisit) {
+                pointsToVisit.add((Point) v);
+            }
 
-                @Override
-                public int getYCoordinate() {
-                    return v.getYCoordinate();
-                }
-            });
+            Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
+
+            for (Point point : pointsToVisit) {
+                transportPatient(ambulance, point);
+            }
+            leavePatient(patient, hospitalToLeave);
         }
-
-        Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
-
-        for (Point point : pointsToVisit) {
-            transportPatient(ambulance, point);
-        }
-        leavePatient(patient, hospitalToLeave);
     }
 
     private void leavePatient(Patient patient, Hospital hospital) {
@@ -157,16 +156,15 @@ public class AmbulanceService extends Thread {
 
     private void driveAmbulance(Ambulance ambulance, double sourceX, double sourceY, double vx, double vy, double step) {
         isVisible = true;
-        for (double dist = 0.05; dist <= 1; dist += step) {
+        for (double dist = 0.00; dist <= 1; dist += step) {
             ambulance.setXCoordinate((sourceX + vx * dist));
             ambulance.setYCoordinate((sourceY + vy * dist));
-            if (dist < 0.95) {
-                long start = System.nanoTime();
-                long end;
-                do {
-                    end = System.nanoTime();
-                } while (start + interval >= end);
-            }
+            long start = System.nanoTime();
+            long end;
+            do {
+                end = System.nanoTime();
+            } while (start + interval >= end);
+
         }
     }
 
