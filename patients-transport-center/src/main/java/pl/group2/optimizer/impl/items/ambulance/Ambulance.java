@@ -14,7 +14,6 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 public class Ambulance {
     private double x;
     private double y;
-    private final int patientId;
 
     private BufferedImage currentImage;
 
@@ -23,8 +22,7 @@ public class Ambulance {
     private BufferedImage imageLeftBlue;
     private BufferedImage imageLeftRed;
 
-    public Ambulance(int patientId, double x, double y) {
-        this.patientId = patientId;
+    public Ambulance(double x, double y) {
         this.x = x;
         this.y = y;
         loadImages();
@@ -50,24 +48,6 @@ public class Ambulance {
         return image;
     }
 
-    public void flash() {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (currentImage == imageRightBlue) {
-                    currentImage = imageRightRed;
-                } else if (currentImage == imageRightRed) {
-                    currentImage = imageRightBlue;
-                } else if (currentImage == imageLeftBlue) {
-                    currentImage = imageLeftRed;
-                } else if (currentImage == imageLeftRed) {
-                    currentImage = imageLeftBlue;
-                }
-            }
-        }, 0, 250);
-    }
-
     public double getXCoordinate() {
         return x;
     }
@@ -88,15 +68,29 @@ public class Ambulance {
         this.y = y;
     }
 
-    public int getPatientId() {
-        return patientId;
-    }
-
     public void setRightSprite() {
         currentImage = imageRightBlue;
     }
 
     public void setLeftSprite() {
         currentImage = imageLeftBlue;
+    }
+
+    public void flash() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (currentImage == imageRightBlue) {
+                    currentImage = imageRightRed;
+                } else if (currentImage == imageRightRed) {
+                    currentImage = imageRightBlue;
+                } else if (currentImage == imageLeftBlue) {
+                    currentImage = imageLeftRed;
+                } else if (currentImage == imageLeftRed) {
+                    currentImage = imageLeftBlue;
+                }
+            }
+        }, 0, 250);
     }
 }

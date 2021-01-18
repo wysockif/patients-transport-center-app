@@ -20,13 +20,9 @@ public class Intersections {
         intersections = new LinkedList<>();
     }
 
-    public Collection<Intersection> getCollection() {
-        return intersections;
-    }
-
     public void lookForIntersections(List<Path> paths, int maxHospitalIdForDijkstra) {
         IntersectionFinder intersectionFinder = new IntersectionFinder(paths, maxHospitalIdForDijkstra);
-        intersectionFinder.findIntersectionsNaive(); //od razu tworzy nowa liste dróg
+        intersectionFinder.findIntersectionsNaive();
         intersections = intersectionFinder.getIntersectionsList();
     }
 

@@ -57,10 +57,6 @@ public class Hospital extends Vertex implements Point, Sprite {
         return name;
     }
 
-    public int getNumberOfBeds() {
-        return numberOfBeds;
-    }
-
     public int getNumberOfAvailableBeds() {
         return numberOfAvailableBeds;
     }

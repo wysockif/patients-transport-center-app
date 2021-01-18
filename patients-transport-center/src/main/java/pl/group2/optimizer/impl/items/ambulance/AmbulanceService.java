@@ -62,18 +62,14 @@ public class AmbulanceService extends Thread {
         while (running) {
             System.out.print("");
             if (patients.size() > 0) {
-                try {
-                    attendToPatients();
-                } catch (MyException e) {
-                    e.printStackTrace();
-                }
+                attendToPatients();
             }
         }
     }
 
-    public void attendToPatients() throws MyException {
+    public void attendToPatients() {
         Patient patient = patients.popFirst();
-        ambulance = new Ambulance(patient.getId(), patient.getXCoordinate(), patient.getYCoordinate());
+        ambulance = new Ambulance(patient.getXCoordinate(), patient.getYCoordinate());
         ambulance.flash();
         Hospital hospital = shortestDistanceChecker.closestHospital(patient, hospitals);
         if (isOutsideArea(patient)) {
@@ -89,7 +85,7 @@ public class AmbulanceService extends Thread {
         }
     }
 
-    private void findAnotherHospital(Patient patient, Hospital hospital, Ambulance ambulance) throws MyException {
+    private void findAnotherHospital(Patient patient, Hospital hospital, Ambulance ambulance) {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
         List<Vertex> verticesToVisit = null;
@@ -104,7 +100,6 @@ public class AmbulanceService extends Thread {
             for (Vertex v : verticesToVisit) {
                 pointsToVisit.add((Point) v);
             }
-
             Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
 
             for (Point point : pointsToVisit) {
@@ -125,11 +120,6 @@ public class AmbulanceService extends Thread {
         graveList.add(grave);
         String message = "Pacjent o id = " + patient.getId() + " znajduje się poza obsługiwanym obszarem";
         communicator.saveMessage(message);
-        try {
-            sleep(5);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private boolean isOutsideArea(Patient patient) {

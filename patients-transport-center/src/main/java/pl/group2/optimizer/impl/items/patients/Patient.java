@@ -13,8 +13,8 @@ import static javax.swing.JOptionPane.ERROR_MESSAGE;
 
 public class Patient {
     private final int id;
-    private int xCoordinate;
-    private int yCoordinate;
+    private final int xCoordinate;
+    private final int yCoordinate;
 
     private BufferedImage image;
 
@@ -39,14 +39,6 @@ public class Patient {
         }
     }
 
-
-    public void setXCoordinate(int xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    public void setYCoordinate(int yCoordinate) {
-        this.yCoordinate = yCoordinate;
-    }
 
     public int getId() {
         return id;
