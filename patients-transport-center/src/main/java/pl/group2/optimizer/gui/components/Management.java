@@ -44,8 +44,6 @@ public class Management extends JPanel {
         setLayout(null);
     }
 
-
-
     private JButton createRunButton() {
         JLabel attachPatientsLabel = new JLabel("Uruchom symulację:", CENTER);
         attachPatientsLabel.setFont(new Font("TitleFont", BOLD, 14));
@@ -56,17 +54,20 @@ public class Management extends JPanel {
         button.setBounds(40, 240, 155, 35);
         button.setBackground(DARK_GRAY);
         button.setForeground(GREEN.darker());
-        button.addActionListener(e -> {
-            optimizer.run();
-            button.setEnabled(false);
-            button.setText("Uruchomiono");
-            optimizer.changePeriod(paceSlider.getValue());
-        });
+        button.addActionListener(e -> run(button));
         button.setFocusable(false);
         button.setEnabled(false);
         add(button);
         return button;
     }
+
+    private void run(JButton button) {
+        optimizer.run();
+        button.setEnabled(false);
+        button.setText("Uruchomiono");
+        optimizer.changePeriod(paceSlider.getValue());
+    }
+
 
     private void createSliderElements() {
         JLabel paceLabel = new JLabel("Tempo:", CENTER);
@@ -117,30 +118,58 @@ public class Management extends JPanel {
     }
 
     private void attachPatients() {
+        String path = getPathFromFileChooser();
         try {
-            optimizer.loadPatients(getPathFromFileChooser());
-            attachPatientsButton.setForeground(GREEN.darker());
-            attachPatientsButton.setText("Załączono");
-            attachPatientsButton.setEnabled(false);
-            arePatientsAttached = true;
-            optimizer.getPatientsManagement().enablePanel();
-            checkIfBothFilesAreAttached();
+            if (!path.equals("")) {
+                optimizer.loadPatients(path);
+                attachPatientsButton.setForeground(GREEN.darker());
+                attachPatientsButton.setText("Załączono");
+                optimizer.getPatientsManagement().enablePanel();
+                attachPatientsButton.setEnabled(false);
+                arePatientsAttached = true;
+                checkIfBothFilesAreAttached();
+            }
         } catch (MyException myException) {
-            myException.printStackTrace();
+            optimizer.getPatientsManagement().reset();
+            optimizer.resetPatients();
+            optimizer.getCommunicator().saveMessage("Wystąpił błąd podczas załączania pacjentów");
+        }
+    }
+
+    private void appendPatients() {
+        String path = getPathFromFileChooser();
+        try {
+            if (!path.equals("")) {
+                optimizer.loadPatients(path);
+                attachPatientsButton.setForeground(GREEN.darker());
+                attachPatientsButton.setText("Załączono");
+                optimizer.getPatientsManagement().enablePanel();
+                attachPatientsButton.setEnabled(false);
+                arePatientsAttached = true;
+                checkIfBothFilesAreAttached();
+            }
+        } catch (MyException myException) {
+            optimizer.getPatientsManagement().reset();
+            optimizer.resetPatients();
+            optimizer.getCommunicator().saveMessage("Wystąpił błąd podczas załączania pacjentów");
         }
     }
 
     private void attachMap() {
+        String path = getPathFromFileChooser();
         try {
-            optimizer.loadMap(getPathFromFileChooser());
-            attachMapButton.setForeground(GREEN.darker());
-            attachMapButton.setText("Załączono");
-            attachMapButton.setEnabled(false);
-            isMapAttached = true;
-            checkIfBothFilesAreAttached();
-            optimizer.showMap();
+            if (!path.equals("")) {
+                optimizer.loadMap(path);
+                attachMapButton.setForeground(GREEN.darker());
+                attachMapButton.setText("Załączono");
+                attachMapButton.setEnabled(false);
+                isMapAttached = true;
+                checkIfBothFilesAreAttached();
+                optimizer.showMap();
+            }
         } catch (MyException myException) {
-            myException.printStackTrace();
+            optimizer.resetMap();
+            optimizer.getCommunicator().saveMessage("Wystąpił błąd podczas załączania mapy");
         }
     }
 
@@ -173,6 +202,5 @@ public class Management extends JPanel {
         g.setColor(new Color(99, 99, 99));
         g.fillRect(0, 335, 250, 5);
         g.fillRect(0, 415, 250, 5);
-
     }
 }

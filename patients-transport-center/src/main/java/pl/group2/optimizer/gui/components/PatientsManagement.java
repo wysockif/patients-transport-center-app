@@ -24,7 +24,7 @@ import static javax.swing.SwingConstants.CENTER;
 public class PatientsManagement extends JPanel {
     private final Optimizer optimizer;
     private final JTextArea area;
-    private final LinkedList<String> patients;
+    private LinkedList<String> patients;
     private final JButton addButton;
     private JTextField idField, xField, yField;
 
@@ -164,5 +164,10 @@ public class PatientsManagement extends JPanel {
         String allPatients = String.join("\n", patients);
         area.setText(allPatients);
 
+    }
+
+    public void reset() {
+        patients = new LinkedList<>();
+        area.setText("");
     }
 }

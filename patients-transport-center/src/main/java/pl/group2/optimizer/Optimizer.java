@@ -57,7 +57,6 @@ public class Optimizer {
         paths.setNumberOfMapElements(numberOfElements);
 
         intersections = new Intersections();
-        // ODKOMENTOWAĆ jak będzie z tym działał Dijkstra
         intersections.lookForIntersections(paths.getList(), hospitals.getMaxId());
 
         communicator.saveMessage(messageAboutDownloadedMap());
@@ -84,11 +83,6 @@ public class Optimizer {
 
 
     public void run() {
-        // komentarz dla Bartka
-        // możesz tutaj stworzyć obiekt klasy reprezentującej ten algorytm
-        // i wstrzyknąć go w poniższym konstruktorze do Ambulance Service
-        // żeby nie wciągać tam oddzielnie skrzyżowań, ścieżek, a juz sam algorytm
-
         DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(hospitals, paths, intersections);
         ambulanceService = new AmbulanceService(patients, hospitals, area, communicator, dijkstraAlgorithm);
         ambulanceService.start();
@@ -124,9 +118,6 @@ public class Optimizer {
         }
     }
 
-    private void scalePatients(int numberOfPatients) {
-
-    }
 
     public String messageAboutDownloadedPatients() {
         return "Wczytano " + patients.size() + " pacjentów";
@@ -140,11 +131,11 @@ public class Optimizer {
 
     public void loadPatients(String inputFilePath) throws MyException {
         TextFileReader textFileReader = new TextFileReader();
-
         textFileReader.readData(inputFilePath, patientsManagement);
         patients = textFileReader.getPatients();
         communicator.saveMessage(messageAboutDownloadedPatients());
     }
+
 
     public void changePeriod(long value) {
         if (ambulanceService != null) {
@@ -207,5 +198,17 @@ public class Optimizer {
 
     public AmbulanceService getAmbulanceService() {
         return ambulanceService;
+    }
+
+    public void resetPatients() {
+        patients = null;
+    }
+
+    public void resetMap() {
+        hospitals = null;
+        specialObjects = null;
+        paths = null;
+        intersections = null;
+        area = null;
     }
 }

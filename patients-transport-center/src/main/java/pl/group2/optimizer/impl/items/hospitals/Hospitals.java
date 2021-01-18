@@ -37,6 +37,7 @@ public class Hospitals implements Items {
     }
 
     public int getMaxId() {
+
         int max = indexes.get(0);
         for (int i = 1; i < indexes.size(); i++) {
             if (indexes.get(i) > max) {

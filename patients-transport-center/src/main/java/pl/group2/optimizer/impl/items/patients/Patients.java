@@ -22,7 +22,6 @@ import static pl.group2.optimizer.gui.components.Plan.PADDING;
 public class Patients implements Items {
     private final QueueFIFO<Patient> patientsQueue;
     private final PatientsManagement patientsManagement;
-    private int numberOfMapElements;
 
     public Patients(PatientsManagement patientsManagement) {
         this.patientsManagement = patientsManagement;
@@ -48,9 +47,6 @@ public class Patients implements Items {
         return patientsQueue.size();
     }
 
-    public Patient getFirst() {
-        return patientsQueue.front();
-    }
 
     @Override
     public Object[] convertAttributes(String[] attributes) throws DataFormatException {
@@ -109,19 +105,18 @@ public class Patients implements Items {
         return convertedAttributes;
     }
 
-    public Collection<Patient> getCollectionToDraw() {
+    public Collection<Patient> getCollection() {
         return patientsQueue.getCollection();
     }
 
 
     public void setNumberOfMapElements(int numberOfMapElements) {
-        this.numberOfMapElements = numberOfMapElements;
     }
 
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         drawAureole(g, scalaX, scalaY, minX, minY);
-        for (Patient patient : getCollectionToDraw()) {
+        for (Patient patient : getCollection()) {
             int xShift = patient.getImageWidth() / 2;
             int yShift = patient.getImageHeight() / 2;
 

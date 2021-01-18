@@ -55,7 +55,9 @@ public class TextFileReader {
                 break;
             }
             whereInFileMessage = "[Plik wejściowy: " + fileName + ", nr linii: " + lineNumber + "]. ";
-            loadSingleItem(items, line);
+            if(!loadSingleItem(items, line)){
+                break;
+            }
         }
         return items;
     }
@@ -118,7 +120,7 @@ public class TextFileReader {
         return headline.startsWith("#");
     }
 
-    private void loadSingleItem(Items item, String line) throws MyException {
+    private boolean loadSingleItem(Items item, String line) throws MyException {
         String[] attributes = line.split(Pattern.quote(" | "));
         try {
             Object[] convertedAttributes = item.convertAttributes(attributes);
@@ -127,7 +129,9 @@ public class TextFileReader {
         } catch (DataFormatException e) {
             String message = whereInFileMessage + e.getMessage();
             ErrorHandler.handleError(INPUT_FILE_INCORRECT_FORMAT, message);
+            return false;
         }
+        return true;
     }
 
     public Patients getPatients() {

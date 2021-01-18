@@ -9,18 +9,10 @@ public class ErrorHandler {
     public static final int INPUT_FILE_INCORRECT_FORMAT = -102;
     public static final int NO_HOSPITALS_AVAILABLE = -103;
 
-    private ErrorHandler() {
-    }
-
     public static void handleError(int codeError, String message) throws MyException {
         String informationAboutError = "\n| Błąd " + codeError + " | " + message + "!";
 
         JOptionPane.showMessageDialog(null, informationAboutError, "Patients Transport Center", JOptionPane.ERROR_MESSAGE);
-
-        if (codeError == NO_HOSPITALS_AVAILABLE) {
-            System.exit(0);
-        }
-        
-        throw new MyException(informationAboutError);
-    }
+        throw new MyException(message);
+  }
 }

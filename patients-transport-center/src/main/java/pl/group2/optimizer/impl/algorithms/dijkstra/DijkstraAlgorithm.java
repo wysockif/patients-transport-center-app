@@ -89,6 +89,7 @@ public class DijkstraAlgorithm {
         }
         if (amountOfNotFreeBeds > hospitals.getMaxId()) {
             ErrorHandler.handleError(ErrorHandler.NO_HOSPITALS_AVAILABLE, "Brak wolnych szpitali");
+            System.exit(ErrorHandler.NO_HOSPITALS_AVAILABLE);
         }
         return index;
     }
