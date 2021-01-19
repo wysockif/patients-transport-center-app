@@ -16,10 +16,6 @@ public class Predecessor {
         this.id = id;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
-    }
-
     public Predecessor(int id, int distance) {
         this.id = id;
         this.distance = distance;

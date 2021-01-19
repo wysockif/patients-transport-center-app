@@ -9,15 +9,6 @@ public class MyPQ {
     public MyPQ() {
         predecessors = new ArrayList<>();
     }
-
-    public void printQuery() {
-        System.out.print("Kolejka zawiera: ");
-        for (int i = 0; i < predecessors.size(); i++) {
-            System.out.print(predecessors.get(i).getId() + " " + predecessors.get(i).getDistance() + ", ");
-        }
-        System.out.println();
-    }
-
     public void add(Predecessor predecessor) {
         predecessors.add(predecessor);
         predecessors.sort((o1, o2) -> Integer.compare(o1.distance - o2.distance, 0));
@@ -27,14 +18,6 @@ public class MyPQ {
         return predecessors.remove(0);
     }
 
-    //    public void setNewPriority(int id, int distance) {
-//        for(int i = 0; i < predecessors.size(); i++) {
-//            if(predecessors.get(i).getId() == id) {
-//                predecessors.set(i, new Predecessor(predecessors.get(i).getId(), distance));
-//            }
-//        }
-//        predecessors.sort((o1, o2) -> Integer.compare(o1.distance - o2.distance, 0));
-//    }
     public void setNewPriority(int id, int distance) {
 
         boolean isIn = false;
