@@ -2,7 +2,6 @@ package pl.group2.optimizer.impl.items.specialobjects;
 
 import pl.group2.optimizer.gui.sprites.Sprite;
 import pl.group2.optimizer.impl.items.area.Point;
-import pl.group2.optimizer.impl.items.hospitals.Hospital;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -42,10 +41,6 @@ public class SpecialObject implements Point, Sprite {
 
     public int getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override
