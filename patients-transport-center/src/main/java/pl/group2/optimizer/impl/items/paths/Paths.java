@@ -93,13 +93,8 @@ public class Paths implements Items {
     }
 
     private void validateDistance(int distance) throws DataFormatException {
-        if (distance < 0) {
-            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca odległość drogi";
-            throw new DataFormatException(message);
-        }
-
         if (distance <= 0) {
-            String message = "Niepoprawny format danych. Zerowa wartość reprezentująca odległość drogi";
+            String message = "Niepoprawny format danych. Niedodatnia wartość reprezentująca odległość drogi";
             throw new DataFormatException(message);
         }
     }
@@ -129,12 +124,9 @@ public class Paths implements Items {
         int from = (int) attributes[1];
         int to = (int) attributes[2];
         int distance = (int) attributes[3];
-
         pathList.add(new Path(id, hospitals.getHospitalById(from), hospitals.getHospitalById(to), distance));
     }
 
-    public void setNumberOfMapElements(int numberOfMapElements) {
-    }
 
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {

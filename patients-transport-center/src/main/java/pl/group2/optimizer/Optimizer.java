@@ -54,7 +54,6 @@ public class Optimizer {
         int numberOfElements = hospitals.size() + specialObjects.size();
         specialObjects.setNumberOfMapElements(numberOfElements);
         hospitals.setNumberOfMapElements(numberOfElements);
-        paths.setNumberOfMapElements(numberOfElements);
 
         intersections = new Intersections();
         intersections.lookForIntersections(paths.getList(), hospitals.getMaxId());
