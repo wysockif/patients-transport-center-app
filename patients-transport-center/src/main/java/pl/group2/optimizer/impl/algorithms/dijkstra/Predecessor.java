@@ -1,8 +1,8 @@
 package pl.group2.optimizer.impl.algorithms.dijkstra;
 
 public class Predecessor {
-    int id;
-    int distance;
+    private int id;
+    private int distance;
 
     public int getId() {
         return id;

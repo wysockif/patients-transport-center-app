@@ -25,12 +25,6 @@ public class Graph {
         return numberOfVertices;
     }
 
-    public void setWeightOfEdge(int from, int to, int weight) {
-        checkCorrectnessOfOperation(from, to);
-        weights[from][to] = weight;
-        weights[to][from] = weight;
-    }
-
     private boolean containsVertices(int from, int to) {
         return (from >= numberOfVertices || to >= numberOfVertices);
     }

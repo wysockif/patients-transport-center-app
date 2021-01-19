@@ -1,17 +1,21 @@
-package pl.group2.optimizer.impl.algorithms.dijkstra;
+package pl.group2.optimizer.impl.structures.graph;
+
+import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
+import pl.group2.optimizer.impl.algorithms.dijkstra.Predecessor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPQ {
-    List<Predecessor> predecessors;
+public class DijkstraPriorityQueue {
+    private List<Predecessor> predecessors;
 
-    public MyPQ() {
+    public DijkstraPriorityQueue() {
         predecessors = new ArrayList<>();
     }
+
     public void add(Predecessor predecessor) {
         predecessors.add(predecessor);
-        predecessors.sort((o1, o2) -> Integer.compare(o1.distance - o2.distance, 0));
+        predecessors.sort((o1, o2) -> Integer.compare(o1.getDistance() - o2.getDistance(), 0));
     }
 
     public Predecessor remove() {
@@ -38,7 +42,7 @@ public class MyPQ {
 
         }
 
-        predecessors.sort((o1, o2) -> Integer.compare(o1.distance - o2.distance, 0));
+        predecessors.sort((o1, o2) -> Integer.compare(o1.getDistance() - o2.getDistance(), 0));
     }
 
 

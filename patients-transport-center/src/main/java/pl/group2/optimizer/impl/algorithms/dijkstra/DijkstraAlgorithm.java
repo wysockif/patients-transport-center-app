@@ -8,6 +8,7 @@ import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
+import pl.group2.optimizer.impl.structures.graph.DijkstraPriorityQueue;
 import pl.group2.optimizer.impl.structures.graph.Graph;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class DijkstraAlgorithm {
 
     private int predecessors[];
     private int distances[];
-    private MyPQ q;
+    private DijkstraPriorityQueue q;
 
     public DijkstraAlgorithm(Hospitals hospitals, Paths paths, Intersections intersections) {
         this.hospitals = hospitals;
@@ -61,7 +62,7 @@ public class DijkstraAlgorithm {
     private void initiatePredecessorsDistancesAndPriorityQueue(Vertex start) {
         predecessors = new int[graph.getNumberOfVertices()];
         distances = new int[graph.getNumberOfVertices()];
-        q = new MyPQ();
+        q = new DijkstraPriorityQueue();
 
         for (int i = 0; i < graph.getNumberOfVertices(); i++) {
             if (i == start.getId()) {
