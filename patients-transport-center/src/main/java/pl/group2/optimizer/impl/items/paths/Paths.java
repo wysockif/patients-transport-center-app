@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
@@ -21,30 +20,25 @@ import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 import static pl.group2.optimizer.gui.components.Plan.PADDING;
 
 public class Paths implements Items {
-    private final List<Path> paths;
+    private final List<Path> pathList;
     private final Hospitals hospitals;
 
     public Paths(Hospitals hospitals) {
-        paths = new LinkedList<>();
+        pathList = new LinkedList<>();
         this.hospitals = hospitals;
     }
-
-    public void addNewPath(Path path) {
-        checkIfArgumentIsNotNull(path);
-        paths.add(path);
-    }
-
+    
     public boolean contains(Path path) {
         checkIfArgumentIsNotNull(path);
-        return paths.contains(path);
+        return pathList.contains(path);
     }
 
     public int size() {
-        return paths.size();
+        return pathList.size();
     }
 
     public Path get(int index) {
-        return paths.get(index);
+        return pathList.get(index);
     }
 
     @Override
@@ -88,14 +82,6 @@ public class Paths implements Items {
             String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala w drogach";
             throw new DataFormatException(message);
         }
-
-//        if (contains(id)) {
-//            throw new DataFormatException("Nie można dodawać specjalnych obiektów o tym samym id.");
-//        }
-
-//        if (containsHospitals(id)) {
-//            throw new DataFormatException("Nie można dodawać drogi, która łączy te same szpitale.");
-//        }
     }
 
     @Override
@@ -106,7 +92,7 @@ public class Paths implements Items {
         int to = (int) attributes[2];
         int distance = (int) attributes[3];
 
-        paths.add(new Path(id, hospitals.getHospitalById(from), hospitals.getHospitalById(to), distance));
+        pathList.add(new Path(id, hospitals.getHospitalById(from), hospitals.getHospitalById(to), distance));
     }
 
     int numberOfMapElements;
@@ -117,7 +103,7 @@ public class Paths implements Items {
 
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
-        for (Path path : paths) {
+        for (Path path : pathList) {
             g.setColor(DARK_GRAY);
             Graphics2D g2d = (Graphics2D) g;
 
@@ -172,6 +158,6 @@ public class Paths implements Items {
     }
 
     public List<Path> getList() {
-        return paths;
+        return pathList;
     }
 }
