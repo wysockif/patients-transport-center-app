@@ -1,0 +1,6 @@
+# Szpitale (id | nazwa | wsp. x | wsp. y | Liczba łóżek | Liczba wolnych łóżek)
+1 | Szpital Wojewódzki nr 997 | 10 | 10 | 1000 | 0
+2 | Krakowski Szpital Kliniczny | 100 | 120 | 999 | 99
+3 | Pierwszy Szpital im. Prezesa RP | 120 | 130 | 99 | 0
+4 | Drugi Szpital im. Naczelnika RP | 10.2 | 140 | 70 | 1
+5 | Trzeci Szpital im. Króla RP | 140 | 10 | 996 | 1
