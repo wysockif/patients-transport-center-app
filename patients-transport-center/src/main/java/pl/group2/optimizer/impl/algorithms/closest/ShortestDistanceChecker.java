@@ -34,35 +34,4 @@ public class ShortestDistanceChecker {
 
         return closest;
     }
-
-    public Hospital closestHospitalGoCrazy(Patient patient, Hospitals hospitals) {
-        Hospital hospital;
-        double[] distances = new double[hospitals.size()];
-        int hospitalsThatHaveZeroBeds = 0;
-        for (int i = 0; i < hospitals.size(); i++) {
-            hospital = hospitals.getHospitalByIndex(i);
-            if (hospital.getNumberOfAvailableBeds() != 0) {
-                double dx = Math.pow((hospital.getXCoordinate() - patient.getXCoordinate()), 2);
-                double dy = Math.pow((hospital.getYCoordinate() - patient.getYCoordinate()), 2);
-                distances[i] = dx + dy;
-            } else {
-                distances[i] = 1_000_000_000;
-                hospitalsThatHaveZeroBeds++;
-            }
-        }
-
-        if (hospitalsThatHaveZeroBeds == hospitals.size()) {
-            for (int i = 0; i < hospitals.size(); i++) {
-                hospital = hospitals.getHospitalByIndex(i);
-                double dx = Math.pow((hospital.getXCoordinate() - patient.getXCoordinate()), 2);
-                double dy = Math.pow((hospital.getYCoordinate() - patient.getYCoordinate()), 2);
-                distances[i] = dx + dy;
-            }
-        }
-
-        Hospital closest = hospitals.getHospitalByIndex(minIndex(distances));
-
-        return closest;
-    }
-
 }

@@ -1,4 +1,4 @@
-package pl.group2.optimizer.impl.algorithms.dijkstra;
+package pl.group2.optimizer.impl.structures.graph;
 
 public class Graph {
 
@@ -21,18 +21,8 @@ public class Graph {
         weights[to][from] = weight;
     }
 
-    public boolean containsEdge(int from, int to) {
-        return weights[from][to] > 0;
-    }
-
     public int getNumberOfVertices() {
         return numberOfVertices;
-    }
-
-    public void setWeightOfEdge(int from, int to, int weight) {
-        checkCorrectnessOfOperation(from, to);
-        weights[from][to] = weight;
-        weights[to][from] = weight;
     }
 
     private boolean containsVertices(int from, int to) {

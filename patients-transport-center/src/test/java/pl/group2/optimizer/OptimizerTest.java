@@ -269,4 +269,34 @@ class OptimizerTest {
         );
     }
 
+    @Test
+    void should_throwMyException_when_xHasFloatValue_map() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/map/" +
+                "map_float_hospitals");
+
+        // then
+        assertEquals(
+                "[Plik wejściowy: map_float_hospitals, nr linii: 5]. Nieudana konwersja danej: \"10.2\"",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
+    @Test
+    void should_throwMyException_when_xHasFloatValue_patients() {
+        // given
+
+        // when
+        Executable executable = () -> optimizer.loadMap("exemplaryData/incorrect/patients/" +
+                "patients_float");
+
+        // then
+        assertEquals(
+                "[Plik wejściowy: patients_float, nr linii: 2]. Niepoprawny format danych",
+                assertThrows(MyException.class, executable).getMessage()
+        );
+    }
+
 }

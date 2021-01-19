@@ -34,22 +34,9 @@ public class SpecialObjects implements Items {
         indexById.put(id, counter);
         counter++;
     }
-
-    public SpecialObject getSpecialObjectByIndex(int index) {
-        return specialObjectByIndex.get(index);
-    }
-
+    
     public boolean contain(int id) {
         return indexById.containsKey(id);
-    }
-
-    public int getSpecialObjectIndexById(int id) {
-        return indexById.get(id);
-    }
-
-    public SpecialObject getSpecialObjectById(int id) {
-        int index = indexById.get(id);
-        return specialObjectByIndex.get(index);
     }
 
     @Override
