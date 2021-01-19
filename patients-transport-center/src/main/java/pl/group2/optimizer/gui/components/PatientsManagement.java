@@ -35,7 +35,7 @@ public class PatientsManagement extends JPanel {
         setLayout(null);
         addTitle();
         addLabel();
-        addingComponents();
+        addComponents();
         addButton = createButton();
         patients = new LinkedList<>();
         area = createPatientsArea();
@@ -56,11 +56,7 @@ public class PatientsManagement extends JPanel {
     private void createPatient() {
         String[] attributes = {idField.getText(), xField.getText(), yField.getText()};
         try {
-            for (String attribute : attributes) {
-                if (attribute.isBlank()) {
-                    throw new DataFormatException("Aby dodać pacjenta wszystkie pola muszą zostać wypełnione!");
-                }
-            }
+            checkIfAllFieldsAreFillOut(attributes);
             Object[] convertedAttributes = optimizer.getPatients().convertAttributes(attributes);
             optimizer.getPatients().validateAttributes(convertedAttributes);
             optimizer.getPatients().addNewElement(convertedAttributes);
@@ -70,22 +66,30 @@ public class PatientsManagement extends JPanel {
         }
     }
 
+    private void checkIfAllFieldsAreFillOut(String[] attributes) throws DataFormatException {
+        for (String attribute : attributes) {
+            if (attribute.isBlank()) {
+                throw new DataFormatException("Aby dodać pacjenta wszystkie pola muszą zostać wypełnione!");
+            }
+        }
+    }
+
     private void resetFields() {
         idField.setText("");
         xField.setText("");
         yField.setText("");
     }
 
-    private void addingComponents() {
-        createLabel("id:", 25);
+    private void addComponents() {
+        createLabelForField("id:", 25);
         idField = createField(25);
-        createLabel("x:", 85);
+        createLabelForField("x:", 85);
         xField = createField(85);
-        createLabel("y:", 145);
+        createLabelForField("y:", 145);
         yField = createField(145);
     }
 
-    private void createLabel(String name, int x) {
+    private void createLabelForField(String name, int x) {
         JLabel label = new JLabel(name, CENTER);
         label.setBounds(x, 235, 60, 20);
         add(label);

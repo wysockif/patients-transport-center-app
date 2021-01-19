@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-class QueueFIFOTest {
-    private QueueFIFO<Integer> queue;
+class QueueLIFOTest {
+    private QueueLIFO<Integer> queue;
 
     @BeforeEach
     void setUp() {
-        queue = new QueueFIFO<>();
+        queue = new QueueLIFO<>();
     }
 
     @Test
@@ -38,40 +38,13 @@ class QueueFIFOTest {
     @Test
     void should_throwIllegalArgumentException_when_givenItemToAddIsNull() {
         // given
-        queue = new QueueFIFO<>();
+        Integer itemToAdd = null;
 
         // when
-        Integer itemToAdd = null;
         Executable executable = () -> queue.add(itemToAdd);
 
         // then
         assertThrows(IllegalArgumentException.class, executable);
-    }
-
-    @Test
-    void should_returnFrontItem_when_queueIsNotEmpty() {
-        // given
-        queue.add(10);
-        queue.add(123);
-
-        // when
-        Integer actual = queue.front();
-
-        // then
-        int expected = 10;
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void should_throwNoSuchElementException_when_cannotReturnFrontItemFromEmptyQueue() {
-        // given
-        queue = new QueueFIFO<>();
-
-        // when
-        Executable executable = () -> queue.front();
-
-        // then
-        assertThrows(NoSuchElementException.class, executable);
     }
 
     @Test
@@ -90,7 +63,6 @@ class QueueFIFOTest {
     @Test
     void should_throwNoSuchElementException_when_cannotPopItemFromEmptyQueue() {
         // given
-        queue = new QueueFIFO<>();
 
         // when
         Executable executable = () -> queue.remove();
@@ -102,7 +74,6 @@ class QueueFIFOTest {
     @Test
     void should_returnTrue_when_queueIsEmpty() {
         // given
-        queue = new QueueFIFO<>();
 
         // when
         boolean isEmpty = queue.isEmpty();
@@ -126,7 +97,6 @@ class QueueFIFOTest {
     @Test
     void should_returnProperSize_when_queueIsEmpty() {
         // given
-        queue = new QueueFIFO<>();
 
         // when
         int actualSize = queue.size();
@@ -176,17 +146,17 @@ class QueueFIFOTest {
     @Test
     public void should_returnProperElements_when_givenItemsAreStringType() {
         // given
-        QueueFIFO<String> queueFIFO = new QueueFIFO<>();
-        queueFIFO.add("Pierwszy");
-        queueFIFO.add("Drugi");
+        QueueLIFO<String> queueLIFO = new QueueLIFO<>();
+        queueLIFO.add("Pierwszy");
+        queueLIFO.add("Drugi");
 
         // when
-        String actualFirst = queueFIFO.remove();
-        String actualSecond = queueFIFO.remove();
+        String actualFirst = queueLIFO.remove();
+        String actualSecond = queueLIFO.remove();
 
         // then
-        String expectedFirst = "Pierwszy";
-        String expectedSecond = "Drugi";
+        String expectedFirst = "Drugi";
+        String expectedSecond = "Pierwszy";
         assertEquals(expectedFirst, actualFirst);
         assertEquals(expectedSecond, actualSecond);
     }
@@ -195,13 +165,13 @@ class QueueFIFOTest {
     @Test
     public void should_returnProperElements_when_givenItemsAreDoubleType() {
         // given
-        QueueFIFO<Double> queueFIFO = new QueueFIFO<>();
-        queueFIFO.add(1.2);
-        queueFIFO.add(3.4);
+        QueueLIFO<Double> queueLIFO = new QueueLIFO<>();
+        queueLIFO.add(3.4);
+        queueLIFO.add(1.2);
 
         // when
-        Double actualFirst = queueFIFO.remove();
-        Double actualSecond = queueFIFO.remove();
+        Double actualFirst = queueLIFO.remove();
+        Double actualSecond = queueLIFO.remove();
 
         // then
         Double expectedFirst = 1.2;
