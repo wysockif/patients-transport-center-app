@@ -114,22 +114,25 @@ public class Patients implements Items {
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         try {
-            drawAureole(g, scalaX, scalaY, minX, minY);
-            for (Patient patient : getCollection()) {
-                int xShift = patient.getImageWidth() / 2;
-                int yShift = patient.getImageHeight() / 2;
-
-                int x = (int) Math.round(PADDING + patient.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
-                int y = (int) Math.round(PADDING + HEIGHT - (patient.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
-
-                Image image = patient.getImage();
-                g.drawImage(image, x, y, null);
-                drawCenteredString(g, String.valueOf(patient.getId()),
-                        new Rectangle(x + 1, y - yShift, 2 * xShift, yShift),
-                        new Font("id-font", Font.PLAIN, 11));
-            }
+            drawPatientsCollection(g, scalaX, scalaY, minX, minY);
         } catch (ConcurrentModificationException e) {
             draw(g,scalaX, scalaY, minX, minY);
+        }
+    }
+
+    private void drawPatientsCollection(Graphics g, double scalaX, double scalaY, int minX, int minY) {
+        drawAureole(g, scalaX, scalaY, minX, minY);
+        for (Patient patient : getCollection()) {
+            int xShift = patient.getImageWidth() / 2;
+            int yShift = patient.getImageHeight() / 2;
+            int x = (int) Math.round(PADDING + patient.getXCoordinate() * scalaX + MARGIN - xShift - minX * scalaX);
+            int y = (int) Math.round(PADDING + HEIGHT - (patient.getYCoordinate() * scalaY) - MARGIN - yShift + minY * scalaY);
+
+            Image image = patient.getImage();
+            g.drawImage(image, x, y, null);
+            drawCenteredString(g, String.valueOf(patient.getId()),
+                    new Rectangle(x + 1, y - yShift, 2 * xShift, yShift),
+                    new Font("id-font", Font.PLAIN, 11));
         }
     }
 

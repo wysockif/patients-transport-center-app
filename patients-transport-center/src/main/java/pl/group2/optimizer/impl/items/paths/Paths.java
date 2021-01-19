@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 
@@ -23,6 +22,7 @@ import static pl.group2.optimizer.gui.components.Plan.PADDING;
 public class Paths implements Items {
     private final List<Path> paths;
     private final Hospitals hospitals;
+
 
     public Paths(Hospitals hospitals) {
         paths = new LinkedList<>();
@@ -64,11 +64,40 @@ public class Paths implements Items {
         int from = (int) attributes[1];
         int to = (int) attributes[2];
 
+        validateId(id);
+        validateDistance(distance);
+        validateNegativeNumbers(from, to);
+        verifyIfPathExists(from, to);
+    }
+
+    private void verifyIfPathExists(int from, int to) throws DataFormatException {
+        if (exists(from, to) || exists(to, from)) {
+            throw new DataFormatException("Nie można dodawać drogi, która łączy te same szpitale.");
+        }
+    }
+
+    private void validateNegativeNumbers(int from, int to) throws DataFormatException {
+        if (from < 0) {
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala w drogach";
+            throw new DataFormatException(message);
+        }
+        if (to < 0) {
+            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala w drogach";
+            throw new DataFormatException(message);
+        }
+    }
+
+    private void validateId(int id) throws DataFormatException {
         if (id < 0) {
             String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id drogi";
             throw new DataFormatException(message);
         }
+        if (containsId(id)) {
+            throw new DataFormatException("Nie można dodawać dróg o tym samym id.");
+        }
+    }
 
+    private void validateDistance(int distance) throws DataFormatException {
         if (distance < 0) {
             String message = "Niepoprawny format danych. Ujemna wartość reprezentująca odległość drogi";
             throw new DataFormatException(message);
@@ -78,24 +107,24 @@ public class Paths implements Items {
             String message = "Niepoprawny format danych. Zerowa wartość reprezentująca odległość drogi";
             throw new DataFormatException(message);
         }
+    }
 
-        if (from < 0) {
-            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala w drogach";
-            throw new DataFormatException(message);
+    private boolean exists(int from, int to) {
+        for (Path path1 : paths) {
+            if (path1.getFrom().getId() == from && path1.getTo().getId() == to) {
+                return true;
+            }
         }
+        return false;
+    }
 
-        if (to < 0) {
-            String message = "Niepoprawny format danych. Ujemna wartość reprezentująca id szpitala w drogach";
-            throw new DataFormatException(message);
+    private boolean containsId(int id) {
+        for (Path path : paths) {
+            if (path.getId() == id) {
+                return true;
+            }
         }
-
-//        if (contains(id)) {
-//            throw new DataFormatException("Nie można dodawać specjalnych obiektów o tym samym id.");
-//        }
-
-//        if (containsHospitals(id)) {
-//            throw new DataFormatException("Nie można dodawać drogi, która łączy te same szpitale.");
-//        }
+        return false;
     }
 
     @Override
@@ -109,10 +138,7 @@ public class Paths implements Items {
         paths.add(new Path(id, hospitals.getHospitalById(from), hospitals.getHospitalById(to), distance));
     }
 
-    int numberOfMapElements;
-
     public void setNumberOfMapElements(int numberOfMapElements) {
-        this.numberOfMapElements = numberOfMapElements;
     }
 
     @Override
@@ -127,7 +153,6 @@ public class Paths implements Items {
             int yFrom = path.getFrom().getYCoordinate();
             int xTo = path.getTo().getXCoordinate();
             int yTo = path.getTo().getYCoordinate();
-
             int x1 = (int) Math.round(PADDING - minX * scalaX + xFrom * scalaX + MARGIN);
             int y1 = (int) Math.round(PADDING + minY * scalaY + HEIGHT - (yFrom * scalaY) - MARGIN);
             int x2 = (int) Math.round(PADDING - minX * scalaX + xTo * scalaX + MARGIN);
