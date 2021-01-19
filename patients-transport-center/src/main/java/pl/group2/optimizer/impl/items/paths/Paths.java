@@ -62,12 +62,19 @@ public class Paths implements Items {
         validateId(id);
         validateDistance(distance);
         validateNegativeNumbers(from, to);
+        verifyIfHospitalsExist(from, to);
         verifyIfPathExists(from, to);
+    }
+
+    private void verifyIfHospitalsExist(int from, int to) throws DataFormatException{
+        if(!hospitals.contain(from) || !hospitals.contain(to)){
+            throw new DataFormatException("Nie można dodawać drogi, która łączy nie conajmniej jeden nieistniejący szpital");
+        }
     }
 
     private void verifyIfPathExists(int from, int to) throws DataFormatException {
         if (exists(from, to) || exists(to, from)) {
-            throw new DataFormatException("Nie można dodawać drogi, która łączy te same szpitale.");
+            throw new DataFormatException("Nie można dodawać drogi, która łączy te same szpitale");
         }
     }
 
@@ -88,7 +95,7 @@ public class Paths implements Items {
             throw new DataFormatException(message);
         }
         if (containsId(id)) {
-            throw new DataFormatException("Nie można dodawać dróg o tym samym id.");
+            throw new DataFormatException("Nie można dodawać dróg o tym samym id");
         }
     }
 
