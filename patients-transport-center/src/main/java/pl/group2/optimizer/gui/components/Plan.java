@@ -32,27 +32,38 @@ public class Plan extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.setColor(new Color(4, 88, 4));
-        g.fillRect(0, 0, WIDTH, HEIGHT);
-
-        g.setColor(Color.BLACK);
+        drawBackground(g);
         if (running) {
-            optimizer.getHandledArea().draw(g, scalaX, scalaY);
-            optimizer.getPaths().draw(g, scalaX, scalaY, minX, minY);
-            optimizer.getIntersections().draw(g, scalaX, scalaY, minX, minY);
-            optimizer.getSpecialObjects().draw(g, scalaX, scalaY, minX, minY);
-            if (optimizer.getPatients() != null) {
-                optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
-            }
-            if (optimizer.getAmbulanceService() != null) {
-                optimizer.getAmbulanceService().drawAmbulance(g, scalaX, scalaY, minX, minY);
-                optimizer.getAmbulanceService().drawDeadPatients(g, scalaX, scalaY, minX, minY);
-            }
-            optimizer.getHospitals().draw(g, scalaX, scalaY, minX, minY);
+            drawObjects(g);
         } else {
             g.setFont(g.getFont().deriveFont(20.0f));
             g.drawString("ZAŁADUJ DANE", 400, 300);
         }
+    }
+
+    private void drawObjects(Graphics g) {
+        optimizer.getHandledArea().draw(g, scalaX, scalaY);
+        optimizer.getPaths().draw(g, scalaX, scalaY, minX, minY);
+        optimizer.getIntersections().draw(g, scalaX, scalaY, minX, minY);
+        optimizer.getSpecialObjects().draw(g, scalaX, scalaY, minX, minY);
+        drawAmbulanceAndPatientsIfTheyExist(g);
+        optimizer.getHospitals().draw(g, scalaX, scalaY, minX, minY);
+    }
+
+    private void drawAmbulanceAndPatientsIfTheyExist(Graphics g) {
+        if (optimizer.getPatients() != null) {
+            optimizer.getPatients().draw(g, scalaX, scalaY, minX, minY);
+        }
+        if (optimizer.getAmbulanceService() != null) {
+            optimizer.getAmbulanceService().drawAmbulance(g, scalaX, scalaY, minX, minY);
+            optimizer.getAmbulanceService().drawDeadPatients(g, scalaX, scalaY, minX, minY);
+        }
+    }
+
+    private void drawBackground(Graphics g) {
+        g.setColor(new Color(4, 88, 4));
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.setColor(Color.BLACK);
     }
 
     public void setProperties(double scalaX, double scalaY, int minX, int minY) {
@@ -66,7 +77,6 @@ public class Plan extends JPanel {
         running = true;
         double framesPerSecond = 60;
         double millisecondsInSecond = 1000;
-
         Timer time = new Timer();
         time.scheduleAtFixedRate(new TimerTask() {
             @Override

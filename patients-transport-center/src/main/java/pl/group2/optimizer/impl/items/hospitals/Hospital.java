@@ -68,14 +68,15 @@ public class Hospital extends Vertex implements Point, Sprite {
     @Override
     public String toString() {
         return "Hospital{" +
-                "id=" + super.getId() +
-                ", name=" + this.getName() +
-                ", x=" + this.getXCoordinate() +
-                ", y=" + this.getYCoordinate() +
+                "name='" + name + '\'' +
+                ", numberOfBeds=" + numberOfBeds +
+                ", numberOfAvailableBeds=" + numberOfAvailableBeds +
+                ", image=" + image +
                 '}';
     }
 
     public void decreaseNumberOfAvailableBeds() {
         numberOfAvailableBeds--;
     }
+
 }

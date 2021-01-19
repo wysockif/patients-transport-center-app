@@ -4,7 +4,6 @@ import pl.group2.optimizer.impl.algorithms.intersectionFinder.IntersectionFinder
 import pl.group2.optimizer.impl.items.paths.Path;
 
 import java.awt.Graphics;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 

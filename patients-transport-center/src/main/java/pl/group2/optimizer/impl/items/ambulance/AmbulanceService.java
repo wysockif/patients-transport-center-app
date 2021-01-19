@@ -89,24 +89,28 @@ public class AmbulanceService extends Thread {
         communicator.saveMessage("Pacjent o id = " + patient.getId() + " nie został przyjęty " +
                 "w szpitalu o id = " + hospital.getId() + " (" + hospital.getName() + ")");
         List<Vertex> verticesToVisit = null;
-        try {
-            verticesToVisit = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
-        } catch (MyException e) {
-            communicator.saveMessage("System został przepełniony. Brak wolnych łóżek w szpitalach!");
-            System.exit(ErrorHandler.NO_HOSPITALS_AVAILABLE);
-        }
+        verticesToVisit = tryToFindShortestPath(hospital, verticesToVisit);
         List<Point> pointsToVisit = new ArrayList<>();
         if (verticesToVisit != null) {
             for (Vertex v : verticesToVisit) {
                 pointsToVisit.add((Point) v);
             }
             Hospital hospitalToLeave = dijkstraAlgorithm.getNewHospital();
-
             for (Point point : pointsToVisit) {
                 transportPatient(ambulance, point);
             }
             leavePatient(patient, hospitalToLeave);
         }
+    }
+
+    private List<Vertex> tryToFindShortestPath(Hospital hospital, List<Vertex> verticesToVisit) {
+        try {
+            verticesToVisit = dijkstraAlgorithm.shortestPathFromSelectedVertexToHospital(hospital);
+        } catch (MyException e) {
+            communicator.saveMessage("System został przepełniony. Brak wolnych łóżek w szpitalach!");
+            System.exit(ErrorHandler.NO_HOSPITALS_AVAILABLE);
+        }
+        return verticesToVisit;
     }
 
     private void leavePatient(Patient patient, Hospital hospital) {
@@ -131,16 +135,12 @@ public class AmbulanceService extends Thread {
         double sourceY = ambulance.getYCoordinate();
         int destX = point.getXCoordinate();
         int destY = point.getYCoordinate();
-
         setHorizontalDirection(ambulance, sourceX, destX);
         rotateAmbulance(ambulance, sourceX, sourceY, destX, destY);
-
         double vx = destX - sourceX;
         double vy = destY - sourceY;
-
         double distance = Math.sqrt((destX - sourceX) * (destX - sourceX) + (destY - sourceY) * (destY - sourceY));
         double step = 1 / (200 * distance);
-
         driveAmbulance(ambulance, sourceX, sourceY, vx, vy, step);
     }
 

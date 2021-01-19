@@ -34,36 +34,40 @@ public class MouseClickListener implements MouseListener {
             int y = (int) Math.round((PADDING + HEIGHT - MARGIN - yShift + minY * scaleY - e.getY()) / scaleY);
             optimizer.getPatientsManagement().getXField().setText(String.valueOf(x));
             optimizer.getPatientsManagement().getYField().setText(String.valueOf(y));
-
-            optimizer.getPatientsManagement().getXField().setBackground(GRAY);
-            optimizer.getPatientsManagement().getXField().setForeground(BLACK);
-            optimizer.getPatientsManagement().getYField().setBackground(GRAY);
-            optimizer.getPatientsManagement().getYField().setForeground(BLACK);
+            lightUp();
         }
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
+    private void lightUp() {
+        optimizer.getPatientsManagement().getXField().setBackground(GRAY);
+        optimizer.getPatientsManagement().getXField().setForeground(BLACK);
+        optimizer.getPatientsManagement().getYField().setBackground(GRAY);
+        optimizer.getPatientsManagement().getYField().setForeground(BLACK);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e) && optimizer.isRunning()) {
-            optimizer.getPatientsManagement().getXField().setBackground(DARK_GRAY.darker());
-            optimizer.getPatientsManagement().getXField().setForeground(WHITE);
-            optimizer.getPatientsManagement().getYField().setBackground(DARK_GRAY.darker());
-            optimizer.getPatientsManagement().getYField().setForeground(WHITE);
+            resetBackground();
         }
+    }
+
+    private void resetBackground() {
+        optimizer.getPatientsManagement().getXField().setBackground(DARK_GRAY.darker());
+        optimizer.getPatientsManagement().getXField().setForeground(WHITE);
+        optimizer.getPatientsManagement().getYField().setBackground(DARK_GRAY.darker());
+        optimizer.getPatientsManagement().getYField().setForeground(WHITE);
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
+    }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
 }

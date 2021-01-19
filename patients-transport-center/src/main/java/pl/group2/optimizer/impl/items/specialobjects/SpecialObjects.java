@@ -19,6 +19,7 @@ public class SpecialObjects implements Items {
     private final Map<Integer, Integer> indexById;
     private int counter;
 
+
     public int size() {
         return specialObjectByIndex.size();
     }
@@ -34,7 +35,7 @@ public class SpecialObjects implements Items {
         indexById.put(id, counter);
         counter++;
     }
-    
+
     public boolean contain(int id) {
         return indexById.containsKey(id);
     }
@@ -100,11 +101,6 @@ public class SpecialObjects implements Items {
         return specialObjectByIndex.values();
     }
 
-    int numberOfMapElements = 0;
-
-    public void setNumberOfMapElements(int numberOfMapElements) {
-        this.numberOfMapElements = numberOfMapElements;
-    }
 
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {

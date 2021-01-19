@@ -25,6 +25,17 @@ public class Communicator extends JPanel {
         messages = "";
     }
 
+    public void saveMessage(String message) {
+        String singleMessage;
+        if (messages.isEmpty()) {
+            singleMessage = " > " + message + ";";
+        } else {
+            singleMessage = "\n > " + message + ";";
+        }
+        messages += singleMessage;
+        textArea.setText(messages);
+    }
+
     private JTextArea createTextArea() {
         JTextArea jTextArea = new JTextArea();
         jTextArea.setSize(WIDTH, HEIGHT);
@@ -39,16 +50,5 @@ public class Communicator extends JPanel {
         jScrollPane.setBorder(new EmptyBorder(1, 1, 1, 1));
         add(jScrollPane);
         return jTextArea;
-    }
-
-    public void saveMessage(String message) {
-        String singleMessage;
-        if (messages.isEmpty()) {
-            singleMessage = " > " + message + ";";
-        } else {
-            singleMessage = "\n > " + message + ";";
-        }
-        messages += singleMessage;
-        textArea.setText(messages);
     }
 }

@@ -30,8 +30,6 @@ public class ShortestDistanceChecker {
             distances[i] = dx + dy;
         }
 
-        Hospital closest = hospitals.getHospitalByIndex(minIndex(distances));
-
-        return closest;
+        return hospitals.getHospitalByIndex(minIndex(distances));
     }
 }

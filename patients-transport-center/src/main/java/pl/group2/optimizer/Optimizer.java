@@ -52,7 +52,6 @@ public class Optimizer {
         paths = textFileReader.getPaths();
 
         int numberOfElements = hospitals.size() + specialObjects.size();
-        specialObjects.setNumberOfMapElements(numberOfElements);
         hospitals.setNumberOfMapElements(numberOfElements);
 
         intersections = new Intersections();

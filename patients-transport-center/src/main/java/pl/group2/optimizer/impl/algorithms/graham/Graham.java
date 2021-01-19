@@ -30,7 +30,7 @@ public class Graham {
         }
         findTheLowestPoint();
         points.sort(this::comparePoints);
-        if (points.size() < 2) {
+        if (points.size() <= 2) {
             return new LinkedList<>();
         }
         runScanning();
@@ -102,7 +102,7 @@ public class Graham {
         return dy1 >= 0 && dy2 < 0;
     }
 
-    public int counterClockwise(Point a, Point b, Point c) {
+    private int counterClockwise(Point a, Point b, Point c) {
         double area = (b.getXCoordinate() - a.getXCoordinate()) *
                 (c.getYCoordinate() - a.getYCoordinate()) - (b.getYCoordinate() - a.getYCoordinate()) *
                 (c.getXCoordinate() - a.getXCoordinate());
