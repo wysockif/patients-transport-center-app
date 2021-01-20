@@ -16,6 +16,7 @@ public class IntersectionFinder {
     private int newPathId;
 
     public IntersectionFinder(List<Path> paths, int maxHospitalIdForDijkstra) {
+        checkIfArgumentsAreNotNull(paths, maxHospitalIdForDijkstra);
         this.paths = paths;
         intersections = new LinkedList<>();
         intersectionId = maxHospitalIdForDijkstra + 1;
@@ -133,6 +134,14 @@ public class IntersectionFinder {
         }
 
         return false;
+    }
+
+    private void checkIfArgumentsAreNotNull(Object... arguments) {
+        for (Object argument : arguments) {
+            if (argument == null) {
+                throw new IllegalArgumentException("The argument is null");
+            }
+        }
     }
 
     public List<Intersection> getIntersectionsList() {
