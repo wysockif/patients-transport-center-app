@@ -284,5 +284,4 @@ class OptimizerTest {
                 assertThrows(MyException.class, executable).getMessage()
         );
     }
-
 }
