@@ -86,7 +86,6 @@ public class Optimizer {
         return area;
     }
 
-
     public void run() {
         DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(hospitals, paths, intersections);
         ambulanceService = new AmbulanceService(patients, hospitals, area, communicator, dijkstraAlgorithm);
