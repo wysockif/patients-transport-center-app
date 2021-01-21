@@ -8,7 +8,7 @@ import pl.group2.optimizer.impl.items.hospitals.Hospitals;
 import pl.group2.optimizer.impl.items.intersections.Intersections;
 import pl.group2.optimizer.impl.items.paths.Path;
 import pl.group2.optimizer.impl.items.paths.Paths;
-import pl.group2.optimizer.impl.structures.graph.DijkstraPriorityQueue;
+import pl.group2.optimizer.impl.structures.queues.DijkstraPriorityQueue;
 import pl.group2.optimizer.impl.structures.graph.Graph;
 
 import java.util.ArrayList;

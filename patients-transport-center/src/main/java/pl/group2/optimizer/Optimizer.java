@@ -52,7 +52,6 @@ public class Optimizer {
         paths = textFileReader.getPaths();
 
         int numberOfElements = hospitals.size() + specialObjects.size();
-        hospitals.setNumberOfMapElements(numberOfElements);
 
         intersections = new Intersections();
         intersections.lookForIntersections(paths.getList(), hospitals.getMaxId());
@@ -69,7 +68,7 @@ public class Optimizer {
         SwingUtilities.invokeLater(() -> new Window(optimizer, plan, patientsManagement, communicator));
     }
 
-    public HandledArea prepareData() {
+    private HandledArea prepareData() {
         Graham grahamAlgorithm = new Graham();
         grahamAlgorithm.loadPoints(hospitals, specialObjects);
         List<Point> points = grahamAlgorithm.findConvexHull();
@@ -97,7 +96,7 @@ public class Optimizer {
         running = true;
     }
 
-    public void scaleMap(int numberOfElements) {
+    private void scaleMap(int numberOfElements) {
         double scale;
         if (numberOfElements < 20) {
             scale = 1;
@@ -117,11 +116,11 @@ public class Optimizer {
     }
 
 
-    public String messageAboutDownloadedPatients() {
+    private String messageAboutDownloadedPatients() {
         return "Wczytano " + patients.size() + " pacjentów";
     }
 
-    public String messageAboutDownloadedMap() {
+    private String messageAboutDownloadedMap() {
         return "Wczytano " + hospitals.size() + " szpitali, " +
                 specialObjects.size() + " specjalnych obiektów, " +
                 paths.size() + " dróg";
@@ -140,6 +139,14 @@ public class Optimizer {
             long interval = 750000 - (100000 * value);
             ambulanceService.setInterval(interval);
         }
+    }
+
+    public void resetMap() {
+        hospitals = null;
+        specialObjects = null;
+        paths = null;
+        intersections = null;
+        area = null;
     }
 
     public Patients getPatients() {
@@ -200,13 +207,5 @@ public class Optimizer {
 
     public void resetPatients() {
         patients = null;
-    }
-
-    public void resetMap() {
-        hospitals = null;
-        specialObjects = null;
-        paths = null;
-        intersections = null;
-        area = null;
     }
 }

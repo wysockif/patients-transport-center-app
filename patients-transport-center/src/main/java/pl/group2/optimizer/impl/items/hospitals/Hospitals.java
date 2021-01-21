@@ -113,12 +113,6 @@ public class Hospitals implements Items {
         add(hospital);
     }
 
-    int numberOfMapElements;
-
-    public void setNumberOfMapElements(int numberOfMapElements) {
-        this.numberOfMapElements = numberOfMapElements;
-    }
-
     @Override
     public void draw(Graphics g, double scalaX, double scalaY, int minX, int minY) {
         for (Hospital hospital : getCollection()) {

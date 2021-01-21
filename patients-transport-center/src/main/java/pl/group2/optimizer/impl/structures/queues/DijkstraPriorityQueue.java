@@ -1,4 +1,4 @@
-package pl.group2.optimizer.impl.structures.graph;
+package pl.group2.optimizer.impl.structures.queues;
 
 import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
 import pl.group2.optimizer.impl.algorithms.dijkstra.Predecessor;
