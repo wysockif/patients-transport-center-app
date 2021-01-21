@@ -1,0 +1,5 @@
+pl\group2\optimizer\impl\algorithms\intersectionFinder\IntersectionFinderTest.class
+pl\group2\optimizer\impl\structures\queues\QueueLIFOTest.class
+pl\group2\optimizer\impl\structures\queues\QueueFIFOTest.class
+pl\group2\optimizer\impl\algorithms\graham\GrahamTest.class
+pl\group2\optimizer\OptimizerTest.class
