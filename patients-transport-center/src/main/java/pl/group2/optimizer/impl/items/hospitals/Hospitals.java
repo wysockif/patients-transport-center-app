@@ -2,6 +2,7 @@ package pl.group2.optimizer.impl.items.hospitals;
 
 import pl.group2.optimizer.impl.items.Items;
 
+import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -37,7 +38,7 @@ public class Hospitals implements Items {
     }
 
     public int getMaxId() {
-
+        checkNumberOfElements();
         int max = indexes.get(0);
         for (int i = 1; i < indexes.size(); i++) {
             if (indexes.get(i) > max) {
@@ -163,6 +164,14 @@ public class Hospitals implements Items {
             throw new DataFormatException(message);
         }
         return convertedAttributes;
+    }
+
+    private void checkNumberOfElements() {
+        if(indexes.isEmpty()){
+            String message = "Zbyt mała liczba elementów!";
+            JOptionPane.showMessageDialog(null, message, "Patients Transport Center", JOptionPane.ERROR_MESSAGE);
+            System.exit(-1);
+        }
     }
 
     public Collection<Hospital> getCollection() {

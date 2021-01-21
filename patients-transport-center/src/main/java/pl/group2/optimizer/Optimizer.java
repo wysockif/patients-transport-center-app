@@ -6,6 +6,7 @@ import pl.group2.optimizer.gui.components.PatientsManagement;
 import pl.group2.optimizer.gui.components.Plan;
 import pl.group2.optimizer.impl.algorithms.dijkstra.DijkstraAlgorithm;
 import pl.group2.optimizer.impl.algorithms.graham.Graham;
+import pl.group2.optimizer.impl.io.ErrorHandler;
 import pl.group2.optimizer.impl.io.MyException;
 import pl.group2.optimizer.impl.io.TextFileReader;
 import pl.group2.optimizer.impl.items.ambulance.AmbulanceService;
@@ -27,6 +28,7 @@ import static pl.group2.optimizer.gui.components.Plan.HEIGHT;
 import static pl.group2.optimizer.gui.components.Plan.MARGIN;
 import static pl.group2.optimizer.gui.components.Plan.PADDING;
 import static pl.group2.optimizer.gui.components.Plan.WIDTH;
+import static pl.group2.optimizer.impl.io.ErrorHandler.INCORRECT_NUMBER_OF_ELEMENTS;
 
 public class Optimizer {
     private double scaleX;
@@ -52,13 +54,19 @@ public class Optimizer {
         paths = textFileReader.getPaths();
 
         int numberOfElements = hospitals.size() + specialObjects.size();
-
+        validateNumberOfElements(numberOfElements);
         intersections = new Intersections();
         intersections.lookForIntersections(paths.getList(), hospitals.getMaxId());
 
         communicator.saveMessage(messageAboutDownloadedMap());
         scaleMap(numberOfElements);
         area = prepareData();
+    }
+
+    private void validateNumberOfElements(int numberOfElements) throws MyException {
+        if (numberOfElements < 3) {
+            ErrorHandler.handleError(INCORRECT_NUMBER_OF_ELEMENTS,"Liczba elementów mapy nie może być mniejsza niż 3!");
+        }
     }
 
     public void createWindow(Optimizer optimizer) {
